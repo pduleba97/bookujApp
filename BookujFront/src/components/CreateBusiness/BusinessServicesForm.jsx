@@ -1,0 +1,149 @@
+import { useState, useEffect } from "react";
+import "./BusinessDetailsForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faStore,
+  faSquarePlus,
+  faTrashCan,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import ServiceModal from "./ServiceModal.jsx";
+import EditServiceModal from "./EditServiceModal.jsx";
+
+function BusinessServicesForm({
+  businessData,
+  setBusinessData,
+  nextStep,
+  prevStep,
+  handleBusinessSubmit,
+}) {
+  const [showModal, setShowModal] = useState(false);
+  const [editIdx, setEditIdx] = useState(null);
+
+  function handleRemoveService(idxToRemove) {
+    setBusinessData((prev) => {
+      return {
+        ...prev,
+        services: prev.services.filter((_, idx) => idx != idxToRemove),
+      };
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleBusinessSubmit();
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="form-wrapper">
+      {showModal && (
+        <ServiceModal
+          setShowModal={setShowModal}
+          positionClass="register-services-modal"
+          onSave={(newService) => {
+            setBusinessData((prev) => ({
+              ...prev,
+              services: [...prev.services, newService],
+            }));
+          }}
+        />
+      )}
+      {editIdx !== null && (
+        <EditServiceModal
+          setEditIdx={setEditIdx}
+          serviceData={businessData.services[editIdx]}
+          positionClass="register-services-modal"
+          onEdit={(editedService) => {
+            setBusinessData((prev) => {
+              const newServices = [...prev.services];
+              newServices[editIdx] = editedService;
+
+              return { ...prev, services: newServices };
+            });
+          }}
+          onDelete={() => {
+            handleRemoveService(editIdx);
+          }}
+        />
+      )}
+      <div className="business-services-form">
+        <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faStore} />
+        {businessData.services.length == 0 ? (
+          <div className="business-services-form-header">
+            <h1>No services added yet</h1>
+            <p>
+              Add at least one service now. Later you can add more, edit
+              details, and group services into categories.
+            </p>
+          </div>
+        ) : (
+          <div className="business-services-form-header">
+            <h1>Your services</h1>
+          </div>
+        )}
+        {businessData.services.length > 0 && <hr className="divider" />}
+        {businessData.services &&
+          businessData.services.map((service, idx) => (
+            <div key={idx}>
+              <div className="service-group">
+                <div className="service-delete">
+                  <FontAwesomeIcon
+                    className="service-remove"
+                    icon={faTrashCan}
+                    onClick={() => {
+                      handleRemoveService(idx);
+                    }}
+                  />
+                </div>
+                <div
+                  className="service-name-duration-name-price"
+                  onClick={() => {
+                    setEditIdx(idx);
+                  }}
+                >
+                  <div className="service-name-duration-name">
+                    <div>{service.name}</div>
+                    <p>{service.durationMinutes + "min"}</p>
+                  </div>
+                  <div className="service-price">
+                    <div>{service.price + " zł"}</div>
+                    <FontAwesomeIcon
+                      icon={faChevronRight}
+                      style={{ fontSize: "20px" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <hr className="divider" />
+            </div>
+          ))}
+        <div
+          className="business-services-form-button"
+          onClick={() => {
+            setShowModal(true);
+          }}
+        >
+          <FontAwesomeIcon icon={faSquarePlus} />
+          <p>Add new service</p>
+        </div>
+      </div>
+
+      <div className="form-buttons">
+        <button type="submit" className="manage-business-button" id="save">
+          Next
+        </button>
+        <button
+          type="button"
+          className="manage-business-button-white"
+          id="back"
+          onClick={prevStep}
+        >
+          Back
+        </button>
+      </div>
+    </form>
+  );
+}
+
+export default BusinessServicesForm;

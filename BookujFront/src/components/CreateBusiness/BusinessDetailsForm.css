@@ -1,0 +1,274 @@
+.form-group input,
+.form-group select {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-business-wrapper {
+  margin: auto;
+  padding: 2em;
+  max-width: 28em;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  margin-bottom: 1em;
+}
+
+.add-image {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.upload-box {
+  width: 125px;
+  height: 125px;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.upload-box.has-preview {
+  border: 2px solid #ccc;
+}
+
+.upload-box:hover {
+  border-color: #007bff;
+}
+
+.upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-preview {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgb(255, 255, 255);
+  border: none;
+  color: black;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-preview:hover {
+  background: rgba(231, 231, 231, 0.822);
+}
+
+.add-image-body {
+  padding-left: 2em;
+  text-align: left;
+}
+
+.add-image-body > h3 {
+  padding-bottom: 0.4em;
+}
+
+.add-image-body > p {
+  color: #888;
+}
+
+.input-details {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.form-wrapper p {
+  opacity: 80%;
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.form-buttons .manage-business-button-white,
+.form-buttons .manage-business-button {
+  width: 100%;
+  border: solid 1px #888;
+  cursor: pointer;
+  padding: 1em;
+  font-size: 16px;
+  height: auto;
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-buttons button {
+  margin-bottom: 1em;
+}
+
+.opening-hours-form {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.opening-hours-group-toggle-day {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  width: 135px;
+  cursor: pointer;
+}
+
+.opening-hours-group-toggle-day h4 {
+  margin-left: 0.5em;
+}
+
+.opening-hours-group {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.opening-hours-group-clickable {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 0em;
+  width: 100%;
+  cursor: pointer;
+}
+
+.opening-hours-group-change-hours {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.opening-hours-group-hours-info {
+  display: flex;
+  align-items: center;
+}
+
+.opening-hours-group-hours-chevron {
+  display: flex;
+  align-items: center;
+}
+
+.opening-hours-form .divider {
+  opacity: 20%;
+}
+
+.faChevronRight {
+  opacity: 30%;
+}
+
+.business-services-form {
+  margin-bottom: 2em;
+}
+
+.business-services-form .divider {
+  opacity: 20%;
+}
+
+.business-services-form-header {
+  margin-bottom: 2em;
+}
+
+.business-services-form-button {
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.business-services-form-button p {
+  margin-left: 0.25em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
+.business-services-form .service-group {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.service-name-duration-name-price {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.service-name-duration-name {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-name-duration-name div {
+  font-size: 18px;
+}
+
+.service-name-duration-name p {
+  margin: 0;
+  margin-top: 0.25em;
+  font-size: 14px;
+  opacity: 50%;
+}
+
+.service-delete {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  width: 45px;
+}
+
+.service-delete .service-remove {
+  margin-right: 0.5em;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.service-delete .service-remove:hover {
+  opacity: 80%;
+}
+
+.service-price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-price div {
+  margin-right: 0.5em;
+  font-weight: 600;
+}
+
+.form-wrapper .input-details textarea {
+  overflow-y: auto;
+  overflow-x: hidden;
+  resize: vertical;
+  min-height: 7em;
+  max-height: 10em;
+  font-family: Arial, Helvetica, sans-serif;
+}

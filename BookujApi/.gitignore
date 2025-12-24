@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build
+bin/
+obj/
+
+# Migrations
+Migrations/
+
+# Other
+*.cache
+*.db
+*.db-shm
+*.db-wal

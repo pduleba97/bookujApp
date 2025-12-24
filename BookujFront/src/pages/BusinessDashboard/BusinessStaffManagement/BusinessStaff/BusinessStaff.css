@@ -1,0 +1,209 @@
+.business-staff-content {
+  display: flex;
+}
+
+.business-staff-content-staff {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 400px;
+  height: calc(100vh - 148px);
+
+  background-color: #fff;
+  position: relative;
+}
+
+.business-staff-content-staff-list {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.business-staff-content-staff-list .divider {
+  background-color: #f5f5f5;
+  opacity: 30%;
+  width: 100%;
+  height: 1px;
+}
+
+.business-staff-content-staff .form-group {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.business-staff-content-staff-list-single {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.business-staff-content-staff-list-single:hover {
+  background-color: #f5f5f5;
+}
+
+.business-staff-content-staff-list-single.active {
+  background-color: #f5f5f5;
+}
+
+.business-staff-content-staff-list-single-icon {
+  font-size: 24px;
+  opacity: 30%;
+}
+
+.business-staff-content-staff-list-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.business-staff-content-staff-list-avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(187, 187, 187);
+  cursor: default;
+}
+
+.business-staff-content-staff-add-staff {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  right: 1em;
+  bottom: 1em;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0px 6px 12px rgb(0, 0, 0, 0.4);
+}
+
+.business-staff-content-details {
+  width: 40em;
+  padding: 1em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.business-staff-content-details-header-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.business-staff-content-details-header-info-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.business-staff-content-details-header-info-avatar-placeholder {
+  width: 85px;
+  height: 85px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(187, 187, 187);
+  cursor: default;
+  font-size: 36px;
+}
+
+.business-staff-content-details-header-info-avatar {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.business-staff-content-details-header-edit {
+  position: absolute;
+  left: 0em;
+  top: 0em;
+  margin-top: 1em;
+  margin-left: 1em;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.business-staff-content-details-header-calendar-button {
+  position: absolute;
+  right: 0em;
+  top: 0em;
+  margin-top: 1em;
+  margin-right: 1em;
+  background-color: #fff;
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 40px;
+  width: fit-content;
+  padding-left: 1em;
+  padding-right: 1em;
+  cursor: pointer;
+}
+
+.business-staff-content-details-header-info-main-bottom {
+  display: flex;
+  gap: 1em;
+}
+
+.business-staff-content-details-header-info-main-bottom-role-badge {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.business-staff-content-details-body {
+  background-color: #fff;
+  border-radius: 6px;
+}
+
+.business-staff-content-details-body .divider {
+  opacity: 30%;
+}
+
+.business-staff-content-details-body-nav {
+  padding: 1em;
+  display: flex;
+}
+
+.business-staff-content-details-body-nav div {
+  margin-left: 1em;
+}
+
+.business-staff-content-details-body-search-service {
+  margin: 1em;
+}
+
+#searchServices {
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}

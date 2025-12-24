@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@200;300;400;700&display=swap");
+
+html,
+body {
+  color: #1a1a1a;
+  font-family: "Barlow Semi Condensed", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+}
+
+a {
+  color: black;
+  text-decoration: inherit;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-y: scroll;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #646cff;
+  }
+  button {
+    background-color: #2a2c32;
+  }
+}
+
+.MuiSwitch-root *,
+.MuiSwitch-thumb,
+.MuiSwitch-track,
+.MuiSwitch-switchBase {
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}

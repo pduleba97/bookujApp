@@ -1,0 +1,26 @@
+li {
+  list-style: none; /* MOD: brak kropek */
+}
+
+.fetchListUl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  margin: 0;
+}
+
+.fetchListLi {
+  text-align: left;
+  padding: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: transform 0.3s;
+}
+
+.fetchListLi:hover {
+  transform: scale(1.02);
+  border-color: #535bf2;
+  background-color: #535bf2;
+}

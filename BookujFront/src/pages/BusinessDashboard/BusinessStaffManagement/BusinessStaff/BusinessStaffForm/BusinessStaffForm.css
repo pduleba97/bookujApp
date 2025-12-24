@@ -1,0 +1,199 @@
+.business-staff-form-wrapper {
+  width: 60em;
+  margin-left: 3em;
+}
+
+.business-staff-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.business-staff-form-header .business-staff-form-header-save {
+  min-width: 8em;
+  height: 3em;
+}
+
+.business-staff-form-header .business-staff-form-header-save button {
+  cursor: pointer;
+  height: 100%;
+}
+
+.business-staff-form-header-back {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.business-staff-form-card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow-y: hidden;
+}
+
+.business-staff-form-employee {
+  padding: 2em 1em;
+  padding-left: calc(
+    1em + 6px
+  ); /* including 6px width of scroll on the right side */
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+  border-right: 1px solid #cccccc50;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  max-height: 700px;
+}
+
+/* Chrome / Edge */
+.business-staff-form-employee::-webkit-scrollbar {
+  width: 6px;
+}
+
+.business-staff-form-employee::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.business-staff-form-employee:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.business-staff-form-employee .form-group {
+  width: 100%;
+}
+
+.business-staff-form-employee-avatar-body {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px dashed #c9c9c9;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  cursor: pointer;
+  transition: border 0.2s;
+  overflow: hidden;
+  margin-bottom: 1em;
+}
+
+.business-staff-form-employee-avatar-body img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.business-staff-form-employee-avatar-body:hover {
+  border: 1px dashed #007bff;
+}
+
+.business-staff-form-employee-avatar-body p {
+  font-size: 14px;
+  opacity: 80%;
+  width: 350px;
+  word-wrap: break-word;
+}
+
+.business-staff-form-employee-switch-group {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+}
+
+.business-staff-form-employee .email-disabled {
+  cursor: not-allowed;
+  background-color: #ebebeb;
+}
+
+.business-staff-form-services {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.business-staff-form-services-header {
+  border-bottom: 1px solid #cccccc50;
+}
+
+.business-staff-form-services-header-services {
+  margin-left: 2em;
+  padding: 1em 0.5em;
+  width: fit-content;
+  border-bottom: 2px solid black;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.business-staff-form-services-body-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  gap: 1em;
+}
+
+.business-staff-form-services-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 1em;
+}
+
+.business-staff-form-services-body-button-container {
+  padding: 0em 1em;
+}
+
+.business-staff-form-services-body-empty-button-container {
+  width: 10em;
+  height: 3em;
+  justify-self: center;
+}
+
+.business-staff-form-services-body-empty-button-container button {
+  height: 100%;
+  cursor: pointer;
+}
+
+.business-staff-form-employee #description {
+  overflow-y: auto;
+  overflow-x: hidden;
+  resize: vertical;
+  min-height: 7em;
+  max-height: 12em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.business-staff-form-services-body-service-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  font-size: 24px;
+  padding: 0.5em 1em;
+}
+
+.business-staff-form-services-body-service-group:not(:last-of-type) {
+  border-bottom: 1px solid #ccc;
+}
+
+.business-staff-form-services-body-service-group-name {
+  opacity: 90%;
+}
+
+.business-staff-form-services-body-service-group-duration-price {
+  display: flex;
+  gap: 1em;
+}

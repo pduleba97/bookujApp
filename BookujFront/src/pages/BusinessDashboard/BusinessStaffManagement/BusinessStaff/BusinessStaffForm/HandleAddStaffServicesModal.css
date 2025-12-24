@@ -1,0 +1,131 @@
+.handle-staff-services-modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.handle-staff-services-modal {
+  position: absolute;
+  top: 5em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2em;
+  padding-top: 2em;
+  width: 70em;
+}
+
+.handle-staff-services-modal-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.handle-staff-services-modal-card-header-close {
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.handle-staff-services-modal-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.handle-staff-services-modal-description p {
+  text-align: left;
+  opacity: 80%;
+}
+
+.handle-staff-services-modal-searchbar input {
+  width: 100%;
+}
+
+.handle-staff-services-modal-body {
+  display: flex;
+}
+
+.handle-staff-services-modal-body-categories {
+  flex: 1;
+  border-right: 1px solid #ccc;
+  height: 60vh;
+}
+
+.handle-staff-services-modal-body-categories-header,
+.handle-staff-services-modal-body-services-header {
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+.handle-staff-services-modal-body-categories-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.handle-staff-services-modal-body-services {
+  flex: 2;
+  padding: 0em 1em;
+}
+
+.handle-staff-services-modal-body-services-body-service-group-checkbox-name {
+  display: flex;
+  gap: 1em;
+  opacity: 90%;
+  align-items: center;
+}
+
+.handle-staff-services-modal-body-services-body-service-group-checkbox-name
+  input {
+  width: 28px;
+  height: 28px;
+  opacity: 50%;
+  cursor: pointer;
+}
+
+.handle-staff-services-modal-body-services-body-service-group {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  padding: 0.5em;
+}
+
+.handle-staff-services-modal-body-services-body-service-group:not(
+    :last-of-type
+  ) {
+  border-bottom: 1px solid #ccc;
+}
+
+.handle-staff-services-modal-body-services-body-service-group-duration-price {
+  display: flex;
+  gap: 2em;
+}
+
+.handle-staff-services-modal-buttons {
+  display: flex;
+  width: fit-content;
+  gap: 0.5em;
+  align-self: flex-end;
+}
+
+#handle-staff-services-modal-buttons-cancel {
+  background-color: #fff;
+  color: black;
+  border: 1px solid #ccc;
+}
+
+.handle-staff-services-modal-buttons button {
+  width: 120px;
+  height: 50px;
+  cursor: pointer;
+}

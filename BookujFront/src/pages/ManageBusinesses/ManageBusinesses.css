@@ -1,0 +1,177 @@
+input,
+textarea {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  height: 3em;
+  border-radius: 8px;
+}
+
+.manage-businesses-wrapper {
+  margin: auto;
+  padding: 2em;
+  max-width: 80em;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+  margin-bottom: 1em;
+}
+
+.manage-business-top {
+  display: flex;
+  margin: 2em;
+}
+
+.manage-business-top > h2 {
+  text-align: left;
+  flex: 7;
+}
+
+.manage-business-top > button {
+  flex: 1;
+}
+
+.manage-business-button p {
+  color: white;
+  padding-right: 0em;
+}
+
+.manage-business-button-link {
+  display: flex;
+  align-items: center;
+}
+
+.manage-business-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  background-color: #2a2c32;
+}
+
+.manage-business-button:hover {
+  background: rgba(0, 0, 0, 0.87);
+}
+
+.manage-business-button-white {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+  background-color: white;
+  color: black;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.manage-business-button-white:hover {
+  background: rgba(236, 236, 236, 0.863);
+}
+
+.add-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 0.5em;
+  -webkit-mask: url("/icons/icon-add.svg") no-repeat center / contain;
+  mask: url("/icons/icon-add.svg") no-repeat center / contain;
+  background-color: white;
+}
+
+.manage-business-header {
+  padding: 0em 2em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.manage-business-header-subsription-filter {
+  display: flex;
+  flex: 1;
+}
+
+.manage-business-header-subsription-filter > p {
+  margin-right: 0.5em;
+}
+
+.manage-business-header-subsription-filter > p:nth-child(2)::after,
+.manage-business-header-subsription-filter > p:nth-child(3)::after {
+  margin-left: 0.5em;
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background-color: #ccc;
+  transform: translateY(2px);
+}
+
+.manage-business-header-input-wrapper {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.manage-business-body {
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}
+
+.manage-business-body > table {
+  width: 100%;
+}
+
+.manage-business-body table {
+  border-spacing: 0;
+}
+
+.manage-business-body table thead th {
+  border-bottom: 1px solid #a0a0a0;
+  padding-bottom: 1em;
+}
+
+.manage-business-body td,
+.manage-business-body th {
+  cursor: default;
+}
+
+tbody td {
+  border-bottom: 1px solid #ccc;
+}
+
+.manage-business-actions {
+  display: grid;
+  justify-content: center;
+  gap: 0.2em;
+}
+
+.manage-business-action {
+  color: black;
+  display: flex;
+  gap: 0.1em;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+}
+
+table > tbody > tr > td {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+@media (max-width: 1325px) {
+  .manage-businesses-wrapper {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}

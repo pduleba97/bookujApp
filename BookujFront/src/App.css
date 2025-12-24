@@ -1,0 +1,15 @@
+#root {
+  text-align: center;
+}
+
+.card {
+  padding-top: 80px;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+.app-content {
+  padding-top: 8em;
+}
