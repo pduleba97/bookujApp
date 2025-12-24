@@ -1,0 +1,90 @@
+.service-modal-overlay {
+  position: fixed; /* przykrywa całą stronę */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1002;
+}
+
+.service-modal-overlay > .service-modal-card {
+  position: fixed;
+  top: 20%;
+  left: 40%;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  max-width: 500px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  justify-content: space-between;
+}
+
+.service-modal-overlay > .service-modal-card > .service-modal-card-header {
+  padding-top: 1.5em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  display: flex;
+  margin-bottom: 1em;
+  align-items: center;
+}
+
+.service-modal-overlay
+  > .service-modal-card
+  > .service-modal-card-header
+  > .service-modal-card-header-close {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.service-modal-overlay h4 {
+  margin-left: 1em;
+}
+
+.service-modal-overlay > .service-modal-card > .divider {
+  opacity: 40%;
+  margin: 0;
+}
+
+.service-modal-overlay > .service-modal-card > .service-modal-card-body {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  text-align: left;
+  margin-top: 1em;
+  margin-bottom: 5em;
+}
+
+.service-modal-overlay
+  > .service-modal-card
+  > .service-modal-card-book-details {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  padding-bottom: 1.5em;
+}
+
+.service-modal-overlay
+  > .service-modal-card
+  > .service-modal-card-book-details
+  > .price-duration {
+  text-align: left;
+  flex: 3;
+}
+
+.service-modal-overlay
+  > .service-modal-card
+  > .service-modal-card-book-details
+  > button {
+  margin: 0;
+  flex: 8;
+  padding: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+}

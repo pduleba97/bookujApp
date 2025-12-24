@@ -1,0 +1,212 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1002;
+}
+
+.modal-overlay > .service-modal-card {
+  position: fixed;
+  padding-left: 2em;
+  padding-right: 2em;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  max-width: 500px;
+  min-width: 400px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  justify-content: space-between;
+}
+
+.modal-overlay > .register-services-modal {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal-overlay > .settings-services-modal {
+  top: 30%;
+  left: 22%;
+  margin-right: 2em;
+}
+
+@media (max-width: 1200px) {
+  .modal-overlay > .settings-services-modal {
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.service-modal-card > .service-modal-card-description {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-modal-card
+  > .service-modal-card-description
+  > .service-modal-card-header {
+  padding-top: 1.5em;
+  display: flex;
+  margin-bottom: 1em;
+  align-items: center;
+}
+
+.service-modal-card
+  > .service-modal-card-description
+  > .service-modal-card-header
+  > h1 {
+  margin-left: 1em;
+}
+
+.service-modal-card > .service-modal-card-description > p {
+  margin-top: 1em;
+  opacity: 80%;
+  text-align: left;
+  margin-bottom: 2em;
+}
+
+.modal-overlay > .service-modal-card > .service-modal-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.service-modal-card
+  > .service-modal-card-body
+  > .service-modal-card-body-inputs {
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+  background-color: #eeeeee;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+  margin-bottom: 1em;
+}
+
+.service-modal-card-body-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1; /* zajmuje całą szerokość gridu */
+}
+
+.service-modal-card
+  > .service-modal-card-body
+  > .service-modal-card-body-inputs
+  > select {
+  width: 125px;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.service-modal-card > .service-modal-card-book-details,
+.service-modal-card > .edit-service-modal-card-book-details {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: right;
+}
+
+.service-modal-card > .service-modal-card-book-details > button,
+.service-modal-card > .edit-service-modal-card-book-details > button {
+  height: 4em;
+  width: 8em;
+  margin: 0;
+}
+
+.service-modal-card > .edit-service-modal-card-book-details > button {
+  margin: 0;
+}
+
+.service-modal-card > .edit-service-modal-card-book-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.edit-service-remove-box {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 3.5em;
+  width: 3.5em;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+  color: red;
+}
+.edit-service-remove-box .edit-service-remove {
+  font-size: 20px;
+}
+
+.service-modal-card > .form-group {
+  position: relative;
+}
+
+.modal-overlay .form-group > input,
+.modal-overlay .form-group > textarea,
+.modal-overlay .form-group > select {
+  background-color: #f5f5f5;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.modal-overlay .form-group > label {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  color: #888;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.modal-overlay .form-group > input:focus ~ label,
+.modal-overlay .form-group > input:not(:placeholder-shown) ~ label,
+.modal-overlay .form-group textarea:focus ~ label,
+.modal-overlay .form-group textarea:not(:placeholder-shown) ~ label,
+.modal-overlay .form-group > select:focus ~ label,
+.modal-overlay .form-group.has-value > label {
+  top: -8px;
+  left: 8px;
+  font-size: 12px;
+  color: #555;
+  background-color: #f5f5f5;
+  padding: 0 4px;
+}
+
+.service-modal-card-body .form-group.full-width textarea {
+  overflow-y: auto;
+  overflow-x: hidden;
+  resize: vertical;
+  min-height: 5em;
+  max-height: 10em;
+}
+
+.service-modal-card-header-close {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}

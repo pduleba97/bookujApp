@@ -1,0 +1,106 @@
+.business-settings-details-category-card {
+  padding-left: 3rem;
+}
+
+.business-settings-details-category-header {
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  width: 20vw; /*has to remain the same as in .dashboard-settings-details-category-body! */
+  align-items: flex-start;
+}
+
+.business-settings-details-category-header-back {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.business-settings-details-category-header-back
+  .question-mark-wrapper
+  .question-mark-icon {
+  opacity: 40%;
+  margin-top: 4px;
+}
+
+.question-mark-wrapper {
+  position: relative;
+  z-index: 1001;
+}
+
+.business-settings-details-category-header-back .tooltip {
+  margin-top: 0.5em;
+  position: absolute;
+  visibility: hidden;
+  background-color: white;
+  padding: 1em;
+  border: 1px solid #e9e9e9;
+  border-radius: 6px;
+  display: flex;
+  width: 20em;
+}
+
+.business-settings-details-category-header-back
+  .question-mark-wrapper:hover
+  .tooltip {
+  visibility: visible;
+}
+
+.business-settings-details-category-header-save {
+  min-width: 8em;
+  height: 3em;
+  align-self: flex-end;
+}
+
+.business-settings-details-category-header-save button {
+  height: 100%;
+  cursor: pointer;
+}
+
+.business-settings-details-category-header-save button:disabled {
+  cursor: not-allowed;
+  background-color: #2a2c32ec;
+}
+
+.dashboard-settings-details-category-body {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+  border: 1px solid #e9e9e9;
+  border-radius: 12px;
+  background-color: #ffffff;
+  width: 20vw;
+  min-width: 290px;
+  min-height: 5em;
+  position: relative;
+  padding: 1em;
+}
+
+.dashboard-settings-details-category-body-content-header {
+  padding-bottom: 2em;
+}
+
+.dashboard-settings-details-category-body-content-header > p {
+  text-align: left;
+  font-weight: 600;
+}
+
+.dashboard-settings-details-category-body-content {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+
+.dashboard-settings-details-category-body-content select {
+  font-weight: 600;
+}
+
+.dashboard-settings-details-category-body-content-general {
+  width: 100%;
+}
+
+.dashboard-settings-details-category-body-content-general .form-group {
+  margin-bottom: 1.5em;
+  width: 100%;
+}

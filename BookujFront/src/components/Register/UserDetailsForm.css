@@ -1,0 +1,106 @@
+.user-details-form-wrapper {
+  margin-top: 0.5em;
+}
+
+.form-group-wrapper {
+  display: grid;
+  row-gap: 1em;
+  margin-bottom: 1em;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 12px 12px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-group label {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  color: #888;
+  font-size: 16px;
+  pointer-events: none; /* doesn't block clicking on input when clicked accidentaly on label */
+  transition: 0.2s ease all;
+}
+
+.form-group input:focus ~ label,
+.form-group input:not(:placeholder-shown) ~ label,
+.form-group textarea:focus ~ label,
+.form-group textarea:not(:placeholder-shown) ~ label,
+.form-group select:focus ~ label,
+.form-group.has-value label {
+  top: -8px;
+  left: 8px;
+  font-size: 12px;
+  color: #555;
+  background-color: white;
+  padding: 0 4px;
+}
+
+.personal-details-form-button-wrapper {
+  display: flex;
+}
+
+.personal-details-form-button-wrapper > button:first-child {
+  margin-right: 0.5em;
+}
+
+.user-details-form-wrapper > h4 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.already-registered-wrapper {
+  display: flex;
+  justify-content: center;
+  color: #888;
+}
+
+.already-registered-wrapper > p {
+  margin-right: 0.3em;
+}
+
+.user-summary {
+  background: #fff;
+  padding: 0.5em 0.5em 0em 0.5em;
+  border-radius: 12px;
+  margin-bottom: 1em;
+}
+
+.user-summary h4 {
+  margin-bottom: 0.5em;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 500;
+  color: #666;
+}
+
+.value {
+  font-weight: 600;
+  color: #333;
+}

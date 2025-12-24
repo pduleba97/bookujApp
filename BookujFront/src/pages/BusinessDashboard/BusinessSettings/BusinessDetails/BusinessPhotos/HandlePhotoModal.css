@@ -1,0 +1,46 @@
+.handle-photo-modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.handle-photo-modal {
+  position: absolute;
+  top: 5em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  padding-top: 2em;
+  width: 25em;
+}
+
+.handle-photo-modal button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #cccccc;
+}
+
+.handle-photo-modal .button-delete {
+  background-color: white;
+  color: #eb0043;
+}
+
+.handle-photo-modal .button-cancel {
+  background-color: white;
+  color: black;
+}
