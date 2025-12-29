@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { authFetch } from "../../api/authFetch";
-import "./profile.css";
+import "./Profile.css";
 import { setAccessToken } from "../../api/sessionApi";
 import { reduceImageSize } from "../../utils/imageUtils";
 
