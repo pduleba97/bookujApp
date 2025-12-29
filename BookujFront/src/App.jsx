@@ -78,7 +78,10 @@ function App() {
               <Login setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />
             }
           />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={<Profile setGeneralUserData={setUserData} />}
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/manage-businesses" element={<ManageBusinesses />} />
           <Route path="/manage-businesses/add" element={<CreateBusiness />} />

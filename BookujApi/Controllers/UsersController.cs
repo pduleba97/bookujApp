@@ -224,7 +224,7 @@ namespace BookujApi.Controllers
                             });
                         }
 
-                        return Ok(new { message = "Role updated", accessToken=response.AccessToken });
+                        return Ok(new { message = "Role updated", userData = response.User ,accessToken=response.AccessToken });
 
                     case SetRoleResult.UserNotFound: return NotFound(new { error = "User not found" });
                     case SetRoleResult.Forbidden: return StatusCode(403, new { error = "Role change forbidden." });

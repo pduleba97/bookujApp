@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { authFetch } from "../../api/authFetch";
 import "./Profile.css";
-import { setAccessToken } from "../../api/sessionApi";
+import { setAccessToken, setUser } from "../../api/sessionApi";
 import { reduceImageSize } from "../../utils/imageUtils";
 
-function Profile(
-  {
-    // userData, setUserData
-  }
-) {
+function Profile({
+  // userData, setUserData
+  setGeneralUserData,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -140,8 +139,9 @@ function Profile(
       }
 
       setUserData((prev) => ({ ...prev, role: newRole }));
-
+      setUser(data.userData);
       setAccessToken(data.accessToken);
+      setGeneralUserData((prev) => ({ ...prev, role: newRole }));
 
       alert(`Your account status has been successfully changed to ${newRole}`);
       //Toast here to let user know that operation succeeded? (instead of alert)
