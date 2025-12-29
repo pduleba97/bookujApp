@@ -13,6 +13,7 @@ export default defineConfig(({ command }) => {
           key: fs.readFileSync("./certs/localhost-key.pem"),
           cert: fs.readFileSync("./certs/localhost.pem"),
         },
+        port: 3000,
       },
     };
   } else {
