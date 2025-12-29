@@ -41,7 +41,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("https://localhost:3000") //Frontend Adress!
+            .WithOrigins("https://bookuj-app.vercel.app", "https://localhost:3000") //Frontend Adress!
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
