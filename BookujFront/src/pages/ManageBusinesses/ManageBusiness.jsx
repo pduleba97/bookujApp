@@ -157,7 +157,7 @@ function ManageBusiness() {
   return (
     <div className="manage-business-wrapper">
       <div className="manage-business-main">
-        {businessData.profilePictureUrl != "" && (
+        {businessData?.profilePictureUrl && (
           <img
             src={businessData.profilePictureUrl}
             alt="image"

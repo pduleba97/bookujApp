@@ -24,6 +24,7 @@ function BusinessStaffForm({ mode }) {
     role: "Employee",
     position: "",
     description: "",
+    employeeServices: [],
   });
   const [avatarPreview, setAvatarPreview] = useState();
   const [createAccount, setCreateAccount] = useState(false);
@@ -64,7 +65,6 @@ function BusinessStaffForm({ mode }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
 
-      console.log(data);
       return data;
     } catch (err) {
       console.warn(err);
@@ -141,6 +141,8 @@ function BusinessStaffForm({ mode }) {
       description: formData.description || null,
     };
 
+    let employeeId = null;
+
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/employees${isEdit ? `/${id}` : ""}`,
@@ -153,13 +155,36 @@ function BusinessStaffForm({ mode }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
 
+      employeeId = data.id;
       if (currentImageFile) {
-        await addCroppedImage(currentImageFile, data.id);
+        await addCroppedImage(currentImageFile, employeeId);
         setCurrentImageFile(null);
         setCroppedAreaPixels(null);
       }
 
       if (!isEdit) navigate(`/manage-businesses/business/${businessId}/staff`);
+    } catch (err) {
+      console.warn(err);
+    }
+
+    const selectedServicesIds = formData.employeeServices.map((es) => {
+      return es.serviceId;
+    });
+    const servicesPayload = { serviceIds: selectedServicesIds };
+
+    try {
+      const response = await authFetch(
+        `/businesses/me/${businessId}/employees/${employeeId}/services`,
+        {
+          method: "PUT",
+          body: JSON.stringify(servicesPayload),
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error ?? "Failed to assign services");
+      }
     } catch (err) {
       console.warn(err);
     }
@@ -407,6 +432,8 @@ function BusinessStaffForm({ mode }) {
           setShowAddServicesModal={setShowAddServicesModal}
           businessId={businessId}
           employeeId={id}
+          employeeServices={formData.employeeServices}
+          setFormData={setFormData}
         />
       )}
 

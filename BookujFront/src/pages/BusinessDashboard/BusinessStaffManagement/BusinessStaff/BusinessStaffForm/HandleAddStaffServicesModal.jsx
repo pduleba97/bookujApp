@@ -3,16 +3,15 @@ import { authFetch } from "../../../../../api/authFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { duration } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 function HandleAddStaffServicesModal({
   name = "",
   setShowAddServicesModal,
   businessId,
   employeeId,
+  employeeServices,
+  setFormData,
 }) {
-  const navigate = useNavigate();
   const [servicesList, setServicesList] = useState([]);
   const allSelected = servicesList.every((s) => s.selected);
 
@@ -27,13 +26,16 @@ function HandleAddStaffServicesModal({
         const data = await response.json();
         if (!response.ok) throw new Error(data.error);
 
-        const servicesWithSelection = data.map((service) => ({
-          ...service,
-          selected: false,
-        }));
+        const servicesWithSelection = data.map((service) => {
+          var isSelected =
+            employeeServices?.some(
+              (employeeService) => employeeService.serviceId === service.id
+            ) ?? false;
+
+          return { ...service, selected: isSelected };
+        });
 
         setServicesList(servicesWithSelection);
-        console.log(data);
       } catch (err) {
         console.warn(err);
       }
@@ -45,30 +47,13 @@ function HandleAddStaffServicesModal({
   }, [servicesList]);
 
   async function handleAssignServices() {
-    const selectedServiceIds = servicesList
-      .filter((s) => s.selected)
-      .map((s) => s.id);
-
-    const payload = { serviceIds: selectedServiceIds };
-
-    try {
-      const response = await authFetch(
-        `/businesses/me/${businessId}/employees/${employeeId}/services`,
-        {
-          method: "PUT",
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error ?? "Failed to assign services");
-      }
-
-      window.location.reload();
-    } catch (err) {
-      console.warn(err);
-    }
+    setFormData((prev) => {
+      const newServices = servicesList
+        .filter((s) => s.selected)
+        .map(({ id, ...rest }) => ({ serviceId: id, ...rest }));
+      return { ...prev, employeeServices: newServices };
+    });
+    setShowAddServicesModal(false);
   }
 
   return (
