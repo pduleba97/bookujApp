@@ -16,7 +16,7 @@
 .dashboard-details-tiles {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  width: 55vw;
+  width: 50vw;
   gap: 2em;
   grid-auto-rows: 1fr;
 }
