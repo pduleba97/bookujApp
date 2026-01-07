@@ -54,7 +54,7 @@ function BusinessDetailsForm({
               required
             >
               <option value={null}></option>
-              <option value="Barbershop">Barbershop</option>
+              <option value="Barber shop">Barber shop</option>
               <option value="Hair Salon">Hair Salon</option>
               <option value="Beauty Salon">Beauty Salon</option>
               <option value="Nail Salon">Nail Salon</option>
