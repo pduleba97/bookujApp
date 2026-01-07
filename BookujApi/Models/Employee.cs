@@ -36,7 +36,7 @@ namespace BookujApi.Models
 
         // Navigation
         public ICollection<Appointment>? Appointments { get; set; }
-        public ICollection<EmployeeService>? EmployeeServices { get; set; }
+        public ICollection<EmployeeService> EmployeeServices { get; set; } = new List<EmployeeService>();
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
