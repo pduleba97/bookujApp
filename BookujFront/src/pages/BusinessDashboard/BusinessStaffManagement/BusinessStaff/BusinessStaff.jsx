@@ -1,4 +1,4 @@
-import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPencil, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "./BusinessStaff.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -69,7 +69,6 @@ function BusinessStaff() {
                 setFilteredName(e.target.value);
               }}
             />
-            {/* Todo: implement filtering by name+lastname */}
             <label htmlFor="searchStaff">Search for staff</label>
           </div>
           <div className="business-staff-content-staff-list">
@@ -119,10 +118,7 @@ function BusinessStaff() {
                 to={`/manage-businesses/business/${businessId}/staff/edit/${selectedEmployee?.id}`}
                 className="business-staff-content-details-header-edit"
               >
-                <FontAwesomeIcon
-                  icon={faPenToSquare}
-                  style={{ fontSize: "18px" }}
-                />
+                <FontAwesomeIcon icon={faPencil} style={{ fontSize: "28px" }} />
               </Link>
               <div className="business-staff-content-details-header-info-main">
                 {selectedEmployee?.imageUrl ? (
@@ -159,13 +155,30 @@ function BusinessStaff() {
           </div>
           <div className="business-staff-content-details-body">
             <div className="business-staff-content-details-body-nav">
-              <div>Services</div>
+              <div style={{ borderBottom: "2px solid black" }}>Services</div>
               <div>Working hours</div>
             </div>
-            <hr className="divider" />
             <div className="business-staff-content-details-body-search-service form-group">
               <label htmlFor="searchServices">Search for a service</label>
               <input id="searchServices" type="text" />
+            </div>
+            <div>
+              {selectedEmployee.employeeServices?.map((service) => (
+                <div
+                  className="business-staff-form-services-body-service-group"
+                  key={service.id}
+                >
+                  <div className="business-staff-form-services-body-service-group-name">
+                    <span>{service.name}</span>
+                  </div>
+                  <div className="business-staff-form-services-body-service-group-duration-price">
+                    <span style={{ opacity: "50%", fontSize: "18px" }}>
+                      {service.durationMinutes + "min"}
+                    </span>
+                    <span>{service.price.toFixed(2) + " zł"}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -906,7 +906,6 @@ namespace BookujApi.Services
                 throw new ArgumentException("Invalid businessId");
 
             List<GetEmployeeDto> employees = await _db.Employees
-                .Include(e=> e.User)
                 .Where(e => e.BusinessId == parseBusinessId)
                 .Select(e => new GetEmployeeDto 
                 { 
@@ -924,6 +923,15 @@ namespace BookujApi.Services
                     IsActive = e.IsActive,
                     CreatedAt = e.CreatedAt,
                     UpdatedAt = e.UpdatedAt,
+                    EmployeeServices = e.EmployeeServices 
+                    .Select(es => new GetEmployeeService
+                    {
+                        ServiceId = es.ServiceId,
+                        Name = es.Service.Name,
+                        DurationMinutes = es.Service.DurationMinutes,
+                        Price = es.Service.Price
+                    })
+                    .ToList()
                 })
                 .OrderBy(e => e.Role)
                 .ThenBy(e => e.CreatedAt)
