@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +64,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+
+// TEST ENDPOINT
+app.MapGet("/", () => "API IS RUNNING");
 
 using (var scope = app.Services.CreateScope())
 {
