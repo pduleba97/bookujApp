@@ -14,6 +14,7 @@ namespace BookujApi.Data
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceCategory> ServiceCategories { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<OpeningHour> OpeningHours { get; set; }
@@ -23,11 +24,11 @@ namespace BookujApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // mapowanie enumów postgresowych
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasPostgresEnum<UserRole>();
             modelBuilder.HasPostgresEnum<AppointmentStatus>();
             modelBuilder.HasPostgresEnum<SubscriptionStatus>();
-
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<EmployeeService>()
                 .HasKey(es => new { es.EmployeeId, es.ServiceId });
@@ -41,6 +42,12 @@ namespace BookujApi.Data
                 .HasOne(es => es.Service)
                 .WithMany(s => s.EmployeeServices)
                 .HasForeignKey(es => es.ServiceId);
+
+            modelBuilder.Entity<Service>()
+                .HasOne(s => s.ServiceCategory)
+                .WithMany(sc => sc.Services)
+                .HasForeignKey(s => s.ServiceCategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

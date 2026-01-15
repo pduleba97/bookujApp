@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-function ServiceModal({ setShowModal, positionClass, onSave }) {
+function ServiceModal({ setShowServiceModal, positionClass, onSave }) {
   const hours = [null];
   const hoursValues = [null];
   const minutes = [null];
@@ -100,7 +100,7 @@ function ServiceModal({ setShowModal, positionClass, onSave }) {
     };
 
     onSave(newService);
-    setShowModal(false);
+    setShowServiceModal(false);
   }
 
   return (
@@ -121,7 +121,7 @@ function ServiceModal({ setShowModal, positionClass, onSave }) {
               icon={faArrowLeft}
               className="service-modal-card-header-close"
               onClick={() => {
-                setShowModal(false);
+                setShowServiceModal(false);
               }}
             />
             <h1>Add Service</h1>

@@ -1,7 +1,7 @@
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function PlaceholderCalendar() {
+function PlaceholderGrahpic() {
   return (
     <>
       <style>
@@ -84,4 +84,4 @@ function PlaceholderCalendar() {
   );
 }
 
-export default PlaceholderCalendar;
+export default PlaceholderGrahpic;

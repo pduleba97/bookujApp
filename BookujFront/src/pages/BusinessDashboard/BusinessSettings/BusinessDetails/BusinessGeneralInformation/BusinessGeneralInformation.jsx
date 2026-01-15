@@ -178,7 +178,7 @@ function BusinessGeneralInformation() {
                   e.target.style.height = e.target.scrollHeight + "px";
                 }}
               />
-              <label htmlFor="description">
+              <label htmlFor="description" style={{ textAlign: "left" }}>
                 Short description of your business (recommended)
               </label>
             </div>

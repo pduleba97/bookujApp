@@ -8,13 +8,17 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { Link, useParams } from "react-router-dom";
 import { authFetch } from "../../../../api/authFetch";
+import BusinessStaffServicesList from "./BusinessStaffServicesList/BusinessStaffServicesList";
 
 function BusinessStaff() {
   const { businessId } = useParams();
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [staffList, setStaffList] = useState([]);
-  const [filteredStaffList, setFilteredStaffList] = useState([]);
   const [filteredName, setFilteredName] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedEmployeeGroupedServices, setSelectedEmployeeGroupedServices] =
+    useState([]);
 
   useEffect(() => {
     (async () => {
@@ -30,30 +34,59 @@ function BusinessStaff() {
         if (!response.ok) throw new Error(data.error);
 
         setStaffList(data);
-        setFilteredStaffList(data);
-        setSelectedEmployee(data[0]);
-        console.log(data);
+        if (data.length > 0) {
+          setSelectedEmployee(data[0]);
+          fetchEmployeeServicesGroupedByCategory(data[0].id);
+        }
       } catch (err) {
         console.warn(err);
       }
     })();
   }, []);
 
-  useEffect(() => {
-    const adjustedFilteredName = filteredName.toLowerCase();
+  async function fetchEmployeeServicesGroupedByCategory(employeeId) {
+    try {
+      const response = await authFetch(
+        `/businesses/me/${businessId}/employees/${employeeId}/services-grouped`,
+        {
+          method: "GET",
+        }
+      );
 
-    setFilteredStaffList(
-      staffList.filter(
-        (staff) =>
-          (staff.firstName + " " + staff.lastName)
-            .toLowerCase()
-            .includes(adjustedFilteredName) ||
-          (staff.lastName + " " + staff.firstName)
-            .toLowerCase()
-            .includes(adjustedFilteredName)
-      )
-    );
-  }, [filteredName, staffList]);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error);
+
+      console.log(filteredGroupedEmployeeServicesList);
+      setSelectedEmployeeGroupedServices(data);
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  const adjustedFilteredName = filteredName.toLowerCase();
+
+  const filteredStaffList = staffList.filter(
+    (staff) =>
+      (staff.firstName + " " + staff.lastName)
+        .toLowerCase()
+        .includes(adjustedFilteredName) ||
+      (staff.lastName + " " + staff.firstName)
+        .toLowerCase()
+        .includes(adjustedFilteredName)
+  );
+
+  const filteredGroupedEmployeeServicesList = selectedEmployeeGroupedServices
+    ?.map((gs) => ({
+      ...gs,
+      services: gs.services.filter((es) =>
+        es.name.toLowerCase().includes(serviceFilter.toLowerCase())
+      ),
+    }))
+    .filter((gs) => gs.services.length > 0);
+
+  useEffect(() => {
+    console.log(filteredGroupedEmployeeServicesList);
+  }, [serviceFilter]);
 
   return (
     <div className="business-staff-wrapper">
@@ -72,14 +105,16 @@ function BusinessStaff() {
             <label htmlFor="searchStaff">Search for staff</label>
           </div>
           <div className="business-staff-content-staff-list">
-            {filteredStaffList?.map((staff, idx) => (
+            {filteredStaffList?.map((staff) => (
               <div key={staff.id}>
                 <div
                   className={`business-staff-content-staff-list-single ${
-                    selectedEmployee.id == staff.id && "active"
+                    selectedEmployee.id === staff.id ? "active" : ""
                   }`}
                   onClick={() => {
                     setSelectedEmployee(staff);
+                    fetchEmployeeServicesGroupedByCategory(staff.id);
+                    setServiceFilter("");
                   }}
                 >
                   <FontAwesomeIcon
@@ -93,8 +128,8 @@ function BusinessStaff() {
                     />
                   ) : (
                     <div className="business-staff-content-staff-list-avatar-placeholder">
-                      {staff.firstName?.slice(0, 1) +
-                        staff.lastName?.slice(0, 1)}
+                      {(staff.firstName?.[0].toUpperCase() || "") +
+                        (staff.lastName?.[0].toUpperCase() || "")}
                     </div>
                   )}
                   {staff.firstName + " " + staff.lastName}
@@ -114,12 +149,17 @@ function BusinessStaff() {
         <div className="business-staff-content-details">
           <div className="business-staff-content-details-header">
             <div className="business-staff-content-details-header-info">
-              <Link
-                to={`/manage-businesses/business/${businessId}/staff/edit/${selectedEmployee?.id}`}
-                className="business-staff-content-details-header-edit"
-              >
-                <FontAwesomeIcon icon={faPencil} style={{ fontSize: "28px" }} />
-              </Link>
+              {selectedEmployee?.id && (
+                <Link
+                  to={`/manage-businesses/business/${businessId}/staff/edit/${selectedEmployee.id}`}
+                  className="business-staff-content-details-header-edit"
+                >
+                  <FontAwesomeIcon
+                    icon={faPencil}
+                    style={{ fontSize: "26px" }}
+                  />
+                </Link>
+              )}
               <div className="business-staff-content-details-header-info-main">
                 {selectedEmployee?.imageUrl ? (
                   <img
@@ -128,8 +168,8 @@ function BusinessStaff() {
                   />
                 ) : (
                   <div className="business-staff-content-details-header-info-avatar-placeholder">
-                    {selectedEmployee?.firstName?.slice(0, 1) +
-                      selectedEmployee?.lastName?.slice(0, 1)}
+                    {(selectedEmployee?.firstName?.[0] || "") +
+                      (selectedEmployee?.lastName?.[0] || "")}
                   </div>
                 )}
                 <h3>
@@ -155,31 +195,36 @@ function BusinessStaff() {
           </div>
           <div className="business-staff-content-details-body">
             <div className="business-staff-content-details-body-nav">
-              <div style={{ borderBottom: "2px solid black" }}>Services</div>
-              <div>Working hours</div>
+              <button
+                className={`button-navigation ${
+                  selectedTab === 0 ? "active" : ""
+                }`}
+                onClick={() => {
+                  setSelectedTab(0);
+                }}
+              >
+                Services ({selectedEmployee?.employeeServices?.length ?? 0})
+              </button>
+              <button
+                className={`button-navigation ${
+                  selectedTab === 1 ? "active" : ""
+                }`}
+                onClick={() => {
+                  setSelectedTab(1);
+                }}
+              >
+                Working hours
+              </button>
             </div>
-            <div className="business-staff-content-details-body-search-service form-group">
-              <label htmlFor="searchServices">Search for a service</label>
-              <input id="searchServices" type="text" />
-            </div>
-            <div>
-              {selectedEmployee.employeeServices?.map((service) => (
-                <div
-                  className="business-staff-form-services-body-service-group"
-                  key={service.id}
-                >
-                  <div className="business-staff-form-services-body-service-group-name">
-                    <span>{service.name}</span>
-                  </div>
-                  <div className="business-staff-form-services-body-service-group-duration-price">
-                    <span style={{ opacity: "50%", fontSize: "18px" }}>
-                      {service.durationMinutes + "min"}
-                    </span>
-                    <span>{service.price.toFixed(2) + " zł"}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {selectedTab === 0 && (
+              <BusinessStaffServicesList
+                filteredGroupedEmployeeServicesList={
+                  filteredGroupedEmployeeServicesList
+                }
+                serviceFilter={serviceFilter}
+                setServiceFilter={setServiceFilter}
+              />
+            )}
           </div>
         </div>
       </div>

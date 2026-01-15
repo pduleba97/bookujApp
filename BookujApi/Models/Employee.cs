@@ -11,7 +11,7 @@ namespace BookujApi.Models
 
         public Guid? UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public User? User { get; set; } = null!;
+        public User? User { get; set; }
 
         [Required]
         public Guid BusinessId { get; set; }
@@ -25,6 +25,7 @@ namespace BookujApi.Models
         public string? Description { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public bool IsDeleted { get; set; } = false;
 
         [Required]
         public string FirstName { get; set; } = null!;

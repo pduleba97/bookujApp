@@ -8,11 +8,12 @@ function HandleAddStaffServicesModal({
   name = "",
   setShowAddServicesModal,
   businessId,
-  employeeId,
   employeeServices,
   setFormData,
 }) {
   const [servicesList, setServicesList] = useState([]);
+  const [filteredServicesList, setFilteredServicesList] = useState([]);
+  const [serviceFilter, setServiceFilter] = useState("");
   const allSelected = servicesList.every((s) => s.selected);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ function HandleAddStaffServicesModal({
         });
 
         setServicesList(servicesWithSelection);
+        setFilteredServicesList(servicesWithSelection);
       } catch (err) {
         console.warn(err);
       }
@@ -43,8 +45,12 @@ function HandleAddStaffServicesModal({
   }, []);
 
   useEffect(() => {
-    console.log(servicesList);
-  }, [servicesList]);
+    const newFilteredServices = servicesList.filter((service) => {
+      return service.name.toLowerCase().includes(serviceFilter.toLowerCase());
+    });
+
+    setFilteredServicesList(newFilteredServices);
+  }, [servicesList, serviceFilter]);
 
   async function handleAssignServices() {
     setFormData((prev) => {
@@ -79,7 +85,15 @@ function HandleAddStaffServicesModal({
         </div>
         <div className="handle-staff-services-modal-searchbar">
           <div className="form-group">
-            <input id="services-modal-searchbar" type="text" placeholder="" />
+            <input
+              id="services-modal-searchbar"
+              value={serviceFilter}
+              type="text"
+              placeholder=""
+              onChange={(e) => {
+                setServiceFilter(e.target.value);
+              }}
+            />
             {/* implement filter here */}
             <label htmlFor="services-modal-searchbar">
               Search for a service
@@ -114,7 +128,7 @@ function HandleAddStaffServicesModal({
                   <span>Select all</span>
                 </div>
               </div>
-              {servicesList.map((service) => (
+              {filteredServicesList.map((service) => (
                 <div
                   className="handle-staff-services-modal-body-services-body-service-group"
                   key={service.id}
@@ -136,10 +150,18 @@ function HandleAddStaffServicesModal({
                     <span>{service.name}</span>
                   </div>
                   <div className="handle-staff-services-modal-body-services-body-service-group-duration-price">
-                    <span style={{ opacity: "50%", fontSize: "18px" }}>
+                    <span
+                      style={{
+                        opacity: "50%",
+                        fontSize: "18px",
+                        textAlign: "center",
+                      }}
+                    >
                       {service.durationMinutes + "min"}
                     </span>
-                    <span>{service.price.toFixed(2) + " zł"}</span>
+                    <span style={{ textAlign: "right" }}>
+                      {service.price.toFixed(2) + "zł"}
+                    </span>
                   </div>
                 </div>
               ))}

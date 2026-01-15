@@ -14,12 +14,18 @@ namespace BookujApi.Models
         [ForeignKey(nameof(BusinessId))]
         public Business Business { get; set; } = null!;
 
+        public Guid? ServiceCategoryId { get; set; }
+        [ForeignKey(nameof(ServiceCategoryId))]
+        public ServiceCategory? ServiceCategory { get; set; }
+
         [Required]
+        [MinLength(3)]
         public string Name { get; set; } = null!;
 
         public string? Description { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
 
         [Required]
@@ -27,10 +33,10 @@ namespace BookujApi.Models
 
         public bool IsActive { get; set; } = true;
 
-        public ICollection<EmployeeService>? EmployeeServices { get; set; }
+        public ICollection<EmployeeService> EmployeeServices { get; set; } = new List<EmployeeService>();
 
         // Navigation
-        public ICollection<Appointment>? Appointments { get; set; }
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

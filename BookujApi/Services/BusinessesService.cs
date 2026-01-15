@@ -4,9 +4,6 @@ using BookujApi.Models;
 using BookujApi.Models.Dto;
 using BookujApi.Models.Forms;
 using Microsoft.EntityFrameworkCore;
-using Supabase;
-using Supabase.Gotrue;
-using Supabase.Storage;
 using System.Text;
 using System.Text.RegularExpressions;
 using static BookujApi.Models.Dto.GetBusinessDto;
@@ -60,8 +57,8 @@ namespace BookujApi.Services
             {
                 Id = Guid.NewGuid(),
                 BusinessId = newBusiness.Id,
-                FirstName= userExists.FirstName,
-                LastName= userExists.LastName,
+                FirstName = userExists.FirstName,
+                LastName = userExists.LastName,
                 UserId = userExists.Id,
                 Role = BusinessRole.Owner,
                 CreatedAt = DateTime.UtcNow
@@ -204,19 +201,14 @@ namespace BookujApi.Services
 
             var business = await _db.Businesses
                 .Include(b => b.Owner)
-                .Include(b => b.OpeningHours)
+                .Include(b => b.OpeningHours.OrderBy(h => h.DayOfWeek))
                 .Include(b => b.Services)
                 .Include(b => b.BusinessPhotos)
-                .Include(b => b.Employees)
+                .Include(b => b.Employees.Where(e => !e.IsDeleted && e.IsActive && e.Role != BusinessRole.Receptionist))
                 .FirstOrDefaultAsync(b => b.OwnerId == parseOwnerID && b.Id == parseBusinessID);
 
             if (business == null)
                 return null;
-
-            business.OpeningHours = business.OpeningHours
-            .OrderBy(h => h.DayOfWeek)
-            .ToList();
-
 
             return new GetBusinessDto
             {
@@ -239,7 +231,7 @@ namespace BookujApi.Services
                 OpeningHours = business.OpeningHours?
             .Select(h => new GetOpeningHourDto
             {
-                Id=h.Id,
+                Id = h.Id,
                 DayOfWeek = h.DayOfWeek,
                 IsOpen = h.IsOpen,
                 OpenTime = h.OpenTime,
@@ -266,10 +258,6 @@ namespace BookujApi.Services
                     SortOrder = bp.SortOrder,
                 }).ToList() ?? new List<GetBusinessPhoto>(),
                 Employees = business.Employees?
-                .Where(e =>
-                    e.IsActive &&
-                    e.Role != BusinessRole.Receptionist
-                )
                 .OrderBy(e => e.Role)
                 .ThenBy(e => e.CreatedAt)
                 .Select(e => new GetBusinessEmployeeDto
@@ -316,7 +304,7 @@ namespace BookujApi.Services
             _db.Businesses.Remove(bussinessToRemove);
             await _db.SaveChangesAsync();
 
-            //IMPLEMENT REMOVING OTHER PHOTOS AS WELL!!! ALSO PICTURES TABLE SHOULD BE CLEARED OUT OF BUSINESS PICUTES TBD!!!
+            //IMPLEMENT REMOVING OTHER PHOTOS AS WELL!!! ALSO PICTURES TABLE SHOULD BE CLEARED OUT OF BUSINESS PICTURES TBD!!!
 
             return new BusinessReadDto
             {
@@ -353,39 +341,91 @@ namespace BookujApi.Services
             if (business == null)
                 throw new UnauthorizedAccessException("This business does not belong to you.");
 
-            List<ServiceDto> servicesList = await _db.Services.Where(s => s.BusinessId == parseBusinessId).Select(s => new ServiceDto
+            List<ServiceDto> servicesList = await _db.Services.Where(s => s.BusinessId == parseBusinessId).OrderBy(s => s.CreatedAt).Select(s => new ServiceDto
             {
                 Id = s.Id,
                 BusinessId = s.BusinessId,
+                ServiceCategoryId = s.ServiceCategoryId,
                 Name = s.Name,
                 Description = s.Description,
                 Price = s.Price,
                 DurationMinutes = s.DurationMinutes,
                 IsActive = s.IsActive
-            }).ToListAsync();
+            })
+            .ToListAsync();
 
             return servicesList;
         }
 
-        public async Task<ServiceDto> AddServiceToMyBusiness(string ownerId, string businessId, AddServiceDto newServiceDto)
+        public async Task<List<ServiceDto>> GetServicesFromCategory(string businessId, Guid categoryId)
         {
-            Guid parseOwnerId;
-            if (!Guid.TryParse(ownerId, out parseOwnerId))
-                throw new ArgumentException("Invalid ownerId");
-
             Guid parseBusinessId;
             if (!Guid.TryParse(businessId, out parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
-            var business = await _db.Businesses.SingleOrDefaultAsync(b => b.Id == parseBusinessId && b.OwnerId == parseOwnerId);
+            List<ServiceDto> servicesList = await _db.Services.AsNoTracking().Where(s => s.BusinessId == parseBusinessId && s.ServiceCategoryId == categoryId).OrderBy(s => s.CreatedAt).Select(s => new ServiceDto
+            {
+                Id = s.Id,
+                BusinessId = s.BusinessId,
+                ServiceCategoryId = s.ServiceCategoryId,
+                Name = s.Name,
+                Description = s.Description,
+                Price = s.Price,
+                DurationMinutes = s.DurationMinutes,
+                IsActive = s.IsActive
+            })
+            .ToListAsync();
 
-            if (business == null)
-                throw new UnauthorizedAccessException("This business does not belong to you.");
+            return servicesList;
+        }
+
+        public async Task<List<ServiceDto>> GetServicesWithoutCategory(string businessId)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            List<ServiceDto> servicesList = await _db.Services.AsNoTracking().Where(s => s.BusinessId == parseBusinessId && s.ServiceCategoryId == null).OrderBy(s => s.CreatedAt).Select(s => new ServiceDto
+            {
+                Id = s.Id,
+                BusinessId = s.BusinessId,
+                ServiceCategoryId = s.ServiceCategoryId,
+                Name = s.Name,
+                Description = s.Description,
+                Price = s.Price,
+                DurationMinutes = s.DurationMinutes,
+                IsActive = s.IsActive
+            })
+            .ToListAsync();
+
+            return servicesList;
+        }
+
+
+        public async Task<ServiceDto> AddServiceToMyBusiness(string businessId, AddServiceDto newServiceDto)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            if (!await _db.Businesses.AnyAsync(b => b.Id == parseBusinessId))
+                throw new KeyNotFoundException("Business not found.");
+
+            if (newServiceDto.ServiceCategoryId != null) //Protection against Service Category from a different business
+            {
+                var categoryExists = await _db.ServiceCategories.AnyAsync(sc =>
+                    sc.Id == newServiceDto.ServiceCategoryId &&
+                    sc.BusinessId == parseBusinessId);
+
+                if (!categoryExists)
+                    throw new ArgumentException("Invalid service category");
+            }
 
             var newService = new Service
             {
                 Id = Guid.NewGuid(),
                 BusinessId = parseBusinessId,
+                ServiceCategoryId = newServiceDto.ServiceCategoryId,
                 Name = newServiceDto.Name,
                 Description = newServiceDto.Description,
                 Price = newServiceDto.Price,
@@ -401,6 +441,7 @@ namespace BookujApi.Services
             {
                 Id = newService.Id,
                 BusinessId = newService.BusinessId,
+                ServiceCategoryId = newService.ServiceCategoryId,
                 Name = newService.Name,
                 Description = newService.Description,
                 Price = newService.Price,
@@ -409,31 +450,55 @@ namespace BookujApi.Services
             };
         }
 
-        public async Task<ServiceDto> EditMyService(string ownerId, string businessId, EditServiceDto editServiceDto)
+        public async Task<ServiceDto> EditMyService(string businessId, Guid serviceId, EditServiceDto editServiceDto)
         {
-            Guid parseOwnerId;
-            if (!Guid.TryParse(ownerId, out parseOwnerId))
-                throw new ArgumentException("Invalid ownerId");
-
             Guid parseBusinessId;
             if (!Guid.TryParse(businessId, out parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
-            var business = await _db.Businesses.SingleOrDefaultAsync(b => b.Id == parseBusinessId && b.OwnerId == parseOwnerId);
+            if (!await _db.Businesses.AnyAsync(b => b.Id == parseBusinessId))
+                throw new KeyNotFoundException("Business not found.");
 
-            if (business == null)
-                throw new UnauthorizedAccessException("This business does not belong to you.");
-
-            var service = await _db.Services.SingleOrDefaultAsync(s => s.Id == editServiceDto.Id && s.BusinessId == parseBusinessId);
+            var service = await _db.Services.SingleOrDefaultAsync(s => s.Id == serviceId && s.BusinessId == parseBusinessId);
 
             if (service == null)
-                throw new Exception("Service not found.");
+                throw new KeyNotFoundException("Service not found.");
 
-            service.Name = editServiceDto.Name;
-            service.Description = editServiceDto.Description;
-            service.Price = editServiceDto.Price;
-            service.DurationMinutes = editServiceDto.DurationMinutes;
-            service.IsActive = editServiceDto.IsActive;
+            if (editServiceDto.ServiceCategoryId != null)
+            {
+                if (!await _db.ServiceCategories.AnyAsync(sc =>
+                sc.Id == editServiceDto.ServiceCategoryId &&
+                sc.BusinessId == parseBusinessId))
+                    throw new ArgumentException("Invalid service category");
+
+                service.ServiceCategoryId = editServiceDto.ServiceCategoryId;
+            }
+
+            if (editServiceDto.Name != null)
+                service.Name = editServiceDto.Name;
+
+            if (editServiceDto.Description != null)
+                service.Description = editServiceDto.Description;
+
+            if (editServiceDto.Price != null)
+            {
+                if (editServiceDto.Price < 0)
+                    throw new ArgumentException("Price must be greater than zero.");
+
+                service.Price = editServiceDto.Price.Value;
+            }
+
+
+            if (editServiceDto.DurationMinutes != null)
+            {
+                if (editServiceDto.DurationMinutes <= 0)
+                    throw new ArgumentException("Duration must be greater than zero.");
+
+                service.DurationMinutes = editServiceDto.DurationMinutes.Value;
+            }
+
+            if (editServiceDto.IsActive != null)
+                service.IsActive = editServiceDto.IsActive.Value;
 
             await _db.SaveChangesAsync();
 
@@ -441,6 +506,7 @@ namespace BookujApi.Services
             {
                 Id = service.Id,
                 BusinessId = service.BusinessId,
+                ServiceCategoryId = service.ServiceCategoryId,
                 Name = service.Name,
                 Description = service.Description,
                 Price = service.Price,
@@ -476,6 +542,134 @@ namespace BookujApi.Services
             _db.Services.Remove(service);
 
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<ServiceCategoryDto> AddServiceCategory(string businessId, AddServiceCategoryDto newServiceCategory)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            if (!await _db.Businesses.AnyAsync(b => b.Id == parseBusinessId))
+                throw new KeyNotFoundException("Business not found.");
+
+            var serviceCategory = new ServiceCategory
+            {
+                Id = Guid.NewGuid(),
+                BusinessId = parseBusinessId,
+                Name = newServiceCategory.Name,
+                Description = newServiceCategory.Description,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _db.ServiceCategories.Add(serviceCategory);
+
+            await _db.SaveChangesAsync();
+
+            return new ServiceCategoryDto
+            {
+                Id = serviceCategory.Id,
+                BusinessId = serviceCategory.BusinessId,
+                Name = serviceCategory.Name,
+                Description = serviceCategory.Description,
+            };
+        }
+
+        public async Task<List<ServiceCategoryDto>> GetServiceCategories(string businessId)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            var serviceCategoriesList = await _db.ServiceCategories.Where(sc => sc.BusinessId == parseBusinessId).OrderBy(sc => sc.CreatedAt).ToListAsync();
+
+            return serviceCategoriesList.Select(sc => new ServiceCategoryDto
+            {
+                Id = sc.Id,
+                Name = sc.Name,
+                Description = sc.Description
+            }).ToList();
+        }
+
+        public async Task<ServiceCategoryDto> EditServiceCategory(string businessId, Guid serviceCategoryId, EditServiceDto editedServiceCategory)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            var serviceCategory = await _db.ServiceCategories.SingleOrDefaultAsync(s => s.Id == serviceCategoryId && s.BusinessId == parseBusinessId);
+
+            if (serviceCategory == null)
+                throw new KeyNotFoundException("Service category not found.");
+
+            if (editedServiceCategory.Name != null)
+                serviceCategory.Name = editedServiceCategory.Name;
+
+            if (editedServiceCategory.Description != null)
+                serviceCategory.Description = editedServiceCategory.Description;
+
+            serviceCategory.UpdatedAt = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+
+            return new ServiceCategoryDto
+            {
+                Id = serviceCategory.Id,
+                BusinessId = serviceCategory.BusinessId,
+                Name = serviceCategory.Name,
+                Description = serviceCategory.Description,
+                CreatedAt = serviceCategory.CreatedAt,
+                UpdatedAt = serviceCategory.UpdatedAt,
+            };
+        }
+
+        public async Task DeleteServiceCategory(string businessId, Guid serviceCategoryId)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            var serviceCategory = await _db.ServiceCategories.SingleOrDefaultAsync(sc => sc.Id == serviceCategoryId && sc.BusinessId == parseBusinessId);
+
+            if (serviceCategory == null)
+            {
+                throw new KeyNotFoundException("Service category not found.");
+            }
+
+            _db.ServiceCategories.Remove(serviceCategory);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<List<GetEmployeeServicesGroupedByCategoryDto>> GetEmployeeServicesGroupedByCategory(string businessId, Guid employeeId)
+        {
+            Guid parseBusinessId;
+            if (!Guid.TryParse(businessId, out parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            var employeeServicesGroupedByCategory = await _db.EmployeeServices
+                .Where(es => es.EmployeeId == employeeId && es.Service.BusinessId == parseBusinessId)
+                .Include(es => es.Service)
+                    .ThenInclude(s => s.ServiceCategory)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return employeeServicesGroupedByCategory.Select(es => es.Service)
+                .GroupBy(s => s.ServiceCategory?.Id)
+                .Select(g => new GetEmployeeServicesGroupedByCategoryDto
+                {
+                    CategoryId = g.Key,
+                    CategoryName = g.First().ServiceCategory?.Name ?? "Uncategorized",
+                    Services = g.Select(s => new ServiceDto
+                    {
+                        Id = s.Id,
+                        BusinessId = s.BusinessId,
+                        Name = s.Name,
+                        Description = s.Description,
+                        DurationMinutes = s.DurationMinutes,
+                        Price = s.Price,
+                    }).ToList()
+                })
+                .ToList();
         }
 
         public async Task<Business> PatchBusiness(string ownerId, string businessId, PatchBusinessDto patchBusinessDto)
@@ -710,7 +904,7 @@ namespace BookujApi.Services
                         throw new ArgumentException("photoId is required for gallery photos");
 
                     var photo = await _db.BusinessPhotos.SingleOrDefaultAsync(bp => bp.Id == photoId && bp.BusinessId == parseBusinessId);
-                    if(photo==null)
+                    if (photo == null)
                         throw new UnauthorizedAccessException("This photo does not belong to your business.");
 
                     await RemoveBusinessPicture(photo.ImageUrl, "gallery");
@@ -746,12 +940,12 @@ namespace BookujApi.Services
                 if (oh != null)
                 {
                     oh.IsOpen = dto.IsOpen;
-                    if(dto.IsOpen == true)
+                    if (dto.IsOpen == true)
                     {
-                        if(dto.OpenTime == null || dto.CloseTime == null)
+                        if (dto.OpenTime == null || dto.CloseTime == null)
                             throw new ArgumentException("OpenTime or CloseTime is missing");
 
-                        if(dto.OpenTime>= dto.CloseTime)
+                        if (dto.OpenTime >= dto.CloseTime)
                             throw new ArgumentException("OpenTime cannot be greater or equal CloseTime");
 
                         oh.OpenTime = dto.OpenTime;
@@ -770,7 +964,7 @@ namespace BookujApi.Services
                 IsOpen = oh.IsOpen,
                 OpenTime = oh.OpenTime,
                 CloseTime = oh.CloseTime,
-            }).OrderBy(oh=> oh.DayOfWeek).ToList();
+            }).OrderBy(oh => oh.DayOfWeek).ToList();
         }
 
         public async Task<GetEmployeeDto> AddNewEmployee(string businessId, AddEmployeeDto newEmployee)
@@ -780,6 +974,7 @@ namespace BookujApi.Services
             Employee employee;
             Models.User? user = null;
             Models.User? existing = null;
+            bool shouldAdd = false;
 
             if (newEmployee.Email != null)
             {
@@ -815,21 +1010,51 @@ namespace BookujApi.Services
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
                     };
+
+                    shouldAdd = true;
                 }
                 else
                 {
-                    employee = new Employee
+                    var existingEmployee = await _db.Employees.SingleOrDefaultAsync(e => e.UserId == existing.Id && e.BusinessId == parseBusinessId);
+
+                    if (existingEmployee == null)
                     {
-                        Id = Guid.NewGuid(),
-                        UserId = existing.Id,
-                        BusinessId = parseBusinessId,
-                        Role = newEmployee.Role,
-                        Position = newEmployee.Position,
-                        Description = newEmployee.Description,
-                        FirstName = newEmployee.FirstName,
-                        LastName = newEmployee.LastName,
-                        PhoneNumber= newEmployee.PhoneNumber,
-                    };
+                        employee = new Employee
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = existing.Id,
+                            BusinessId = parseBusinessId,
+                            Role = newEmployee.Role,
+                            Position = newEmployee.Position,
+                            Description = newEmployee.Description,
+                            FirstName = newEmployee.FirstName,
+                            LastName = newEmployee.LastName,
+                            PhoneNumber = newEmployee.PhoneNumber,
+                        };
+
+                        shouldAdd = true;
+                    }
+                    else
+                    {
+                        if (existingEmployee.IsDeleted)
+                        {
+                            existingEmployee.IsDeleted = false;
+                            existingEmployee.IsActive = true; // Do I want to activate employee right after revert from soft-delete?
+                            existingEmployee.Role = newEmployee.Role;
+                            existingEmployee.Position = newEmployee.Position;
+                            existingEmployee.Description = newEmployee.Description;
+                            existingEmployee.FirstName = newEmployee.FirstName;
+                            existingEmployee.LastName = newEmployee.LastName;
+                            existingEmployee.PhoneNumber = newEmployee.PhoneNumber;
+                            existingEmployee.UpdatedAt = DateTime.UtcNow;
+
+                            employee = existingEmployee;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Employee with this email already exists in this business.");
+                        }
+                    }
                 }
             }
             else
@@ -846,9 +1071,14 @@ namespace BookujApi.Services
                     LastName = newEmployee.LastName,
                     PhoneNumber = newEmployee.PhoneNumber,
                 };
+
+                shouldAdd = true;
             }
 
-            _db.Employees.Add(employee);
+            if (shouldAdd)
+            {
+                _db.Employees.Add(employee);
+            }
             await _db.SaveChangesAsync();
 
             return new GetEmployeeDto
@@ -862,11 +1092,42 @@ namespace BookujApi.Services
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 PhoneNumber = employee.PhoneNumber,
-                Email = employee.UserId !=null 
-                ? (existing?.Email ?? user?.Email): null,
-                CreatedAt= employee.CreatedAt,
+                Email = employee.UserId != null
+                ? (existing?.Email ?? user?.Email) : null,
+                CreatedAt = employee.CreatedAt,
                 UpdatedAt = employee.UpdatedAt,
             };
+        }
+
+        public async Task DeleteEmployee(string businessId, string employeeId)
+        {
+            if (!Guid.TryParse(businessId, out Guid parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            if (!Guid.TryParse(employeeId, out Guid parseEmployeeId))
+                throw new ArgumentException("Invalid employeeId");
+
+            var employee = await _db.Employees.SingleOrDefaultAsync(e => e.Id == parseEmployeeId && e.BusinessId == parseBusinessId && !e.IsDeleted);
+
+            if (employee == null)
+                throw new KeyNotFoundException("Employee doesn't exist or is not employed by this business");
+
+            if (employee.Role == BusinessRole.Owner)
+            {
+                throw new InvalidOperationException("Cannot delete the owner of the business.");
+            }
+
+            if (employee.ImageUrl != null)
+            {
+                await RemoveBusinessPicture(employee.ImageUrl, "employee-avatars");
+                employee.ImageUrl = null;
+            }
+
+            employee.IsDeleted = true;
+            employee.IsActive = false;
+            employee.UpdatedAt = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
         }
 
         public async Task<BusinessRole?> CheckEmployeeRole(string userId, string businessId)
@@ -876,6 +1137,10 @@ namespace BookujApi.Services
 
             if (!Guid.TryParse(businessId, out Guid parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
+
+            var businessExists = await _db.Businesses.AnyAsync(b => b.Id == parseBusinessId);
+            if (!businessExists)
+                throw new KeyNotFoundException("Business not found");
 
             var employee = await _db.Employees.SingleOrDefaultAsync(e => e.UserId == parseUserId && e.BusinessId == parseBusinessId);
             if (employee == null)
@@ -895,7 +1160,7 @@ namespace BookujApi.Services
             if (!Guid.TryParse(businessId, out Guid parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
-            bool isSelf = await _db.Employees.Include(e => e.User).AnyAsync(e => e.Id == parseEmployeeId && e.BusinessId  == parseBusinessId && e.UserId == parseUserId);
+            bool isSelf = await _db.Employees.Include(e => e.User).AnyAsync(e => e.Id == parseEmployeeId && e.BusinessId == parseBusinessId && e.UserId == parseUserId);
 
             return isSelf;
         }
@@ -906,24 +1171,24 @@ namespace BookujApi.Services
                 throw new ArgumentException("Invalid businessId");
 
             List<GetEmployeeDto> employees = await _db.Employees
-                .Where(e => e.BusinessId == parseBusinessId)
-                .Select(e => new GetEmployeeDto 
-                { 
+                .Where(e => e.BusinessId == parseBusinessId && e.IsDeleted == false)
+                .Select(e => new GetEmployeeDto
+                {
                     Id = e.Id,
                     BusinessId = e.BusinessId,
                     UserId = e.UserId,
                     FirstName = e.FirstName,
                     LastName = e.LastName,
-                    Email= e.User != null ? e.User.Email : null,
+                    Email = e.User != null ? e.User.Email : null,
                     PhoneNumber = e.PhoneNumber,
                     Role = e.Role,
                     Position = e.Position,
-                    Description= e.Description,
+                    Description = e.Description,
                     ImageUrl = e.ImageUrl,
                     IsActive = e.IsActive,
                     CreatedAt = e.CreatedAt,
                     UpdatedAt = e.UpdatedAt,
-                    EmployeeServices = e.EmployeeServices 
+                    EmployeeServices = e.EmployeeServices
                     .Select(es => new GetEmployeeService
                     {
                         ServiceId = es.ServiceId,
@@ -1044,16 +1309,16 @@ namespace BookujApi.Services
                 employee.Description = editEmployee.Description;
             }
 
-            if(editEmployee.IsActive.HasValue)
+            if (editEmployee.IsActive.HasValue)
             {
                 employee.IsActive = editEmployee.IsActive.Value;
             }
 
-            if(employee.UserId == null && editEmployee.Email != null)
+            if (employee.UserId == null && editEmployee.Email != null)
             {
                 var normalizedEmail = editEmployee.Email.ToLowerInvariant();
                 var existing = await _db.Users.SingleOrDefaultAsync(u => u.Email == normalizedEmail);
-                if(existing == null)
+                if (existing == null)
                 {
                     var hashedPassword = BCrypt.Net.BCrypt.HashPassword("123456"); //TODO: default password - in the future a random password should be generated and a user should receive an email to reset the password.
 

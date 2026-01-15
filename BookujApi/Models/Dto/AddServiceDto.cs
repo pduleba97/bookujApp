@@ -4,8 +4,9 @@ namespace BookujApi.Models.Dto
 {
     public class AddServiceDto
     {
-
+        public Guid? ServiceCategoryId { get; set; }
         [Required(ErrorMessage = "Name is required")]
+        [MinLength(3)]
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         [Required(ErrorMessage = "Service price is required")]

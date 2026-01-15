@@ -1,15 +1,13 @@
 ﻿namespace BookujApi.Models.Dto
 {
-    public class ServiceDto
+    public class ServiceCategoryDto
     {
         public Guid Id { get; set; }
         public Guid BusinessId { get; set; }
-        public Guid? ServiceCategoryId { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
-        public decimal Price { get; set; }
-        public int DurationMinutes { get; set; }
-        public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public IEnumerable<ServiceDto> Services { get; set; } = new List<ServiceDto>();
     }
-
 }

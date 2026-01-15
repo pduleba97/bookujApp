@@ -5,15 +5,12 @@
   position: fixed;
   top: 0;
   background-color: #19191d;
+  justify-content: space-between;
   align-items: center;
   font-size: 0.9rem;
   font-weight: 500;
   color: white;
   z-index: 1000;
-}
-.test {
-  width: 50%;
-  text-align: left;
 }
 
 .login-details {

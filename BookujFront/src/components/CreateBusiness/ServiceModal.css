@@ -29,9 +29,9 @@
 }
 
 .modal-overlay > .settings-services-modal {
-  top: 30%;
-  left: 22%;
-  margin-right: 2em;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @media (max-width: 1200px) {

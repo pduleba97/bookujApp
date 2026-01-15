@@ -10,14 +10,22 @@
   margin-bottom: 1em;
 }
 
-.business-staff-form-header .business-staff-form-header-save {
+.business-staff-form-header .business-staff-form-header-save,
+.business-staff-form-header .business-staff-form-header-delete {
   min-width: 8em;
   height: 3em;
 }
 
-.business-staff-form-header .business-staff-form-header-save button {
+.business-staff-form-header .business-staff-form-header-save button,
+.business-staff-form-header .business-staff-form-header-delete button {
   cursor: pointer;
   height: 100%;
+}
+
+.business-staff-form-header .business-staff-form-header-delete button {
+  background-color: white;
+  color: red;
+  border: 1px solid #ccc;
 }
 
 .business-staff-form-header-back {
@@ -32,6 +40,7 @@
   background-color: #fff;
   border-radius: 6px;
   overflow-y: hidden;
+  height: 700px;
 }
 
 .business-staff-form-employee {
@@ -46,23 +55,28 @@
   align-items: center;
   gap: 1em;
   border-right: 1px solid #cccccc50;
-  overflow-y: auto;
+  overflow-y: hidden;
   scrollbar-gutter: stable;
-  max-height: 700px;
+}
+
+.business-staff-form-employee:hover {
+  overflow-y: auto;
 }
 
 /* Chrome / Edge */
-.business-staff-form-employee::-webkit-scrollbar {
+.business-staff-form-employee::-webkit-scrollbar,
+.business-staff-form-services-body-service-group-wrapper::-webkit-scrollbar {
   width: 6px;
 }
 
 .business-staff-form-employee::-webkit-scrollbar-thumb {
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
 
-.business-staff-form-employee:hover::-webkit-scrollbar-thumb {
+.business-staff-form-services-body-service-group-wrapper::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
 }
 
 .business-staff-form-employee .form-group {
@@ -104,7 +118,7 @@
   word-wrap: break-word;
 }
 
-.business-staff-form-employee-switch-group {
+.business-staff-form-employee-switch-checkbox-group {
   display: flex;
   gap: 1em;
   justify-content: center;
@@ -121,6 +135,7 @@
   flex: 3;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .business-staff-form-services-header {
@@ -145,26 +160,35 @@
   gap: 1em;
 }
 
+.business-staff-form-services-body-service-group-wrapper {
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+.business-staff-form-services-body-service-group-wrapper:hover {
+  overflow-y: auto;
+}
+
 .business-staff-form-services-body {
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 1em;
 }
 
 .business-staff-form-services-body-button-container {
   padding: 0em 1em;
+  margin-top: 1em;
 }
 
 .business-staff-form-services-body-empty-button-container {
   width: 10em;
-  height: 3em;
   justify-self: center;
 }
 
+.business-staff-form-services-body-button-container button,
 .business-staff-form-services-body-empty-button-container button {
-  height: 100%;
+  height: 50px;
   cursor: pointer;
 }
 
@@ -178,8 +202,9 @@
 }
 
 .business-staff-form-services-body-service-group {
-  display: flex;
-  justify-content: space-between;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 4fr 3fr;
   gap: 1em;
   font-size: 24px;
   padding: 0.5em 1em;
@@ -194,6 +219,7 @@
 }
 
 .business-staff-form-services-body-service-group-duration-price {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 4fr;
   gap: 1em;
 }

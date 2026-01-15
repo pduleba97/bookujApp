@@ -1,5 +1,4 @@
 ﻿using BookujApi.Enums;
-using BookujApi.Models;
 using BookujApi.Models.Dto;
 using BookujApi.Models.Requests;
 using BookujApi.Services;
@@ -114,6 +113,9 @@ namespace BookujApi.Controllers
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+                if (userId == null)
+                    return Unauthorized(new { error = "User is not logged in" });
+
                 var result = await _userService.LogoutUser(userId);
                 Response.Cookies.Delete("refreshToken");
                 return Ok(new { success = true, message = "Logged out successfully" });
@@ -148,7 +150,7 @@ namespace BookujApi.Controllers
                     });
                 }
 
-                return Ok(new { accessToken = response.AccessToken, user= response.User });
+                return Ok(new { accessToken = response.AccessToken, user = response.User });
             }
             catch (Exception ex)
             {
@@ -176,6 +178,9 @@ namespace BookujApi.Controllers
                     return BadRequest(new { error = "User data is empty" });
 
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                    return Unauthorized(new { error = "User is not logged in" });
+
                 var userData = await _userService.GetMe(userId);
 
                 string? publicUrl = null;
@@ -200,6 +205,8 @@ namespace BookujApi.Controllers
             try
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                    return Unauthorized(new { error = "User is not logged in" });
 
                 var result = await _userService.SetUserRole(newRole, userId);
                 switch (result)
@@ -224,7 +231,7 @@ namespace BookujApi.Controllers
                             });
                         }
 
-                        return Ok(new { message = "Role updated", userData = response.User ,accessToken=response.AccessToken });
+                        return Ok(new { message = "Role updated", userData = response.User, accessToken = response.AccessToken });
 
                     case SetRoleResult.UserNotFound: return NotFound(new { error = "User not found" });
                     case SetRoleResult.Forbidden: return StatusCode(403, new { error = "Role change forbidden." });

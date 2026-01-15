@@ -107,7 +107,7 @@ function BusinessServicesForm({
                     <p>{service.durationMinutes + "min"}</p>
                   </div>
                   <div className="service-price">
-                    <div>{service.price + " zł"}</div>
+                    <div>{service.price.toFixed(2) + " zł"}</div>
                     <FontAwesomeIcon
                       icon={faChevronRight}
                       style={{ fontSize: "20px" }}

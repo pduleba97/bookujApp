@@ -16,7 +16,7 @@ function Navbar({ isLoggedIn, userData }) {
   return (
     <nav>
       <div className="nav-status-container">
-        <div className="test">
+        <div>
           <Link to="/" className="home-link">
             <FontAwesomeIcon className="home-icon" icon={faHouse} />
           </Link>

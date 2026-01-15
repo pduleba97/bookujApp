@@ -1,21 +1,38 @@
 .business-staff-content {
   display: flex;
+  height: calc(100vh - 148px);
 }
 
 .business-staff-content-staff {
   padding-top: 1em;
   padding-bottom: 1em;
   width: 400px;
-  height: calc(100vh - 148px);
-
   background-color: #fff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .business-staff-content-staff-list {
   margin-top: 1em;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overflow-y: hidden;
+  user-select: none;
+}
+
+.business-staff-content-staff-list:hover {
+  overflow-y: auto;
+}
+.business-staff-content-staff-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.business-staff-content-staff-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
 }
 
 .business-staff-content-staff .form-group {
@@ -55,6 +72,8 @@
 .business-staff-content-staff-list-avatar-placeholder {
   width: 50px;
   height: 50px;
+  min-width: 50px;
+  min-height: 50px;
   border: 1px solid #ccc;
   border-radius: 50%;
   display: flex;
@@ -82,11 +101,12 @@
 
 .business-staff-content-details {
   width: 40em;
-  padding: 1em;
+  padding: 1em 1em 0em 1em;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 1em;
+  min-height: 0;
 }
 
 .business-staff-content-details-header-info {
@@ -114,6 +134,7 @@
   background-color: rgb(187, 187, 187);
   cursor: default;
   font-size: 36px;
+  user-select: none;
 }
 
 .business-staff-content-details-header-info-avatar {
@@ -121,6 +142,7 @@
   height: 85px;
   object-fit: contain;
   border-radius: 50%;
+  user-select: none;
 }
 
 .business-staff-content-details-header-edit {
@@ -129,8 +151,8 @@
   top: 0em;
   margin-top: 1em;
   margin-left: 1em;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -179,11 +201,64 @@
   padding-bottom: 1px;
   padding-left: 0.5em;
   padding-right: 0.5em;
+  user-select: none;
 }
 
 .business-staff-content-details-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   background-color: #fff;
   border-radius: 6px;
+}
+
+.business-staff-content-details-body-category-name {
+  font-size: 24px;
+  text-align: left;
+  padding: 0.5em 1em;
+  font-weight: bold;
+}
+
+.business-staff-content-details-body-service-group-wrapper {
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+.business-staff-content-details-body-service-group-wrapper:hover {
+  overflow-y: auto;
+}
+
+.business-staff-content-details-body-service-group-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.business-staff-content-details-body-service-group-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.business-staff-content-details-body-service-group {
+  text-align: left;
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  gap: 1em;
+  font-size: 22px;
+  padding: 0.5em 1em;
+}
+
+.business-staff-content-details-body-service-group:not(:last-of-type),
+.business-staff-content-details-body-category-name {
+  border-bottom: 1px solid #ccc;
+}
+
+.business-staff-content-details-body-service-group-name {
+  opacity: 90%;
+}
+
+.business-staff-content-details-body-service-group-duration-price {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  gap: 1em;
 }
 
 .business-staff-content-details-body .divider {
@@ -195,7 +270,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.business-staff-content-details-body-nav div {
+.business-staff-content-details-body-nav button {
   padding: 1em;
   margin-left: 1em;
   height: 100%;

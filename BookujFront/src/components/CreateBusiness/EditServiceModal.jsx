@@ -6,6 +6,7 @@ import { useState } from "react";
 function EditServiceModal({
   setEditIdx,
   serviceData,
+  serviceCategories,
   onEdit,
   onDelete,
   positionClass,
@@ -35,8 +36,9 @@ function EditServiceModal({
   });
   const [service, setService] = useState({
     name: serviceData.name,
+    serviceCategoryId: serviceData.serviceCategoryId,
     description: serviceData.description,
-    price: parseFloat(serviceData.price),
+    price: serviceData.price.toFixed(2),
     durationMinutes: 0,
     isActive: true,
   });
@@ -45,7 +47,7 @@ function EditServiceModal({
     setService((prev) => {
       return {
         ...prev,
-        [e.target.id]: e.target.value,
+        [e.target.id]: e.target.value === "" ? null : e.target.value,
       };
     });
   }
@@ -55,7 +57,7 @@ function EditServiceModal({
       const value = parseFloat(e.target.value);
 
       if (isNaN(value)) {
-        return { ...prev, price: "" };
+        return { ...prev, price: 0 };
       }
       return {
         ...prev,
@@ -104,17 +106,13 @@ function EditServiceModal({
 
     const editedService = {
       ...service,
+      price: parseFloat(service.price),
       description: service.description || null,
       durationMinutes: 60 * serviceTimeHour + serviceTimeMinute,
       ...(serviceData.id && { id: serviceData.id }), // if this fields exist -> add it
     };
     onEdit(editedService);
     setEditIdx(null);
-
-    // const newServices = [...prev.services];
-    // newServices[editIdx] = newService;
-    // const newBusinessData = { ...prev, services: newServices };
-    // return newBusinessData;
   }
 
   return (
@@ -156,6 +154,23 @@ function EditServiceModal({
             />
             <label htmlFor="Name">Service Name</label>
           </div>
+
+          <div className={`form-group has-value`}>
+            <select
+              type="text"
+              value={service.serviceCategoryId}
+              id="serviceCategoryId"
+              placeholder=""
+              onChange={handleOnChange}
+            >
+              <option value="">No Category</option>
+              {serviceCategories.map((sc) => (
+                <option value={sc.id}>{sc.name}</option>
+              ))}
+            </select>
+            <label htmlFor="serviceCategoryId">Service Category</label>
+          </div>
+
           <div className="service-modal-card-body-inputs">
             <div
               className={`form-group ${serviceTimeHour != null && "has-value"}`}

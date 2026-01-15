@@ -3,6 +3,7 @@ using System;
 using BookujApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookujApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260108131125_EmployeeSoftDelete")]
+    partial class EmployeeSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,10 +329,7 @@ namespace BookujApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<Guid?>("ServiceCategoryId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -338,41 +338,7 @@ namespace BookujApi.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.HasIndex("ServiceCategoryId");
-
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("BookujApi.Models.ServiceCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusinessId", "Name")
-                        .IsUnique();
-
-                    b.ToTable("ServiceCategories");
                 });
 
             modelBuilder.Entity("BookujApi.Models.Subscription", b =>
@@ -566,24 +532,6 @@ namespace BookujApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookujApi.Models.ServiceCategory", "ServiceCategory")
-                        .WithMany("Services")
-                        .HasForeignKey("ServiceCategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Business");
-
-                    b.Navigation("ServiceCategory");
-                });
-
-            modelBuilder.Entity("BookujApi.Models.ServiceCategory", b =>
-                {
-                    b.HasOne("BookujApi.Models.Business", "Business")
-                        .WithMany()
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Business");
                 });
 
@@ -623,11 +571,6 @@ namespace BookujApi.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("EmployeeServices");
-                });
-
-            modelBuilder.Entity("BookujApi.Models.ServiceCategory", b =>
-                {
-                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("BookujApi.Models.User", b =>

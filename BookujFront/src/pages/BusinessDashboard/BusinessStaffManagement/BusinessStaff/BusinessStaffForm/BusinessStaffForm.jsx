@@ -7,7 +7,7 @@ import Switch from "react-ios-switch";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../../../../../utils/imageUtils";
 import HandlePhotoModal from "../../../BusinessSettings/BusinessDetails/BusinessPhotos/HandlePhotoModal";
-import PlaceholderCalendar from "../../../../../utils/PlaceholderCalendar";
+import PlaceholderGrahpic from "../../../../../utils/PlaceholderGrahpic";
 import { authFetch } from "../../../../../api/authFetch";
 import HandleAddStaffServicesModal from "./HandleAddStaffServicesModal";
 
@@ -23,6 +23,7 @@ function BusinessStaffForm({ mode }) {
     email: "",
     role: "Employee",
     position: "",
+    isActive: true,
     description: "",
     employeeServices: [],
   });
@@ -76,6 +77,10 @@ function BusinessStaffForm({ mode }) {
       return { ...prev, [e.target.id]: e.target.value };
     });
   }
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const handleFileInput = (e) => {
     const file = e.target.files[0];
@@ -162,18 +167,12 @@ function BusinessStaffForm({ mode }) {
         setCroppedAreaPixels(null);
       }
 
-      if (!isEdit) navigate(`/manage-businesses/business/${businessId}/staff`);
-    } catch (err) {
-      console.warn(err);
-    }
+      const selectedServicesIds = formData.employeeServices.map((es) => {
+        return es.serviceId;
+      });
+      const servicesPayload = { serviceIds: selectedServicesIds };
 
-    const selectedServicesIds = formData.employeeServices.map((es) => {
-      return es.serviceId;
-    });
-    const servicesPayload = { serviceIds: selectedServicesIds };
-
-    try {
-      const response = await authFetch(
+      const servicesResponse = await authFetch(
         `/businesses/me/${businessId}/employees/${employeeId}/services`,
         {
           method: "PUT",
@@ -181,10 +180,32 @@ function BusinessStaffForm({ mode }) {
         }
       );
 
+      if (!servicesResponse.ok) {
+        const servicesData = await servicesResponse.json();
+        throw new Error(servicesData.error ?? "Failed to assign services");
+      }
+
+      if (!isEdit) navigate(`/manage-businesses/business/${businessId}/staff`);
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  async function handleDeleteEmployee() {
+    try {
+      const response = await authFetch(
+        `/businesses/me/${businessId}/employees/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error ?? "Failed to assign services");
+        throw new Error(data.error);
       }
+
+      navigate(`/manage-businesses/business/${businessId}/staff`);
     } catch (err) {
       console.warn(err);
     }
@@ -202,8 +223,18 @@ function BusinessStaffForm({ mode }) {
           </Link>
           <h1>{isEdit ? "Edit employee" : "Add new employee"}</h1>
         </div>
-        <div className="business-staff-form-header-save">
-          <button type="submit">Save</button>
+        <div style={{ display: "flex", gap: "1em" }}>
+          {isEdit && (
+            <div className="business-staff-form-header-delete">
+              <button type="button" onClick={handleDeleteEmployee}>
+                Delete
+              </button>
+            </div>
+          )}
+
+          <div className="business-staff-form-header-save">
+            <button type="submit">Save</button>
+          </div>
         </div>
       </div>
       <div className="business-staff-form-card">
@@ -293,7 +324,7 @@ function BusinessStaffForm({ mode }) {
             <label htmlFor="email">Email</label>
           </div>
 
-          <div className="business-staff-form-employee-switch-group">
+          <div className="business-staff-form-employee-switch-checkbox-group">
             <div>
               <Switch
                 id="business-staff-form-employee-switch-toggler"
@@ -342,6 +373,30 @@ function BusinessStaffForm({ mode }) {
             <label htmlFor="position">Position</label>
           </div>
 
+          <div className="business-staff-form-employee-switch-checkbox-group">
+            <input
+              type="checkbox"
+              checked={formData.isActive ?? false}
+              id="isActive"
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, isActive: e.target.checked }))
+              }
+              style={{
+                minWidth: "30px",
+                minHeight: "30px",
+                accentColor: "black",
+              }}
+            />
+
+            <div>
+              <h4>Set whether your employee is active</h4>
+              <p>
+                Check this box if the employee provides services and should be
+                visible in your Bookuj calendar.
+              </p>
+            </div>
+          </div>
+
           <div className="form-group">
             <textarea
               value={formData.description ?? ""}
@@ -361,7 +416,7 @@ function BusinessStaffForm({ mode }) {
 
           {formData.employeeServices?.length == 0 ? (
             <div className="business-staff-form-services-body-empty">
-              <PlaceholderCalendar />
+              <PlaceholderGrahpic />
               <p>Assign the services offered by the business to the employee</p>
               <div className="business-staff-form-services-body-empty-button-container">
                 <button
@@ -376,20 +431,28 @@ function BusinessStaffForm({ mode }) {
             </div>
           ) : (
             <div className="business-staff-form-services-body">
-              <div>
+              <div className="business-staff-form-services-body-service-group-wrapper">
                 {formData.employeeServices?.map((service) => (
                   <div
                     className="business-staff-form-services-body-service-group"
-                    key={service.id}
+                    key={service.serviceId}
                   >
                     <div className="business-staff-form-services-body-service-group-name">
                       <span>{service.name}</span>
                     </div>
                     <div className="business-staff-form-services-body-service-group-duration-price">
-                      <span style={{ opacity: "50%", fontSize: "18px" }}>
+                      <span
+                        style={{
+                          opacity: "50%",
+                          fontSize: "18px",
+                          textAlign: "left",
+                        }}
+                      >
                         {service.durationMinutes + "min"}
                       </span>
-                      <span>{service.price.toFixed(2) + " zł"}</span>
+                      <span style={{ textAlign: "right" }}>
+                        {service.price.toFixed(2) + "zł"}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -431,7 +494,6 @@ function BusinessStaffForm({ mode }) {
           }
           setShowAddServicesModal={setShowAddServicesModal}
           businessId={businessId}
-          employeeId={id}
           employeeServices={formData.employeeServices}
           setFormData={setFormData}
         />
