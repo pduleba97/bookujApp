@@ -75,6 +75,7 @@
 .dashboard-settings-services-body-categories-category-grab {
   padding: 1em 1em;
   cursor: grab;
+  touch-action: none;
 }
 
 .dashboard-settings-services-body-categories-category-chevron:hover {

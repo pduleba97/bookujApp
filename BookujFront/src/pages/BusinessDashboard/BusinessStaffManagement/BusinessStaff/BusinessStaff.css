@@ -59,6 +59,7 @@
 .business-staff-content-staff-list-single-icon {
   font-size: 24px;
   opacity: 30%;
+  touch-action: none;
 }
 
 .business-staff-content-staff-list-avatar {

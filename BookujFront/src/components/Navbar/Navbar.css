@@ -32,12 +32,17 @@
   display: flex;
   justify-items: center;
   align-items: center;
-  transition: background-color 0.75s ease;
 }
 
 .nav-status.logged:hover .navbar-icon,
 .home-icon:hover {
   color: #ffffff;
+}
+
+.nav-status,
+.navbar-icon,
+.home-icon {
+  transition: color 0.2s ease;
 }
 
 .not-logged:hover .navbar-icon {

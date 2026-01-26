@@ -1,4 +1,10 @@
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  useSensors,
+  useSensor,
+  TouchSensor,
+  MouseSensor,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
@@ -70,6 +76,18 @@ function BusinessCategoriesDnd({
 }) {
   const { businessId } = useParams();
 
+  const sensors = useSensors(
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 5 },
+    }),
+  );
+
   async function handleChangeSortOrder(currentElementId, prevId, nextId) {
     var url;
     if (prevId != null && nextId != null)
@@ -95,6 +113,7 @@ function BusinessCategoriesDnd({
 
   return (
     <DndContext
+      sensors={sensors}
       modifiers={[restrictToVerticalAxis]}
       onDragEnd={(event) => {
         const { active, over } = event;

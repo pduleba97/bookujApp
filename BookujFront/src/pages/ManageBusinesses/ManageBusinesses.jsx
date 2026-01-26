@@ -74,8 +74,7 @@ function ManageBusinesses() {
         </Link>
       </div>
       <div className="manage-business-header">
-        <div className="manage-business-header-subsription-filter">
-          {/* This should enable filtering, decide in the future if the filtering feature is needed */}
+        <div className="manage-business-header-visible-filter">
           <p>Visibility:</p>
           <p
             style={{
@@ -136,14 +135,14 @@ function ManageBusinesses() {
             </tr>
           </thead>
           <tbody>
-            {businessesFilteredList?.map((business) => {
+            {businessesFilteredList.map((business) => {
               return (
                 <tr key={business.id}>
                   <td>{business.name}</td>
                   <td>{business.category}</td>
                   <td>{business.city}</td>
                   <td>{business.address}</td>
-                  <td>{business.isActive == true ? <p>✅</p> : <p>❌</p>}</td>
+                  <td>{business.isActive ? <p>✅</p> : <p>❌</p>}</td>
                   <td className="manage-business-actions">
                     <Link
                       to={`/manage-businesses/business/${business.id}`}

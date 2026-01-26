@@ -20,6 +20,7 @@ button {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
   background-color: white;
   display: flex;
+  gap: 2rem;
   flex-direction: column;
   min-height: 600px;
   margin-bottom: 1em;
@@ -27,7 +28,7 @@ button {
 
 .manage-business-top {
   display: flex;
-  margin: 2em;
+  margin-top: 1rem;
 }
 
 .manage-business-top > h2 {
@@ -89,36 +90,32 @@ button {
 }
 
 .manage-business-header {
-  padding: 0em 2em;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
-.manage-business-header-subsription-filter {
+.manage-business-header-visible-filter {
   display: flex;
-  flex: 1;
 }
 
-.manage-business-header-subsription-filter > p {
+.manage-business-header-visible-filter > p {
   margin-right: 0.5em;
 }
 
-.manage-business-header-subsription-filter > p:nth-child(2)::after,
-.manage-business-header-subsription-filter > p:nth-child(3)::after {
-  margin-left: 0.5em;
-  content: "";
-  display: inline-block;
-  width: 1px;
-  height: 16px;
-  background-color: #ccc;
-  transform: translateY(2px);
+.manage-business-header-visible-filter p:nth-child(2),
+.manage-business-header-visible-filter p:nth-child(3) {
+  border-right: 1px solid #ccc;
+  padding-right: 0.5rem;
 }
 
 .manage-business-header-input-wrapper {
-  flex: 2;
   display: flex;
-  justify-content: flex-end;
+}
+
+.manage-business-header-input {
+  width: 100%;
 }
 
 .manage-business-body {
