@@ -47,6 +47,14 @@
   padding: 1em;
 }
 
+.dashboard-settings-details-generalInformation-body-content-checkbox-group {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+}
+
 .dashboard-settings-details-generalInformation-body-content-header {
   padding-bottom: 2em;
 }

@@ -13,6 +13,7 @@ function ManageBusinesses() {
   const [businessesList, setBusinessesList] = useState([]);
   const [businessesFilteredList, setBusinessesFilteredList] = useState([]);
   const [searchFilter, setSearchFilter] = useState("");
+  const [selectedVisibilityFilter, setSelectedVisibilityFilter] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -24,7 +25,6 @@ function ManageBusinesses() {
           throw new Error(data.error);
         }
         setBusinessesList(data);
-        setBusinessesFilteredList(data);
       } catch (err) {
         console.warn(err);
       }
@@ -32,12 +32,19 @@ function ManageBusinesses() {
   }, []);
 
   useEffect(() => {
-    setBusinessesFilteredList(
-      businessesList.filter((business) =>
-        business.name.toLowerCase().includes(searchFilter.toLowerCase())
-      )
+    let filtered = [...businessesList];
+
+    if (selectedVisibilityFilter === 1)
+      filtered = filtered.filter((b) => b.isActive);
+    else if (selectedVisibilityFilter === 2)
+      filtered = filtered.filter((b) => !b.isActive);
+
+    filtered = filtered.filter((business) =>
+      business.name.toLowerCase().includes(searchFilter.toLowerCase()),
     );
-  }, [searchFilter, businessesList]);
+
+    setBusinessesFilteredList(filtered);
+  }, [businessesList, selectedVisibilityFilter, searchFilter]);
 
   async function handleDeleteBusiness(businessId) {
     try {
@@ -69,10 +76,40 @@ function ManageBusinesses() {
       <div className="manage-business-header">
         <div className="manage-business-header-subsription-filter">
           {/* This should enable filtering, decide in the future if the filtering feature is needed */}
-          <p>Subscription:</p>
-          <p>All {3}</p>
-          <p>Active {2}</p>
-          <p>Inactive {1}</p>
+          <p>Visibility:</p>
+          <p
+            style={{
+              fontWeight: selectedVisibilityFilter == 0 ? "bold" : "normal",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setSelectedVisibilityFilter(0);
+            }}
+          >
+            All {businessesList.length}
+          </p>
+          <p
+            style={{
+              fontWeight: selectedVisibilityFilter == 1 ? "bold" : "normal",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setSelectedVisibilityFilter(1);
+            }}
+          >
+            Active {businessesList.filter((b) => b.isActive).length}
+          </p>
+          <p
+            style={{
+              fontWeight: selectedVisibilityFilter == 2 ? "bold" : "normal",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setSelectedVisibilityFilter(2);
+            }}
+          >
+            Inactive {businessesList.filter((b) => !b.isActive).length}
+          </p>
         </div>
         <div className="manage-business-header-input-wrapper">
           <input
@@ -99,7 +136,7 @@ function ManageBusinesses() {
             </tr>
           </thead>
           <tbody>
-            {businessesFilteredList.map((business) => {
+            {businessesFilteredList?.map((business) => {
               return (
                 <tr key={business.id}>
                   <td>{business.name}</td>

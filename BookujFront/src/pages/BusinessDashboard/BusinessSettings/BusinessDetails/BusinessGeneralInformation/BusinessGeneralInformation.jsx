@@ -8,6 +8,7 @@ import "./BusinessGeneralInformation.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { authFetch } from "../../../../../api/authFetch";
+import Switch from "react-ios-switch";
 
 function BusinessGeneralInformation() {
   const { businessId } = useParams();
@@ -21,6 +22,7 @@ function BusinessGeneralInformation() {
     instagramUrl: "",
     facebookUrl: "",
     websiteUrl: "",
+    isActive: false,
   });
   const [initialBusinessData, setInitialBusinessData] = useState(null);
   const changeDetected =
@@ -31,6 +33,7 @@ function BusinessGeneralInformation() {
       (initialBusinessData.email || "") !== (businessData.email || "") ||
       (initialBusinessData.description || "") !==
         (businessData.description || "") ||
+      (initialBusinessData.isActive || "") !== (businessData.isActive || "") ||
       (initialBusinessData.instagramUrl || "") !==
         (businessData.instagramUrl || "") ||
       (initialBusinessData.facebookUrl || "") !==
@@ -181,6 +184,28 @@ function BusinessGeneralInformation() {
               <label htmlFor="description" style={{ textAlign: "left" }}>
                 Short description of your business (recommended)
               </label>
+            </div>
+
+            <div className="dashboard-settings-details-generalInformation-body-content-checkbox-group">
+              <div>
+                <Switch
+                  checked={businessData.isActive}
+                  onChange={() => {
+                    setBusinessData((prev) => ({
+                      ...prev,
+                      isActive: !prev.isActive,
+                    }));
+                  }}
+                />
+              </div>
+
+              <div>
+                <h4>Activate this business</h4>
+                <p>
+                  Turn this on to make your business visible to customers and
+                  allow bookings.
+                </p>
+              </div>
             </div>
           </div>
 
