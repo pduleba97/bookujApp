@@ -61,3 +61,17 @@
 .dashboard-details-tiles a {
   display: contents; /* disable Link's own box!!!*/
 }
+
+@media (max-width: 560px) {
+  .dashboard-details-tiles {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .business-details-card {
+    padding: 0;
+    width: 75vw;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+}

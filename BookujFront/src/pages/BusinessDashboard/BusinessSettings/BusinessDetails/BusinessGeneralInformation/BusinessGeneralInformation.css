@@ -1,12 +1,14 @@
 .business-settings-details-generalInformation-card {
+  padding-top: 2em;
   padding-left: 3rem;
+  min-width: none;
 }
 
 .business-settings-details-generalInformation-header {
   display: flex;
   gap: 1em;
   justify-content: space-between;
-  width: 35vw; /*has to remain the same as in .dashboard-settings-details-generalInformation-body! */
+  min-width: 450px;
   align-items: flex-start;
 }
 
@@ -26,11 +28,12 @@
 .business-settings-details-generalInformation-header-save button {
   height: 100%;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .business-settings-details-generalInformation-header-save button:disabled {
   cursor: not-allowed;
-  background-color: #2a2c32ec;
+  background-color: #6c757d;
 }
 
 .dashboard-settings-details-generalInformation-body {
@@ -41,7 +44,7 @@
   border-radius: 12px;
   background-color: #ffffff;
   width: 35vw;
-  min-width: 290px;
+  min-width: 450px;
   min-height: 450px;
   position: relative;
   padding: 1em;
@@ -51,8 +54,12 @@
   display: flex;
   gap: 1em;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   text-align: justify;
+  padding: 1.25rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
 }
 
 .dashboard-settings-details-generalInformation-body-content-header {
@@ -62,6 +69,7 @@
 .dashboard-settings-details-generalInformation-body-content-header > p {
   text-align: left;
   font-weight: 600;
+  font-size: 17px;
 }
 
 .dashboard-settings-details-generalInformation-body-content {
@@ -72,7 +80,6 @@
 
 .dashboard-settings-details-generalInformation-body-content input,
 .dashboard-settings-details-generalInformation-body-content textarea {
-  font-weight: 600;
 }
 
 .dashboard-settings-details-generalInformation-body-content-general {
@@ -98,8 +105,8 @@
   overflow-y: hidden;
   overflow-x: hidden;
   resize: none;
-  min-height: 7em;
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 120px;
+  font-family: inherit;
 }
 
 .form-group.with-icon {
@@ -117,4 +124,76 @@
 .form-group.with-icon input,
 .form-group.with-icon label {
   padding-left: 35px;
+}
+
+@media (max-width: 560px) {
+  .business-settings-details-generalInformation-card {
+    background-color: #ffffff;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 520px;
+    padding-bottom: clamp(1rem, 4vh, 3rem);
+  }
+
+  .dashboard-settings-details-generalInformation-body-content {
+    flex-direction: column;
+    overflow-y: visible;
+    padding: 0 1rem;
+  }
+
+  .dashboard-settings-details-generalInformation-body-content-general {
+    border-right: none;
+    padding-bottom: 1rem;
+    padding-right: 0;
+  }
+
+  .dashboard-settings-details-generalInformation-body-content-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .business-settings-details-generalInformation-header {
+    min-width: 0;
+  }
+
+  .dashboard-settings-details-generalInformation-body {
+    width: 100%;
+    max-width: 520px;
+    min-width: 0;
+    min-height: auto;
+    border: none;
+    border-radius: 0;
+    background: #ffffff;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .dashboard-settings-details-generalInformation-body-content input,
+  .dashboard-settings-details-generalInformation-body-content textarea {
+    padding: 0.875rem;
+    min-height: 52px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+  }
+
+  .business-settings-details-generalInformation-header {
+    flex-direction: column;
+    width: 100%;
+    position: sticky;
+    top: 100px;
+    z-index: 100;
+    background-color: white;
+    padding: 1rem;
+  }
+
+  .business-settings-details-generalInformation-header-save {
+    width: 100%;
+  }
+
+  .business-settings-details-generalInformation-header-save button {
+    font-size: 16px;
+    font-weight: 600;
+  }
 }
