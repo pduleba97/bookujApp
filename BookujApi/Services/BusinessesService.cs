@@ -3,6 +3,7 @@ using BookujApi.Enums;
 using BookujApi.Models;
 using BookujApi.Models.Dto;
 using BookujApi.Models.Forms;
+using BookujApi.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -66,6 +67,10 @@ namespace BookujApi.Services
 
             _db.Employees.Add(ownerEmployee);
 
+            DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
+            int diff = (int)today.DayOfWeek;
+            DateOnly weekStart = today.AddDays(-diff); //Start week always from Sunday. Sunday is the starting day(0) of the week.
+
             foreach (var openingHour in business.OpeningHours)
             {
                 _db.OpeningHours.Add(new OpeningHour
@@ -75,7 +80,8 @@ namespace BookujApi.Services
                     DayOfWeek = openingHour.DayOfWeek,
                     IsOpen = openingHour.IsOpen,
                     OpenTime = openingHour.OpenTime,
-                    CloseTime = openingHour.CloseTime
+                    CloseTime = openingHour.CloseTime,
+                    ValidFrom = weekStart //validFrom to starting day of the week.
                 });
             }
 
@@ -199,16 +205,55 @@ namespace BookujApi.Services
             if (!Guid.TryParse(businessId, out parseBusinessID))
                 return null;
 
+            DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
+            int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7; // Monday = 1
+            DateOnly weekStart = today.AddDays(-daysSinceMonday); //Monday
+            DateOnly weekEnd = weekStart.AddDays(6); //Sunday
+
             var business = await _db.Businesses
                 .Include(b => b.Owner)
-                .Include(b => b.OpeningHours.OrderBy(h => h.DayOfWeek))
+                .Include(b => b.OpeningHours
+                    .Where(h => h.ValidFrom <= weekEnd && (h.ValidTo == null || h.ValidTo >= weekStart)))
                 .Include(b => b.Services)
                 .Include(b => b.BusinessPhotos)
-                .Include(b => b.Employees.Where(e => !e.IsDeleted && e.IsActive && e.Role != BusinessRole.Receptionist))
+                .Include(b => b.Employees
+                    .Where(e => !e.IsDeleted && e.IsActive && e.Role != BusinessRole.Receptionist).OrderBy(e => e.SortOrder))
                 .FirstOrDefaultAsync(b => b.OwnerId == parseOwnerID && b.Id == parseBusinessID);
 
             if (business == null)
                 return null;
+
+            // To avoid duplicates
+            var openingHoursByDay = business.OpeningHours
+                .GroupBy(h => h.DayOfWeek)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g
+                    .OrderByDescending(h => h.ValidFrom)
+                    .ThenByDescending(h => h.CreatedAt).First() // the most up-to-date record
+                );
+
+            var orderedDays = Enum.GetValues<WeekDay>()
+                .OrderBy(d => d == WeekDay.Sunday ? 7 : (int)d) // Sunday last
+                .ToList();
+
+            var openingHoursDtos = orderedDays
+                .Select(d => openingHoursByDay.ContainsKey(d)
+                ? new GetBusinessDto.GetOpeningHourDto
+                {
+                    DayOfWeek = d,
+                    IsOpen = openingHoursByDay[d].IsOpen,
+                    OpenTime = openingHoursByDay[d].OpenTime,
+                    CloseTime = openingHoursByDay[d].CloseTime
+                }
+                : new GetBusinessDto.GetOpeningHourDto
+                {
+                    DayOfWeek = d,
+                    IsOpen = false, // closed by default if the record is missing
+                    OpenTime = null,
+                    CloseTime = null
+                })
+                .ToList();
 
             return new GetBusinessDto
             {
@@ -228,15 +273,7 @@ namespace BookujApi.Services
                 FacebookUrl = business.FacebookUrl,
                 WebsiteUrl = business.WebsiteUrl,
                 CreatedAt = business.CreatedAt,
-                OpeningHours = business.OpeningHours?
-            .Select(h => new GetOpeningHourDto
-            {
-                Id = h.Id,
-                DayOfWeek = h.DayOfWeek,
-                IsOpen = h.IsOpen,
-                OpenTime = h.OpenTime,
-                CloseTime = h.CloseTime
-            }).ToList() ?? new List<GetOpeningHourDto>(),
+                OpeningHours = openingHoursDtos,
                 Services = business.Services?
                 .OrderBy(s => s.CreatedAt)
                 .Select(s => new GetServiceDto
@@ -258,8 +295,6 @@ namespace BookujApi.Services
                     SortOrder = bp.SortOrder,
                 }).ToList() ?? new List<GetBusinessPhoto>(),
                 Employees = business.Employees?
-                .OrderBy(e => e.Role)
-                .ThenBy(e => e.CreatedAt)
                 .Select(e => new GetBusinessEmployeeDto
                 {
                     Id = e.Id,
@@ -544,14 +579,41 @@ namespace BookujApi.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task ReindexSortOrder<TEntity>(Guid businessId)
+            where TEntity : class, ISortableEntity
+        {
+            const int STEP = 1000;
+            var entities = await _db.Set<TEntity>()
+                .Where(c => c.BusinessId == businessId)
+                .OrderBy(c => c.SortOrder)
+                .ToListAsync();
+
+            int order = STEP;
+            foreach (var e in entities)
+            {
+                e.SortOrder = order;
+                order += STEP;
+            }
+
+            await _db.SaveChangesAsync();
+        }
+
         public async Task<ServiceCategoryDto> AddServiceCategory(string businessId, AddServiceCategoryDto newServiceCategory)
         {
-            Guid parseBusinessId;
-            if (!Guid.TryParse(businessId, out parseBusinessId))
+            const int STEP = 1000;
+
+            if (!Guid.TryParse(businessId, out var parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
             if (!await _db.Businesses.AnyAsync(b => b.Id == parseBusinessId))
                 throw new KeyNotFoundException("Business not found.");
+
+            var maxSortOrder = await _db.ServiceCategories
+                .Where(c => c.BusinessId == parseBusinessId)
+                .MaxAsync(c => (int?)c.SortOrder) ?? 0;
+
+            if (maxSortOrder + STEP > int.MaxValue)
+                await ReindexSortOrder<ServiceCategory>(parseBusinessId);
 
             var serviceCategory = new ServiceCategory
             {
@@ -559,6 +621,7 @@ namespace BookujApi.Services
                 BusinessId = parseBusinessId,
                 Name = newServiceCategory.Name,
                 Description = newServiceCategory.Description,
+                SortOrder = maxSortOrder + STEP,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -572,6 +635,7 @@ namespace BookujApi.Services
                 BusinessId = serviceCategory.BusinessId,
                 Name = serviceCategory.Name,
                 Description = serviceCategory.Description,
+                SortOrder = serviceCategory.SortOrder
             };
         }
 
@@ -581,14 +645,17 @@ namespace BookujApi.Services
             if (!Guid.TryParse(businessId, out parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
-            var serviceCategoriesList = await _db.ServiceCategories.Where(sc => sc.BusinessId == parseBusinessId).OrderBy(sc => sc.CreatedAt).ToListAsync();
+            var serviceCategoriesList = await _db.ServiceCategories.Where(sc => sc.BusinessId == parseBusinessId).
+                OrderBy(sc => sc.CreatedAt).OrderBy(sc => sc.SortOrder).ToListAsync();
 
             return serviceCategoriesList.Select(sc => new ServiceCategoryDto
             {
                 Id = sc.Id,
                 Name = sc.Name,
-                Description = sc.Description
-            }).ToList();
+                Description = sc.Description,
+                SortOrder = sc.SortOrder
+            })
+            .ToList();
         }
 
         public async Task<ServiceCategoryDto> EditServiceCategory(string businessId, Guid serviceCategoryId, EditServiceDto editedServiceCategory)
@@ -623,6 +690,84 @@ namespace BookujApi.Services
             };
         }
 
+        public async Task<TEntity> ReorderAsync<TEntity>(string businessId, Guid id, Guid? prevId, Guid? nextId)
+            where TEntity : class, ISortableEntity
+        {
+            const int STEP = 1000;
+
+            if (!Guid.TryParse(businessId, out var parseBusinessId))
+                throw new ArgumentException("Invalid businessId");
+
+            var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id && e.BusinessId == parseBusinessId);
+            if (entity == null) throw new Exception("Entity not found");
+
+            TEntity prev = null;
+            TEntity next = null;
+
+            if (prevId.HasValue)
+            {
+                prev = await _db.Set<TEntity>()
+                    .SingleOrDefaultAsync(e => e.Id == prevId && e.BusinessId == parseBusinessId);
+            }
+
+            if (nextId.HasValue)
+            {
+                next = await _db.Set<TEntity>()
+                    .SingleOrDefaultAsync(e => e.Id == nextId && e.BusinessId == parseBusinessId);
+            }
+
+            if (prev != null && next != null)
+            {
+                var newSortOrder = (prev.SortOrder + next.SortOrder) / 2;
+                if (newSortOrder == prev.SortOrder)
+                {
+                    await ReindexSortOrder<TEntity>(parseBusinessId);
+
+                    // Get updated prev and next
+                    prev = await _db.Set<TEntity>()
+                        .SingleAsync(e => e.Id == prev.Id && e.BusinessId == parseBusinessId);
+                    next = await _db.Set<TEntity>()
+                        .SingleAsync(e => e.Id == next.Id && e.BusinessId == parseBusinessId);
+
+                    newSortOrder = (prev.SortOrder + next.SortOrder) / 2;
+                }
+
+                entity.SortOrder = newSortOrder;
+            }
+            else if (prev != null)
+            {
+                if (prev.SortOrder + STEP > int.MaxValue)
+                {
+                    await ReindexSortOrder<TEntity>(parseBusinessId);
+                    // Get updated prev
+                    prev = await _db.Set<TEntity>()
+                        .SingleAsync(e => e.Id == prev.Id && e.BusinessId == parseBusinessId);
+                }
+
+                entity.SortOrder = prev.SortOrder + STEP;
+            }
+            else if (next != null)
+            {
+                if (next.SortOrder - STEP < int.MinValue)
+                {
+                    await ReindexSortOrder<TEntity>(parseBusinessId);
+                    // Get updated next
+                    next = await _db.Set<TEntity>()
+                        .SingleAsync(e => e.Id == next.Id && e.BusinessId == parseBusinessId);
+                }
+
+                entity.SortOrder = next.SortOrder - STEP;
+            }
+            else
+            {
+                entity.SortOrder = STEP; // if list was empty
+            }
+
+            await _db.SaveChangesAsync();
+
+            return entity;
+        }
+
         public async Task DeleteServiceCategory(string businessId, Guid serviceCategoryId)
         {
             Guid parseBusinessId;
@@ -653,8 +798,10 @@ namespace BookujApi.Services
                 .AsNoTracking()
                 .ToListAsync();
 
-            return employeeServicesGroupedByCategory.Select(es => es.Service)
+            return employeeServicesGroupedByCategory
+                .Select(es => es.Service)
                 .GroupBy(s => s.ServiceCategory?.Id)
+                .OrderBy(g => g.First().ServiceCategory?.SortOrder)
                 .Select(g => new GetEmployeeServicesGroupedByCategoryDto
                 {
                     CategoryId = g.Key,
@@ -924,47 +1071,109 @@ namespace BookujApi.Services
             if (!Guid.TryParse(businessId, out Guid parseBusinessId))
                 throw new ArgumentException("Invalid businessId");
 
-            var business = await _db.Businesses.FirstOrDefaultAsync(b => b.Id == parseBusinessId && b.OwnerId == parseOwnerId);
-            if (business == null)
-                throw new UnauthorizedAccessException("Business not found or not yours");
+            if (hours.Count != 7)
+                throw new ArgumentException("Exactly 7 days must be provided");
 
+            if (hours.Select(h => h.DayOfWeek).Distinct().Count() != 7)
+                throw new ArgumentException("Each weekday must be provided exactly once");
 
-            var openingHours = await _db.OpeningHours
-                .Where(o => o.BusinessId == parseBusinessId)
-                .ToListAsync();
-
-            foreach (var dto in hours)
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
             {
-                var oh = openingHours.FirstOrDefault(o => o.DayOfWeek == dto.DayOfWeek);
+                var business = await _db.Businesses.FirstOrDefaultAsync(b => b.Id == parseBusinessId && b.OwnerId == parseOwnerId);
 
-                if (oh != null)
+                if (business == null)
+                    throw new UnauthorizedAccessException("Business not found or not yours");
+
+                var prevOpeningHours = await _db.OpeningHours
+                    .Where(o => o.BusinessId == parseBusinessId && o.ValidTo == null)
+                    .ToListAsync();
+
+                var now = DateTime.UtcNow;
+                var today = DateOnly.FromDateTime(now);
+                var openingHours = new List<OpeningHour>();
+
+                var isEditToday =
+                prevOpeningHours.Count == 7 &&
+                prevOpeningHours.All(a => a.ValidFrom == today);
+
+                if (isEditToday)
                 {
-                    oh.IsOpen = dto.IsOpen;
-                    if (dto.IsOpen == true)
+                    var hoursByDay = hours.ToDictionary(h => h.DayOfWeek);
+
+                    foreach (var prevOpeningHour in prevOpeningHours)
                     {
-                        if (dto.OpenTime == null || dto.CloseTime == null)
-                            throw new ArgumentException("OpenTime or CloseTime is missing");
+                        var dtoDay = hoursByDay[prevOpeningHour.DayOfWeek];
 
-                        if (dto.OpenTime >= dto.CloseTime)
-                            throw new ArgumentException("OpenTime cannot be greater or equal CloseTime");
+                        if (dtoDay.IsOpen)
+                        {
+                            if (dtoDay.OpenTime == null || dtoDay.CloseTime == null)
+                                throw new ArgumentException("OpenTime or CloseTime is missing");
 
-                        oh.OpenTime = dto.OpenTime;
-                        oh.CloseTime = dto.CloseTime;
+                            if (dtoDay.OpenTime >= dtoDay.CloseTime)
+                                throw new ArgumentException("OpenTime cannot be greater or equal CloseTime");
+                        }
+
+                        prevOpeningHour.IsOpen = dtoDay.IsOpen;
+                        prevOpeningHour.OpenTime = dtoDay.IsOpen ? dtoDay.OpenTime : null;
+                        prevOpeningHour.CloseTime = dtoDay.IsOpen ? dtoDay.CloseTime : null;
+
+                        prevOpeningHour.UpdatedAt = now;
+                        openingHours.Add(prevOpeningHour);
+                    }
+                }
+                else
+                {
+
+                    foreach (var prevHour in prevOpeningHours)
+                    {
+                        prevHour.ValidTo = today.AddDays(-1); //For the future: should it be valid to today-1 or maybe start of the week -1 or next week -1?
+                        prevHour.UpdatedAt = now;
                     }
 
-                    oh.UpdatedAt = DateTime.UtcNow;
-                }
-            }
+                    foreach (var dto in hours)
+                    {
+                        if (dto.IsOpen == true)
+                        {
+                            if (dto.OpenTime == null || dto.CloseTime == null)
+                                throw new ArgumentException("OpenTime or CloseTime is missing");
 
-            await _db.SaveChangesAsync();
-            return openingHours.Select(oh => new OpeningHourDto
+                            if (dto.OpenTime >= dto.CloseTime)
+                                throw new ArgumentException("OpenTime cannot be greater or equal CloseTime");
+                        }
+
+
+                        openingHours.Add(new OpeningHour
+                        {
+                            Id = Guid.NewGuid(),
+                            BusinessId = parseBusinessId,
+                            DayOfWeek = dto.DayOfWeek,
+                            IsOpen = dto.IsOpen,
+                            ValidFrom = today, //For the future: should it be valid from today or maybe start of the week or next week?
+                            OpenTime = dto.OpenTime,
+                            CloseTime = dto.CloseTime,
+                        });
+                    }
+                    await _db.OpeningHours.AddRangeAsync(openingHours);
+                }
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return openingHours.Select(oh => new OpeningHourDto
+                {
+                    Id = oh.Id,
+                    DayOfWeek = oh.DayOfWeek,
+                    IsOpen = oh.IsOpen,
+                    OpenTime = oh.OpenTime,
+                    CloseTime = oh.CloseTime,
+                }).OrderBy(oh => oh.DayOfWeek == WeekDay.Sunday ? 7 : (int)oh.DayOfWeek) //Sunday last
+                .ToList();
+            }
+            catch
             {
-                Id = oh.Id,
-                DayOfWeek = oh.DayOfWeek,
-                IsOpen = oh.IsOpen,
-                OpenTime = oh.OpenTime,
-                CloseTime = oh.CloseTime,
-            }).OrderBy(oh => oh.DayOfWeek).ToList();
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<GetEmployeeDto> AddNewEmployee(string businessId, AddEmployeeDto newEmployee)
@@ -975,6 +1184,15 @@ namespace BookujApi.Services
             Models.User? user = null;
             Models.User? existing = null;
             bool shouldAdd = false;
+
+            const int STEP = 1000;
+
+            var maxSortOrder = await _db.Employees
+                .Where(e => e.BusinessId == parseBusinessId && !e.IsDeleted)
+                .MaxAsync(e => (int?)e.SortOrder) ?? 0;
+
+            if (maxSortOrder + STEP > int.MaxValue)
+                await ReindexSortOrder<Employee>(parseBusinessId);
 
             if (newEmployee.Email != null)
             {
@@ -1009,6 +1227,7 @@ namespace BookujApi.Services
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
+                        SortOrder = maxSortOrder + STEP,
                     };
 
                     shouldAdd = true;
@@ -1030,6 +1249,7 @@ namespace BookujApi.Services
                             FirstName = newEmployee.FirstName,
                             LastName = newEmployee.LastName,
                             PhoneNumber = newEmployee.PhoneNumber,
+                            SortOrder = maxSortOrder + STEP,
                         };
 
                         shouldAdd = true;
@@ -1046,6 +1266,7 @@ namespace BookujApi.Services
                             existingEmployee.FirstName = newEmployee.FirstName;
                             existingEmployee.LastName = newEmployee.LastName;
                             existingEmployee.PhoneNumber = newEmployee.PhoneNumber;
+                            existingEmployee.SortOrder = maxSortOrder + STEP;
                             existingEmployee.UpdatedAt = DateTime.UtcNow;
 
                             employee = existingEmployee;
@@ -1070,6 +1291,7 @@ namespace BookujApi.Services
                     FirstName = newEmployee.FirstName,
                     LastName = newEmployee.LastName,
                     PhoneNumber = newEmployee.PhoneNumber,
+                    SortOrder = maxSortOrder + STEP,
                 };
 
                 shouldAdd = true;
@@ -1172,6 +1394,7 @@ namespace BookujApi.Services
 
             List<GetEmployeeDto> employees = await _db.Employees
                 .Where(e => e.BusinessId == parseBusinessId && e.IsDeleted == false)
+                .OrderBy(e => e.SortOrder)
                 .Select(e => new GetEmployeeDto
                 {
                     Id = e.Id,
@@ -1198,8 +1421,6 @@ namespace BookujApi.Services
                     })
                     .ToList()
                 })
-                .OrderBy(e => e.Role)
-                .ThenBy(e => e.CreatedAt)
                 .ToListAsync();
 
             return employees;

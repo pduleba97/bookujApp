@@ -8,7 +8,7 @@ function EditServiceCategoryModal({
   setShowEditServiceCategoryModalId,
   businessId,
   serviceCategory,
-  setServiceCatgories,
+  setServiceCategories,
   setSelectedCategoryId,
 }) {
   const [newServiceCategory, setNewServiceCategory] = useState({
@@ -40,7 +40,7 @@ function EditServiceCategoryModal({
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
 
-      setServiceCatgories((prev) =>
+      setServiceCategories((prev) =>
         prev.map((sc) =>
           sc.id === serviceCategory.id ? newServiceCategory : sc
         )
@@ -64,7 +64,7 @@ function EditServiceCategoryModal({
         throw new Error(data.error);
       }
 
-      setServiceCatgories((prev) =>
+      setServiceCategories((prev) =>
         prev.filter((sc) => sc.id !== serviceCategory.id)
       );
 

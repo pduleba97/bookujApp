@@ -9,6 +9,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { authFetch } from "../../../../api/authFetch";
 import BusinessStaffServicesList from "./BusinessStaffServicesList/BusinessStaffServicesList";
+import BusinessEmployeesDnd from "./BusinessEmployeesDnD";
 
 function BusinessStaff() {
   const { businessId } = useParams();
@@ -105,7 +106,17 @@ function BusinessStaff() {
             <label htmlFor="searchStaff">Search for staff</label>
           </div>
           <div className="business-staff-content-staff-list">
-            {filteredStaffList?.map((staff) => (
+            <BusinessEmployeesDnd
+              filteredStaffList={filteredStaffList}
+              selectedEmployee={selectedEmployee}
+              setSelectedEmployee={setSelectedEmployee}
+              setStaffList={setStaffList}
+              setServiceFilter={setServiceFilter}
+              fetchEmployeeServicesGroupedByCategory={
+                fetchEmployeeServicesGroupedByCategory
+              }
+            />
+            {/* {filteredStaffList?.map((staff) => (
               <div key={staff.id}>
                 <div
                   className={`business-staff-content-staff-list-single ${
@@ -136,7 +147,7 @@ function BusinessStaff() {
                 </div>
                 <hr className="divider" />
               </div>
-            ))}
+            ))} */}
           </div>
 
           <Link

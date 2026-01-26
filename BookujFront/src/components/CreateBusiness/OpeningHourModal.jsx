@@ -18,8 +18,12 @@ function OpeningHourModal({
       times.push(`${hh}:${mm}`);
     }
   }
-  const [openHour, setOpenHour] = useState(openingHour.openTime.slice(0, 5));
-  const [closeHour, setCloseHour] = useState(openingHour.closeTime.slice(0, 5));
+  const [openHour, setOpenHour] = useState(
+    openingHour?.openTime?.slice(0, 5) ?? "00:00",
+  );
+  const [closeHour, setCloseHour] = useState(
+    openingHour?.closeTime?.slice(0, 5) ?? "00:00",
+  );
 
   function submitForm(e) {
     e.preventDefault();

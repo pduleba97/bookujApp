@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./BusinessDetailsForm.css";
 import Switch from "react-ios-switch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -85,10 +85,9 @@ function BusinessOpeningHoursForm({
                 <div className="opening-hours-group-hours-info">
                   {openingHour.isOpen ? (
                     <div className="opening-hours-group-change-hours">
-                      {`${openingHour.openTime.slice(
-                        0,
-                        5
-                      )} - ${openingHour.closeTime.slice(0, 5)}`}
+                      {`${
+                        openingHour?.openTime?.slice(0, 5) ?? "00:00"
+                      } - ${openingHour?.closeTime?.slice(0, 5) ?? "00:00"}`}
                     </div>
                   ) : (
                     <div className="opening-hours-group-change-hours">

@@ -16,13 +16,14 @@ import ServiceCategoryModal from "./ServiceCategoryModal";
 import PlaceholderGrahpic from "../../../../utils/PlaceholderGrahpic";
 import EditServiceCategoryModal from "./EditServiceCategoryModal";
 import Spinner from "../../../../utils/Spinner/Spinner";
+import BusinessCategoriesDnd from "./BusinessCategoriesDnD";
 
 function BusinessServices() {
   const { businessId } = useParams();
   const navigate = useNavigate();
   const [loadingServices, setLoadingServices] = useState(false);
   const [serviceFilter, setServiceFilter] = useState("");
-  const [serviceCategories, setServiceCatgories] = useState([]);
+  const [serviceCategories, setServiceCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
@@ -45,7 +46,7 @@ function BusinessServices() {
         if (!categoriesResponse.ok) {
           throw new Error(categoriesData.err);
         }
-        setServiceCatgories(categoriesData);
+        setServiceCategories(categoriesData);
 
         const servicesResponse = await authFetch(
           `/businesses/me/${businessId}/services`,
@@ -58,6 +59,7 @@ function BusinessServices() {
         }
         setServices(servicesData);
         setFilteredServices(servicesData);
+        console.log(categoriesData);
       } catch (err) {
         console.warn(err);
       }
@@ -135,7 +137,7 @@ function BusinessServices() {
         {showServiceCategoryModal && (
           <ServiceCategoryModal
             setShowServiceCategoryModal={setShowServiceCategoryModal}
-            setServiceCatgories={setServiceCatgories}
+            setServiceCategories={setServiceCategories}
             businessId={businessId}
           />
         )}
@@ -148,7 +150,7 @@ function BusinessServices() {
             serviceCategory={serviceCategories.find(
               (sc) => sc.id == showEditServiceCategoryModalId
             )}
-            setServiceCatgories={setServiceCatgories}
+            setServiceCategories={setServiceCategories}
             businessId={businessId}
             setSelectedCategoryId={setSelectedCategoryId}
           />
@@ -241,31 +243,15 @@ function BusinessServices() {
               >
                 No category
               </p>
-              {serviceCategories.map((sc) => (
-                <div
-                  key={sc.id}
-                  className={`dashboard-settings-services-body-categories-category ${
-                    selectedCategoryId === sc.id
-                      ? "dashboard-settings-services-body-categories-category-selected"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedCategoryId(sc.id);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faBars} />
-                  <p key={sc.id}>{sc.name}</p>
-                  <div
-                    className="dashboard-settings-services-body-categories-category-chevron"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowEditServiceCategoryModalId(sc.id);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faChevronRight} />
-                  </div>
-                </div>
-              ))}
+              <BusinessCategoriesDnd
+                serviceCategories={serviceCategories}
+                setServiceCategories={setServiceCategories}
+                selectedCategoryId={selectedCategoryId}
+                setSelectedCategoryId={setSelectedCategoryId}
+                setShowEditServiceCategoryModalId={
+                  setShowEditServiceCategoryModalId
+                }
+              />
             </div>
             <div className="dashboard-settings-services-body-services">
               <div className="input-details">

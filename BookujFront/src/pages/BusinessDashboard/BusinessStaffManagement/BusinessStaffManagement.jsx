@@ -22,12 +22,21 @@ function BusinessStaffManagement() {
             setSelected(1);
           }}
         >
+          Work schedule
+        </button>
+        <button
+          className={`button-navigation ${selected === 2 ? "active" : ""}`}
+          onClick={() => {
+            setSelected(2);
+          }}
+        >
           Equipment
         </button>
       </div>
       <div className="business-staff-management-content">
         {selected === 0 && <BusinessStaff />}
-        {selected === 1 && <div>Equipment</div>}
+        {selected === 1 && <div>Work schedule</div>}
+        {selected === 2 && <div>Equipment</div>}
       </div>
     </div>
   );

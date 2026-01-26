@@ -84,13 +84,13 @@ function StepComponent({
 
 function CreateBusiness() {
   const initialOpeningHours = [
-    { dayOfWeek: 0, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Monday
-    { dayOfWeek: 1, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Tuesday
-    { dayOfWeek: 2, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Wednesday
-    { dayOfWeek: 3, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Thursday
-    { dayOfWeek: 4, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Friday
-    { dayOfWeek: 5, isOpen: false, openTime: "10:00", closeTime: "18:00" }, // Saturday
-    { dayOfWeek: 6, isOpen: false, openTime: "10:00", closeTime: "18:00" }, // Sunday
+    { dayOfWeek: 1, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Monday
+    { dayOfWeek: 2, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Tuesday
+    { dayOfWeek: 3, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Wednesday
+    { dayOfWeek: 4, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Thursday
+    { dayOfWeek: 5, isOpen: true, openTime: "10:00", closeTime: "18:00" }, // Friday
+    { dayOfWeek: 6, isOpen: false, openTime: "10:00", closeTime: "18:00" }, // Saturday
+    { dayOfWeek: 0, isOpen: false, openTime: "10:00", closeTime: "18:00" }, // Sunday
   ];
 
   const [businessData, setBusinessData] = useState({

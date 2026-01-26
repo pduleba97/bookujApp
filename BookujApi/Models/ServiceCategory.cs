@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookujApi.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookujApi.Models
 {
     [Index(nameof(BusinessId), nameof(Name), IsUnique = true)] //Assures that name is unique for given BusinessId
-    public class ServiceCategory
+    public class ServiceCategory : ISortableEntity
     {
         [Key]
         public Guid Id { get; set; }
@@ -21,6 +22,9 @@ namespace BookujApi.Models
 
         [MaxLength(500)]
         public string? Description { get; set; }
+
+        [Required]
+        public int SortOrder { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

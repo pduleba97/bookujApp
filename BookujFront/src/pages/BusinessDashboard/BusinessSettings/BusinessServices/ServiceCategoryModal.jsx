@@ -7,7 +7,7 @@ import { authFetch } from "../../../../api/authFetch";
 function ServiceCategoryModal({
   setShowServiceCategoryModal,
   businessId,
-  setServiceCatgories,
+  setServiceCategories,
 }) {
   const [serviceCategory, setServiceCategory] = useState({
     name: "",
@@ -33,7 +33,7 @@ function ServiceCategoryModal({
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
 
-      setServiceCatgories((prev) => [...prev, data]);
+      setServiceCategories((prev) => [...prev, data]);
       setShowServiceCategoryModal(false);
     } catch (err) {
       console.warn(err);

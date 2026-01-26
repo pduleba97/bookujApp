@@ -1,10 +1,11 @@
 ﻿using BookujApi.Enums;
+using BookujApi.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookujApi.Models
 {
-    public class Employee
+    public class Employee : ISortableEntity
     {
         [Key]
         public Guid Id { get; set; }
@@ -34,6 +35,9 @@ namespace BookujApi.Models
         public string? PhoneNumber { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        [Required]
+        public int SortOrder { get; set; }
 
         // Navigation
         public ICollection<Appointment>? Appointments { get; set; }

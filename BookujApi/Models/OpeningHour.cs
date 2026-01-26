@@ -1,18 +1,17 @@
-﻿using BookujApi.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookujApi.Models
 {
     public enum WeekDay
     {
-        Monday = 0,
-        Tuesday = 1,
-        Wednesday = 2,
-        Thursday = 3,
-        Friday = 4,
-        Saturday = 5,
-        Sunday = 6
+        Sunday = 0,
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 3,
+        Thursday = 4,
+        Friday = 5,
+        Saturday = 6
     }
 
     public class OpeningHour
@@ -31,6 +30,10 @@ namespace BookujApi.Models
 
         [Required]
         public bool IsOpen { get; set; }
+
+        [Required]
+        public DateOnly ValidFrom { get; set; }
+        public DateOnly? ValidTo { get; set; } // null = still valid
 
         // HH:mm
         public TimeSpan? OpenTime { get; set; }

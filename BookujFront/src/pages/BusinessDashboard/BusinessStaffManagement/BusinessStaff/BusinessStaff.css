@@ -42,10 +42,9 @@
 
 .business-staff-content-staff-list-single {
   display: flex;
-  gap: 1em;
   justify-content: flex-start;
   align-items: center;
-  padding: 1em;
+  padding: 1rem 0rem 1rem 0rem;
   cursor: pointer;
 }
 
@@ -80,7 +79,6 @@
   justify-content: center;
   align-items: center;
   background-color: rgb(187, 187, 187);
-  cursor: default;
 }
 
 .business-staff-content-staff-add-staff {
@@ -259,6 +257,7 @@
   display: grid;
   grid-template-columns: 3fr 4fr;
   gap: 1em;
+  text-align: right;
 }
 
 .business-staff-content-details-body .divider {

@@ -1,4 +1,5 @@
 ﻿using BookujApi.Enums;
+using BookujApi.Models;
 using BookujApi.Models.Dto;
 using BookujApi.Models.Forms;
 using BookujApi.Services;
@@ -304,9 +305,9 @@ namespace BookujApi.Controllers
                 if (currentUserRole is not (BusinessRole.Owner or BusinessRole.Manager)) //Let add new service category only if Owner/Manager
                     return Forbid();
 
-                var service = await _businessService.AddServiceCategory(businessId, newServiceCategory);
+                var serviceCategory = await _businessService.AddServiceCategory(businessId, newServiceCategory);
 
-                return Ok(service);
+                return Ok(serviceCategory);
             }
             catch (Exception ex)
             {
@@ -328,9 +329,9 @@ namespace BookujApi.Controllers
                 if (currentUserRole is null) //Let fetch service categories for all employees
                     return Forbid();
 
-                var services = await _businessService.GetServiceCategories(businessId);
+                var serviceCategories = await _businessService.GetServiceCategories(businessId);
 
-                return Ok(services);
+                return Ok(serviceCategories);
             }
             catch (Exception ex)
             {
@@ -352,9 +353,33 @@ namespace BookujApi.Controllers
                 if (currentUserRole is not (BusinessRole.Owner or BusinessRole.Manager)) //Let edit service category only if Owner/Manager
                     return Forbid();
 
-                var service = await _businessService.EditServiceCategory(businessId, serviceCategoryId, editedServiceCategory);
+                var serviceCategory = await _businessService.EditServiceCategory(businessId, serviceCategoryId, editedServiceCategory);
 
-                return Ok(service);
+                return Ok(serviceCategory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPut("me/{businessId}/ReorderCategory/{currentElementId}")]
+        public async Task<IActionResult> ReorderCategory(string businessId, Guid currentElementId, [FromQuery] Guid? prevId, [FromQuery] Guid? nextId)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (currentUserId == null)
+                return Unauthorized(new { error = "User is not logged in" });
+
+            try
+            {
+                var currentUserRole = await _businessService.CheckEmployeeRole(currentUserId, businessId);
+                if (currentUserRole is not (BusinessRole.Owner or BusinessRole.Manager)) //Let reorder service category only if Owner/Manager
+                    return Forbid();
+
+                var serviceCategory = await _businessService.ReorderAsync<ServiceCategory>(businessId, currentElementId, prevId, nextId);
+
+                return Ok(serviceCategory);
             }
             catch (Exception ex)
             {
@@ -585,6 +610,30 @@ namespace BookujApi.Controllers
                     return Unauthorized();
 
                 var employee = await _businessService.PatchBusinessEmployeeById(businessId, employeeId, editEmployee);
+                return Ok(employee);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPut("me/{businessId}/ReorderEmployee/{currentElementId}")]
+        public async Task<IActionResult> ReorderEmployee(string businessId, Guid currentElementId, [FromQuery] Guid? prevId, [FromQuery] Guid? nextId)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (currentUserId == null)
+                return Unauthorized(new { error = "User is not logged in" });
+
+            try
+            {
+                var currentUserRole = await _businessService.CheckEmployeeRole(currentUserId, businessId);
+                if (currentUserRole is not (BusinessRole.Owner or BusinessRole.Manager)) //Let reorder employee only if Owner/Manager
+                    return Forbid();
+
+                var employee = await _businessService.ReorderAsync<Employee>(businessId, currentElementId, prevId, nextId);
+
                 return Ok(employee);
             }
             catch (Exception ex)

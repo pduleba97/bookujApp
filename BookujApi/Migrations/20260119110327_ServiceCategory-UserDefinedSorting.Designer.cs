@@ -3,6 +3,7 @@ using System;
 using BookujApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookujApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260119110327_ServiceCategory-UserDefinedSorting")]
+    partial class ServiceCategoryUserDefinedSorting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,9 +231,6 @@ namespace BookujApi.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -295,12 +295,6 @@ namespace BookujApi.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateOnly>("ValidFrom")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly?>("ValidTo")
-                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
