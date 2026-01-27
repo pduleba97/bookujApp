@@ -117,7 +117,7 @@ function BusinessServices() {
         {showServiceModal && (
           <ServiceModal
             setShowServiceModal={setShowServiceModal}
-            positionClass="settings-services-modal"
+            serviceCategories={serviceCategories}
             onSave={async (newService) => {
               const response = await authFetch(
                 `/businesses/me/${businessId}/service`,
@@ -131,6 +131,7 @@ function BusinessServices() {
 
               fetchServicesByCategory(selectedCategoryId);
             }}
+            positionClass="settings-services-modal"
           />
         )}
 

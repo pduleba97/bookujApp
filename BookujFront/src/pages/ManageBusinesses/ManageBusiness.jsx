@@ -148,7 +148,7 @@ function ManageBusiness() {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // prędkość scrolla
+    const walk = (x - startX) * 2; // scroll speed
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 

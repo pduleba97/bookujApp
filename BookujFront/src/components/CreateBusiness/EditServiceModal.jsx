@@ -155,21 +155,23 @@ function EditServiceModal({
             <label htmlFor="Name">Service Name</label>
           </div>
 
-          <div className={`form-group has-value`}>
-            <select
-              type="text"
-              value={service.serviceCategoryId}
-              id="serviceCategoryId"
-              placeholder=""
-              onChange={handleOnChange}
-            >
-              <option value="">No Category</option>
-              {serviceCategories.map((sc) => (
-                <option value={sc.id}>{sc.name}</option>
-              ))}
-            </select>
-            <label htmlFor="serviceCategoryId">Service Category</label>
-          </div>
+          {serviceCategories && (
+            <div className={`form-group has-value`}>
+              <select
+                type="text"
+                value={service.serviceCategoryId}
+                id="serviceCategoryId"
+                placeholder=""
+                onChange={handleOnChange}
+              >
+                <option value="">No Category</option>
+                {serviceCategories.map((sc) => (
+                  <option value={sc.id}>{sc.name}</option>
+                ))}
+              </select>
+              <label htmlFor="serviceCategoryId">Service Category</label>
+            </div>
+          )}
 
           <div className="service-modal-card-body-inputs">
             <div
