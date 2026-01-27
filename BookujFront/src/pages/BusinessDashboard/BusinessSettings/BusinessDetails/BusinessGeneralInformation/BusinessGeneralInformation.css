@@ -1,7 +1,8 @@
 .business-settings-details-generalInformation-card {
   padding-top: 2em;
   padding-left: 3rem;
-  min-width: none;
+  width: 37vw;
+  min-width: 640px;
 }
 
 .business-settings-details-generalInformation-header {
@@ -43,11 +44,12 @@
   border: 1px solid #e9e9e9;
   border-radius: 12px;
   background-color: #ffffff;
-  width: 35vw;
-  min-width: 450px;
-  min-height: 450px;
   position: relative;
   padding: 1em;
+  /* width: 35vw;
+  min-height: 450px;
+  min-width: 570px; */
+  width: 100%;
 }
 
 .dashboard-settings-details-generalInformation-body-content-checkbox-group {
@@ -78,18 +80,16 @@
   width: 100%;
 }
 
-.dashboard-settings-details-generalInformation-body-content input,
-.dashboard-settings-details-generalInformation-body-content textarea {
-}
-
 .dashboard-settings-details-generalInformation-body-content-general {
   width: 100%;
   border-right: 1px solid #e9e9e9;
   padding-right: 1em;
+  flex: 1;
 }
 
 .dashboard-settings-details-generalInformation-body-content-socialMedias {
   width: 100%;
+  flex: 1;
 }
 
 .dashboard-settings-details-generalInformation-body-content-general .form-group,
@@ -106,7 +106,6 @@
   overflow-x: hidden;
   resize: none;
   min-height: 120px;
-  font-family: inherit;
 }
 
 .form-group.with-icon {
@@ -126,13 +125,13 @@
   padding-left: 35px;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 710px) {
   .business-settings-details-generalInformation-card {
     background-color: #ffffff;
     width: 100%;
     padding: 0;
-    margin: 0 auto;
-    max-width: 520px;
+    min-width: 0;
+    max-width: 100%;
     padding-bottom: clamp(1rem, 4vh, 3rem);
   }
 
@@ -159,7 +158,7 @@
 
   .dashboard-settings-details-generalInformation-body {
     width: 100%;
-    max-width: 520px;
+    /* max-width: 520px; */
     min-width: 0;
     min-height: auto;
     border: none;

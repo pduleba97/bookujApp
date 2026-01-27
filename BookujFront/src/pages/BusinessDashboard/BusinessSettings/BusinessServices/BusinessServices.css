@@ -18,7 +18,7 @@
   background-color: #ffffff;
   height: 77vh;
   width: 35vw;
-  min-width: 290px;
+  min-width: 500px;
   min-height: 500px;
   position: relative;
 }
@@ -41,6 +41,7 @@
   display: flex;
   flex: 1;
   overflow: hidden;
+  width: 100%;
 }
 
 .dashboard-settings-services-body-categories {
@@ -49,6 +50,7 @@
   align-self: stretch;
   text-align: left;
   user-select: none;
+  min-width: 200px;
 }
 
 .dashboard-settings-services-body-categories
@@ -58,6 +60,17 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.dashboard-settings-services-body-categories-category p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 .dashboard-settings-services-body-categories-category-p {
@@ -70,7 +83,7 @@
 }
 .dashboard-settings-services-body-categories-category-chevron {
   margin-left: auto;
-  padding: 1em 1em;
+  padding: 1rem 0.5rem;
 }
 
 .dashboard-settings-services-body-categories-category-grab {

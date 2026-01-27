@@ -1,5 +1,4 @@
 .business-staff-management-nav {
-  margin-top: -28px; /* magic number to start directly under the navbar - reconsider in the future */
   border-bottom: 1px solid #ccc;
   display: flex;
   gap: 1em;

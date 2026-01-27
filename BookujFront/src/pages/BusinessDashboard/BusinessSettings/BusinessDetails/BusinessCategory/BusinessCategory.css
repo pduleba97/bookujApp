@@ -2,6 +2,7 @@
   padding-top: 2rem;
   padding-left: 3rem;
   min-width: 0;
+  max-width: 550px;
 }
 
 .business-settings-details-category-header {
@@ -108,7 +109,7 @@
   width: 100%;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 586px) {
   .business-settings-details-category-card {
     width: 100%;
     padding: 0;

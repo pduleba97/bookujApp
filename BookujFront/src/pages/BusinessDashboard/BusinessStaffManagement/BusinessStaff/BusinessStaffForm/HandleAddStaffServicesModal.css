@@ -10,7 +10,7 @@
 
 .handle-staff-services-modal {
   position: absolute;
-  top: 5em;
+  top: 120px;
   left: 50%;
   transform: translateX(-50%);
   background-color: white;
@@ -122,8 +122,8 @@
 }
 
 .handle-staff-services-modal-body-services-body-service-group:not(
-    :last-of-type
-  ) {
+  :last-of-type
+) {
   border-bottom: 1px solid #ccc;
 }
 

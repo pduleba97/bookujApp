@@ -1,6 +1,7 @@
 .business-staff-form-wrapper {
   width: 60em;
-  margin-left: 3em;
+  padding-left: 2rem;
+  padding-top: 2rem;
 }
 
 .business-staff-form-header {
