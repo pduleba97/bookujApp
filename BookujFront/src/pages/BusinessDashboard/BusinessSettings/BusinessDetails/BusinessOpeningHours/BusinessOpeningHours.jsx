@@ -59,7 +59,7 @@ function BusinessOpeningHours() {
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/opening-hours`,
-        { method: "PATCH", body: JSON.stringify(businessData.openingHours) }
+        { method: "PATCH", body: JSON.stringify(businessData.openingHours) },
       );
 
       const data = await response.json();

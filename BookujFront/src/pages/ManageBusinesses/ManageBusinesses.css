@@ -29,6 +29,7 @@ button {
 .manage-business-top {
   display: flex;
   margin-top: 1rem;
+  align-items: center;
 }
 
 .manage-business-top > h2 {
@@ -54,7 +55,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -81,8 +82,8 @@ button {
 }
 
 .add-icon {
-  width: 32px;
-  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   margin-right: 0.5em;
   -webkit-mask: url("/icons/icon-add.svg") no-repeat center / contain;
   mask: url("/icons/icon-add.svg") no-repeat center / contain;
@@ -171,5 +172,21 @@ table > tbody > tr > td {
   .manage-businesses-wrapper {
     margin-left: 1em;
     margin-right: 1em;
+  }
+
+  .manage-business-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .manage-business-body {
+    margin-top: 0;
+  }
+
+  .manage-business-header-input-wrapper {
+    width: 100%;
+  }
+
+  .manage-business-button {
+    width: 100px;
   }
 }

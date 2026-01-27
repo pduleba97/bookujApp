@@ -1,12 +1,14 @@
 .business-settings-details-category-card {
+  padding-top: 2rem;
   padding-left: 3rem;
+  min-width: 0;
 }
 
 .business-settings-details-category-header {
   display: flex;
   gap: 1em;
   justify-content: space-between;
-  width: 20vw; /*has to remain the same as in .dashboard-settings-details-category-body! */
+  min-width: 400px; /*has to remain the same as in .dashboard-settings-details-category-body! */
   align-items: flex-start;
 }
 
@@ -38,7 +40,9 @@
   border: 1px solid #e9e9e9;
   border-radius: 6px;
   display: flex;
-  width: 20em;
+  width: 100%;
+  min-width: 150px;
+  transform: translateX(calc(-100% + 26px));
 }
 
 .business-settings-details-category-header-back
@@ -70,15 +74,14 @@
   border: 1px solid #e9e9e9;
   border-radius: 12px;
   background-color: #ffffff;
-  width: 20vw;
-  min-width: 290px;
+  min-width: 400px;
   min-height: 5em;
   position: relative;
   padding: 1em;
 }
 
 .dashboard-settings-details-category-body-content-header {
-  padding-bottom: 2em;
+  padding-bottom: 2rem;
 }
 
 .dashboard-settings-details-category-body-content-header > p {
@@ -103,4 +106,47 @@
 .dashboard-settings-details-category-body-content-general .form-group {
   margin-bottom: 1.5em;
   width: 100%;
+}
+
+@media (max-width: 560px) {
+  .business-settings-details-category-card {
+    width: 100%;
+    padding: 0;
+    padding-top: 0rem;
+    margin: 0 auto;
+    max-width: 520px;
+    padding-bottom: clamp(1rem, 4vh, 3rem);
+  }
+  .business-settings-details-category-header {
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    padding: 1rem;
+    font-size: 0.75rem;
+    width: 100%;
+  }
+
+  .dashboard-settings-details-category-body-content-header {
+    padding-bottom: 1rem;
+  }
+
+  .dashboard-settings-details-category-body {
+    margin: 0rem 1rem;
+    max-width: 520px;
+    min-width: 0;
+    min-height: auto;
+  }
+
+  .business-settings-details-category-header-save {
+    width: 100%;
+  }
+
+  .business-settings-details-category-header-save button {
+    border-radius: 10px;
+  }
+
+  .business-settings-details-category-header-back {
+    justify-content: space-between;
+    width: 100%;
+  }
 }

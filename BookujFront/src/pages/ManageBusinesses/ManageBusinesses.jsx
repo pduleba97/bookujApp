@@ -7,7 +7,10 @@ import {
   faHouse,
   faBriefcase,
   faTrashCan,
+  faCirclePlus,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 
 function ManageBusinesses() {
   const [businessesList, setBusinessesList] = useState([]);

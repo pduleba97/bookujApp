@@ -30,10 +30,10 @@ function BusinessOpeningHoursForm({
   }
 
   return (
-    <form onSubmit={submitForm} className="form-wrapper">
+    <form onSubmit={submitForm} className="opening-hours-form-wrapper">
       <FontAwesomeIcon
         icon={faClock}
-        style={{ fontSize: "62px", marginBottom: "1rem" }}
+        className="opening-hours-form-wrapper-icon-clock"
       />
       {!businessData.openingHours[0].id ? (
         <h1>Your Business Hours</h1>

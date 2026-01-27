@@ -4,9 +4,9 @@
 }
 
 .dashboard-main {
-  /* width of sidebar nav */
-  margin-left: 4em;
+  margin-left: 4em; /* width of sidebar nav */
   flex: 1;
   height: calc(100dvh - 100px);
   display: flex;
+  /* overflow-y: hidden; */
 }

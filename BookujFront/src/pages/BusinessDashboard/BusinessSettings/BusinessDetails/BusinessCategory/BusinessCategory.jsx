@@ -69,7 +69,7 @@ function BusinessCategory() {
 
   return (
     <div className="business-settings-details-category-card">
-      <form onSubmit={handleOnClick}>
+      <form style={{ width: "100%" }} onSubmit={handleOnClick}>
         <div className="business-settings-details-category-header">
           <div className="business-settings-details-category-header-back">
             <FontAwesomeIcon

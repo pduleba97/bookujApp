@@ -97,6 +97,32 @@
   margin-bottom: 2em;
 }
 
+.opening-hours-form-wrapper {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.opening-hours-form-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.opening-hours-form-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.opening-hours-form-wrapper p {
+  opacity: 80%;
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.opening-hours-form-wrapper-icon-clock {
+  font-size: 62px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .form-buttons .manage-business-button-white,
 .form-buttons .manage-business-button {
   width: 100%;
@@ -271,4 +297,19 @@
   min-height: 7em;
   max-height: 10em;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 560px) {
+  .opening-hours-form-wrapper h1 {
+    font-size: 22px;
+  }
+
+  .opening-hours-form-wrapper-icon-clock {
+    font-size: 52px;
+  }
+
+  .opening-hours-form-wrapper p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }

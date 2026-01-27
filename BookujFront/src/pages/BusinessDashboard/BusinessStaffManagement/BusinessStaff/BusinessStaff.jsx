@@ -28,7 +28,7 @@ function BusinessStaff() {
           `/businesses/me/${businessId}/employees`,
           {
             method: "GET",
-          }
+          },
         );
 
         const data = await response.json();
@@ -51,7 +51,7 @@ function BusinessStaff() {
         `/businesses/me/${businessId}/employees/${employeeId}/services-grouped`,
         {
           method: "GET",
-        }
+        },
       );
 
       const data = await response.json();
@@ -73,14 +73,14 @@ function BusinessStaff() {
         .includes(adjustedFilteredName) ||
       (staff.lastName + " " + staff.firstName)
         .toLowerCase()
-        .includes(adjustedFilteredName)
+        .includes(adjustedFilteredName),
   );
 
   const filteredGroupedEmployeeServicesList = selectedEmployeeGroupedServices
     ?.map((gs) => ({
       ...gs,
       services: gs.services.filter((es) =>
-        es.name.toLowerCase().includes(serviceFilter.toLowerCase())
+        es.name.toLowerCase().includes(serviceFilter.toLowerCase()),
       ),
     }))
     .filter((gs) => gs.services.length > 0);
@@ -116,38 +116,6 @@ function BusinessStaff() {
                 fetchEmployeeServicesGroupedByCategory
               }
             />
-            {/* {filteredStaffList?.map((staff) => (
-              <div key={staff.id}>
-                <div
-                  className={`business-staff-content-staff-list-single ${
-                    selectedEmployee.id === staff.id ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedEmployee(staff);
-                    fetchEmployeeServicesGroupedByCategory(staff.id);
-                    setServiceFilter("");
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faBars}
-                    className="business-staff-content-staff-list-single-icon"
-                  />
-                  {staff.imageUrl ? (
-                    <img
-                      src={staff.imageUrl}
-                      className="business-staff-content-staff-list-avatar"
-                    />
-                  ) : (
-                    <div className="business-staff-content-staff-list-avatar-placeholder">
-                      {(staff.firstName?.[0].toUpperCase() || "") +
-                        (staff.lastName?.[0].toUpperCase() || "")}
-                    </div>
-                  )}
-                  {staff.firstName + " " + staff.lastName}
-                </div>
-                <hr className="divider" />
-              </div>
-            ))} */}
           </div>
 
           <Link

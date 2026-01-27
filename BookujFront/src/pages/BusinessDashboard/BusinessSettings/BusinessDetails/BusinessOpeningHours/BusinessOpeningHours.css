@@ -1,15 +1,19 @@
 .business-settings-details-opening-hours-card {
   padding-left: 3rem;
+  padding-top: 2rem;
+  width: fit-content;
 }
 
 .business-settings-details-opening-hours-tiles {
-  margin-top: 1em;
+  margin-top: 1rem;
   background-color: #ffffff;
   padding: 2em 1em;
   gap: 1em;
   border: 1px solid #e9e9e9;
   border-radius: 6px;
   width: 25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .business-settings-details-opening-hours-back {
@@ -34,4 +38,36 @@
 .business-settings-details-opening-hours-save button:disabled {
   cursor: not-allowed;
   background-color: #2a2c32ec;
+}
+
+@media (max-width: 560px) {
+  .business-settings-details-opening-hours-tiles {
+    padding: 0;
+    max-height: 680px;
+    padding-bottom: 1rem;
+    width: 18rem;
+    margin: 1rem auto;
+  }
+
+  .opening-hours-group {
+    padding-left: 1rem;
+  }
+
+  .business-settings-details-opening-hours-save {
+    margin-top: 0;
+    width: 90%;
+    align-self: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .business-settings-details-opening-hours-header h1 {
+    font-size: 22px;
+  }
+
+  .business-settings-details-opening-hours-card {
+    padding-top: 1rem;
+    padding-left: 0rem;
+    margin: 0 auto;
+  }
 }
