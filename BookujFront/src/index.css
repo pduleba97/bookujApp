@@ -41,6 +41,7 @@ button:focus-visible {
   height: auto;
   margin: 0;
   cursor: pointer;
+  opacity: 70%;
 }
 
 .button-navigation:focus {

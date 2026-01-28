@@ -10,6 +10,7 @@ import { Link, useParams } from "react-router-dom";
 import { authFetch } from "../../../../api/authFetch";
 import BusinessStaffServicesList from "./BusinessStaffServicesList/BusinessStaffServicesList";
 import BusinessEmployeesDnd from "./BusinessEmployeesDnD";
+import BusinessStaffWeeklySchedule from "./BusinessStaffWeeklySchedule/BusinessStaffWeeklySchedule";
 
 function BusinessStaff() {
   const { businessId } = useParams();
@@ -19,6 +20,8 @@ function BusinessStaff() {
   const [serviceFilter, setServiceFilter] = useState("");
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedEmployeeGroupedServices, setSelectedEmployeeGroupedServices] =
+    useState([]);
+  const [selectedEmployeeWeeklySchedules, setSelectedEmployeeWeeklySchedules] =
     useState([]);
 
   useEffect(() => {
@@ -57,7 +60,6 @@ function BusinessStaff() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
 
-      console.log(filteredGroupedEmployeeServicesList);
       setSelectedEmployeeGroupedServices(data);
     } catch (err) {
       console.warn(err);
@@ -202,6 +204,13 @@ function BusinessStaff() {
                 }
                 serviceFilter={serviceFilter}
                 setServiceFilter={setServiceFilter}
+              />
+            )}
+
+            {selectedTab === 1 && (
+              <BusinessStaffWeeklySchedule
+                businessId={businessId}
+                employeeId={selectedEmployee.id}
               />
             )}
           </div>

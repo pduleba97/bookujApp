@@ -212,7 +212,7 @@
 }
 
 .business-staff-content-details-body-category-name {
-  font-size: 24px;
+  font-size: 20px;
   text-align: left;
   padding: 0.5em 1em;
   font-weight: bold;
@@ -241,8 +241,8 @@
   display: grid;
   grid-template-columns: 4fr 3fr;
   gap: 1em;
-  font-size: 22px;
-  padding: 0.5em 1em;
+  font-size: 18px;
+  padding: 1rem 1rem;
 }
 
 .business-staff-content-details-body-service-group:not(:last-of-type),
