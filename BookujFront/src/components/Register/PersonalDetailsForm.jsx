@@ -14,7 +14,7 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
 
   function handleOnChange(e) {
     setUser((prev) => {
-      return { ...prev, [e.target.id]: e.target.value };
+      return { ...prev, [e.target.name]: e.target.value };
     });
   }
 
@@ -26,7 +26,8 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
           <div className="form-group">
             <input
               type="text"
-              id="firstName"
+              id="register-firstName"
+              name="firstName"
               pattern="^[A-Za-zÀ-ÖØ-öø-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \-]+$"
               title="Enter a valid first name, e.g. John"
               placeholder=" "
@@ -34,12 +35,13 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
               onChange={handleOnChange}
               required
             />
-            <label htmlFor="firstName">First name</label>
+            <label htmlFor="register-firstName">First name</label>
           </div>
           <div className="form-group">
             <input
               type="text"
-              id="lastName"
+              id="register-lastName"
+              name="lastName"
               pattern="^[A-Za-zÀ-ÖØ-öø-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \-]+$"
               title="Enter a valid last name, e.g. Doe"
               placeholder=" "
@@ -47,12 +49,13 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
               onChange={handleOnChange}
               required
             />
-            <label htmlFor="lastName">Last name</label>
+            <label htmlFor="register-lastName">Last name</label>
           </div>
           <div className="form-group">
             <input
               type="tel"
-              id="phoneNumber"
+              id="register-phoneNumber"
+              name="phoneNumber"
               pattern="^\+?\d{7,14}$"
               title="Phone number must be 7 to 14 digits, can start with +"
               placeholder=" "
@@ -60,14 +63,16 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
               onChange={handleOnChange}
               required
             />
-            <label htmlFor="phoneNumber">Phone</label>
+            <label htmlFor="register-phoneNumber">Phone</label>
           </div>
         </div>
         <div className="personal-details-form-button-wrapper">
           <button type="button" onClick={handlePrevious}>
             Back
           </button>
-          <button type="submit">Next</button>
+          <button id="register-submit" type="submit">
+            Next
+          </button>
         </div>
       </form>
       <div className="already-registered-wrapper">

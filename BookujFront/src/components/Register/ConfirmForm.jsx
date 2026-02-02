@@ -39,22 +39,30 @@ function ConfirmForm({ nextSection, prevSection, user }) {
       <div className="user-summary">
         <div className="summary-item">
           <span className="label">First name</span>
-          <span className="value">{user.firstName}</span>
+          <span id="register-value-firstName" className="value">
+            {user.firstName}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Last name</span>
-          <span className="value">{user.lastName}</span>
+          <span id="register-value-lastName" className="value">
+            {user.lastName}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Email</span>
-          <span className="value">{user.email}</span>
+          <span id="register-value-email" className="value">
+            {user.email}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Phone number</span>
-          <span className="value">{user.phoneNumber}</span>
+          <span id="register-value-phoneNumber" className="value">
+            {user.phoneNumber}
+          </span>
         </div>
       </div>
 
@@ -62,10 +70,12 @@ function ConfirmForm({ nextSection, prevSection, user }) {
         className="personal-details-form-button-wrapper"
         onSubmit={handleNext}
       >
-        <button type="button" onClick={handlePrevious}>
+        <button id="register-back" type="button" onClick={handlePrevious}>
           Back
         </button>
-        <button type="submit">Continue</button>
+        <button id="register-submit" type="submit">
+          Continue
+        </button>
       </form>
       <div className="already-registered-wrapper">
         <p>Already have an account?</p>

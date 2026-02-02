@@ -62,21 +62,28 @@ namespace BookujApi.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-        [HttpDelete("deleteUser")]
-        public async Task<IActionResult> DeleteByEmail([FromBody] string email)
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteByEmail([FromQuery] string email)
         {
             try
             {
                 var result = await _userService.DeleteUserByEmail(email);
                 return Ok(result);
             }
+            catch (KeyNotFoundException ex)
+            {
+                // User not found, return 404
+                return NotFound(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { error = ex.Message });
 
             }
-
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestOrig request)
         {

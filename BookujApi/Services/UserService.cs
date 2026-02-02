@@ -4,7 +4,6 @@ using BookujApi.Models;
 using BookujApi.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -79,7 +78,7 @@ namespace BookujApi.Services
             var existing = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (existing == null)
             {
-                throw new Exception("Email does not exists");
+                throw new KeyNotFoundException("Email does not exist");
             }
 
             _db.Users.Remove(existing);
@@ -256,7 +255,7 @@ namespace BookujApi.Services
             existing.LastName = userPersonalData.LastName;
             existing.Email = userPersonalData.Email.ToLowerInvariant();
             existing.PhoneNumber = userPersonalData.PhoneNumber;
-            if(publicUrl!=null)
+            if (publicUrl != null)
                 existing.ImageUrl = publicUrl;
 
             await _db.SaveChangesAsync();
