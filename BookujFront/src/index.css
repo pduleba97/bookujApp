@@ -27,6 +27,18 @@ body {
   overflow-y: scroll;
 }
 
+.button-bookuj {
+  border-radius: 0.5rem;
+  border: 1px solid #c6e3ff;
+  /* margin: auto; */
+  width: auto;
+  height: 2.5rem;
+  background-color: #2a2c32;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

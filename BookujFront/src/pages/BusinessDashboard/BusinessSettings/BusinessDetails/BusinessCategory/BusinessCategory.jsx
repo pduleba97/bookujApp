@@ -92,11 +92,13 @@ function BusinessCategory() {
               </span>
             </div>
           </div>
-          <div className="business-settings-details-category-header-save">
-            <button disabled={!changeDetected} type="submit">
-              Save
-            </button>
-          </div>
+          <button
+            disabled={!changeDetected}
+            className="button-bookuj business-settings-details-category-header-save"
+            type="submit"
+          >
+            Save
+          </button>
         </div>
 
         <div className="dashboard-settings-details-category-body">

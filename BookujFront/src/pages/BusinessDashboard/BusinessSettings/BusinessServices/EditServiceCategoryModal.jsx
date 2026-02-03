@@ -34,7 +34,7 @@ function EditServiceCategoryModal({
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/servicecategory/${serviceCategory.id}`,
-        { method: "PUT", body: JSON.stringify(newServiceCategory) }
+        { method: "PUT", body: JSON.stringify(newServiceCategory) },
       );
 
       const data = await response.json();
@@ -42,8 +42,8 @@ function EditServiceCategoryModal({
 
       setServiceCategories((prev) =>
         prev.map((sc) =>
-          sc.id === serviceCategory.id ? newServiceCategory : sc
-        )
+          sc.id === serviceCategory.id ? newServiceCategory : sc,
+        ),
       );
 
       setShowEditServiceCategoryModalId(null);
@@ -56,7 +56,7 @@ function EditServiceCategoryModal({
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/servicecategory/${serviceCategory.id}`,
-        { method: "DELETE" }
+        { method: "DELETE" },
       );
 
       if (!response.ok) {
@@ -65,7 +65,7 @@ function EditServiceCategoryModal({
       }
 
       setServiceCategories((prev) =>
-        prev.filter((sc) => sc.id !== serviceCategory.id)
+        prev.filter((sc) => sc.id !== serviceCategory.id),
       );
 
       setSelectedCategoryId(-1);
@@ -122,9 +122,9 @@ function EditServiceCategoryModal({
             <label htmlFor="description">Description</label>
           </div>
         </div>
-        <div className="service-category-modal-card-button">
+        <div className="service-category-modal-card-buttons">
           <button
-            className="service-category-modal-card-button-category-remove-box"
+            className="button-bookuj service-category-modal-card-button-category-remove-box"
             onClick={() => {
               onDelete();
             }}
@@ -136,7 +136,7 @@ function EditServiceCategoryModal({
           </button>
           <button
             type="submit"
-            className="service-category-modal-card-button-category-add-button"
+            className="button-bookuj service-category-modal-card-button-category-add-button"
           >
             Add
           </button>

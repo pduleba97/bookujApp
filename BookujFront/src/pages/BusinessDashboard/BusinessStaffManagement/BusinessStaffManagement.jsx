@@ -9,7 +9,7 @@ function BusinessStaffManagement() {
     <div className="business-staff-management-wrapper">
       <div className="business-staff-management-nav">
         <button
-          className={`button-navigation ${selected === 0 ? "active" : ""}`}
+          className={`button-bookuj button-navigation ${selected === 0 ? "active" : ""}`}
           onClick={() => {
             setSelected(0);
           }}
@@ -17,7 +17,7 @@ function BusinessStaffManagement() {
           Employees
         </button>
         <button
-          className={`button-navigation ${selected === 1 ? "active" : ""}`}
+          className={`button-bookuj button-navigation ${selected === 1 ? "active" : ""}`}
           onClick={() => {
             setSelected(1);
           }}
@@ -25,7 +25,7 @@ function BusinessStaffManagement() {
           Work schedule
         </button>
         <button
-          className={`button-navigation ${selected === 2 ? "active" : ""}`}
+          className={`button-bookuj button-navigation ${selected === 2 ? "active" : ""}`}
           onClick={() => {
             setSelected(2);
           }}

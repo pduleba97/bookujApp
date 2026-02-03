@@ -53,17 +53,11 @@
 }
 
 .business-settings-details-category-header-save {
-  min-width: 8em;
-  height: 3em;
-  align-self: flex-end;
+  min-width: 8rem;
+  height: 3rem;
 }
 
-.business-settings-details-category-header-save button {
-  height: 100%;
-  cursor: pointer;
-}
-
-.business-settings-details-category-header-save button:disabled {
+.business-settings-details-category-header-save:disabled {
   cursor: not-allowed;
   background-color: #2a2c32ec;
 }

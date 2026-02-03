@@ -21,18 +21,12 @@
 }
 
 .business-settings-details-generalInformation-header-save {
-  min-width: 8em;
-  height: 3em;
-  align-self: flex-end;
-}
-
-.business-settings-details-generalInformation-header-save button {
-  height: 100%;
-  cursor: pointer;
+  min-width: 8rem;
+  height: 3rem;
   border-radius: 10px;
 }
 
-.business-settings-details-generalInformation-header-save button:disabled {
+.business-settings-details-generalInformation-header-save:disabled {
   cursor: not-allowed;
   background-color: #6c757d;
 }

@@ -13,7 +13,6 @@ import EditServiceModal from "./EditServiceModal.jsx";
 function BusinessServicesForm({
   businessData,
   setBusinessData,
-  nextStep,
   prevStep,
   handleBusinessSubmit,
 }) {

@@ -8,6 +8,7 @@ import BusinessDescriptionForm from "../../components/CreateBusiness/BusinessDes
 import { reduceImageSize } from "../../utils/imageUtils.js";
 import { authFetch } from "../../api/authFetch.js";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function StepComponent({
   currentStep,
@@ -16,7 +17,7 @@ function StepComponent({
   nextStep,
   prevStep,
   setBusinessPicture,
-  handleBusinessSubmit, //test
+  handleBusinessSubmit,
 }) {
   function handleOpeningHourSave(newOpeningHour, idx) {
     setBusinessData((prev) => {
@@ -128,7 +129,7 @@ function CreateBusiness() {
         businessPicture,
         2000,
         2000,
-        true
+        true,
       );
 
       formData.append("file", reducedFile);
@@ -141,17 +142,23 @@ function CreateBusiness() {
       });
 
       const text = await response.text();
-      console.log("Raw response:", text);
+      // console.log("Raw response:", text);
       if (!response.ok) {
         throw new Error(text);
       }
 
       const data = JSON.parse(text);
-      console.log("Successfully added new business");
-      console.log(data);
+      toast.success("Successfully added new business!", {
+        position: "top-center",
+        style: { width: "60vw" },
+      });
       navigate("/manage-businesses");
     } catch (err) {
       console.log("Fail");
+      toast.error("Failed to add new business.", {
+        position: "top-center",
+        style: { width: "60vw" },
+      });
       console.warn(err);
     }
   }

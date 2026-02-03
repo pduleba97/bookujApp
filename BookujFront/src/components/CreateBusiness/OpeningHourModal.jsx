@@ -113,7 +113,7 @@ function OpeningHourModal({
           </div>
         </div>
         <div className="opening-hour-modal-card-book-details">
-          <button type="button" onClick={submitForm}>
+          <button className="button-bookuj" type="button" onClick={submitForm}>
             Save
           </button>
         </div>

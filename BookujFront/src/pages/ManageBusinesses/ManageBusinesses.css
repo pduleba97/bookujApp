@@ -6,11 +6,6 @@ textarea {
   border-radius: 8px;
 }
 
-button {
-  height: 3em;
-  border-radius: 8px;
-}
-
 .manage-businesses-wrapper {
   margin: auto;
   margin-top: 4em;
@@ -63,7 +58,7 @@ button {
 }
 
 .manage-business-button:hover {
-  background: rgba(0, 0, 0, 0.87);
+  background-color: #3b3d43;
 }
 
 .manage-business-button-white {
