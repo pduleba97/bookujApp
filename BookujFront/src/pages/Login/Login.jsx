@@ -6,6 +6,7 @@ const API_URL = `${import.meta.env.VITE_API_URL}`;
 function Login({ setIsLoggedIn, setUserData }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,8 +29,6 @@ function Login({ setIsLoggedIn, setUserData }) {
         return response.json();
       })
       .then((data) => {
-        console.log("Logged in:", data);
-
         sessionStorage.setItem("accessToken", data.accessToken);
         sessionStorage.setItem("user", JSON.stringify(data.user));
 
@@ -41,6 +40,7 @@ function Login({ setIsLoggedIn, setUserData }) {
       })
       .catch((error) => {
         console.error(error);
+        setIsLoginFailed(true);
       });
   };
 
@@ -48,27 +48,38 @@ function Login({ setIsLoggedIn, setUserData }) {
     <>
       <div className="loginWrapper">
         <div className="loginCard">
-          <h2>Sign in with email</h2>
+          <h1>Sign in with email</h1>
           <p id="loginDescription">
             Book appointments and manage your visits in one simple, convenient
             place. For free.
           </p>
 
           <form className="loginForm" onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="login-inputs-wrapper">
+              <div className="form-group">
+                <input
+                  id="login-email"
+                  type="email"
+                  placeholder=""
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <label htmlFor="login-email">Email</label>
+              </div>
+              <div className="form-group">
+                <input
+                  id="login-password"
+                  type="password"
+                  placeholder=""
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <label htmlFor="login-password">Password</label>
+              </div>
+            </div>
+
             <p id="forgotPassword">Forgot password?</p>
             <button id="login-submit" className="button-bookuj" type="submit">
               Sign in

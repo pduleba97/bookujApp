@@ -47,22 +47,30 @@ function ConfirmForm({ nextSection, prevSection, user }) {
       <div className="user-summary">
         <div className="summary-item">
           <span className="label">First name</span>
-          <span className="value">{user.firstName}</span>
+          <span id="register-value-firstName" className="value">
+            {user.firstName}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Last name</span>
-          <span className="value">{user.lastName}</span>
+          <span id="register-value-lastName" className="value">
+            {user.lastName}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Email</span>
-          <span className="value">{user.email}</span>
+          <span id="register-value-email" className="value">
+            {user.email}
+          </span>
         </div>
 
         <div className="summary-item">
           <span className="label">Phone number</span>
-          <span className="value">{user.phoneNumber}</span>
+          <span id="register-value-phoneNumber" className="value">
+            {user.phoneNumber}
+          </span>
         </div>
       </div>
 

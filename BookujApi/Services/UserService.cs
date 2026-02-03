@@ -4,7 +4,6 @@ using BookujApi.Models;
 using BookujApi.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -28,10 +27,9 @@ namespace BookujApi.Services
             _config = config;
         }
 
-        // ✅ Add new user
         public async Task<User> RegisterUserAsync(RegisterUserDto dto)
         {
-            //Sprawdzenie czy email już istnieje
+            // Check if user with this email address already exists
             var existing = await _db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email.ToLowerInvariant());
             if (existing != null)
                 throw new Exception("Email is already registered.");
@@ -79,7 +77,7 @@ namespace BookujApi.Services
             var existing = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (existing == null)
             {
-                throw new Exception("Email does not exists");
+                throw new KeyNotFoundException("Email does not exist");
             }
 
             _db.Users.Remove(existing);
@@ -256,7 +254,7 @@ namespace BookujApi.Services
             existing.LastName = userPersonalData.LastName;
             existing.Email = userPersonalData.Email.ToLowerInvariant();
             existing.PhoneNumber = userPersonalData.PhoneNumber;
-            if(publicUrl!=null)
+            if (publicUrl != null)
                 existing.ImageUrl = publicUrl;
 
             await _db.SaveChangesAsync();

@@ -24,13 +24,17 @@ function Navbar({ isLoggedIn, userData }) {
         {isLoggedIn ? (
           <div className="login-details">
             {userData && userData.role === "Owner" && (
-              <Link to="/manage-businesses" className="nav-status logged">
+              <Link
+                to="/manage-businesses"
+                id="nav-manage-businesses"
+                className="nav-status logged"
+              >
                 <FontAwesomeIcon className="navbar-icon" icon={faBriefcase} />
                 <div>Your Businesses</div>
               </Link>
             )}
 
-            <Link to="/profile" className="nav-status logged">
+            <Link to="/profile" id="nav-profile" className="nav-status logged">
               <FontAwesomeIcon className="navbar-icon" icon={faUser} />
               <div>{getUser().firstName}</div>
             </Link>
@@ -38,14 +42,18 @@ function Navbar({ isLoggedIn, userData }) {
           </div>
         ) : (
           <div className="login-details">
-            <Link to="/login" className="nav-status not-logged">
+            <Link to="/login" id="nav-login" className="nav-status not-logged">
               <FontAwesomeIcon
                 className="navbar-icon"
                 icon={faArrowRightToBracket}
               />
               <div>Login</div>
             </Link>
-            <Link to="/register" className="nav-status not-logged">
+            <Link
+              to="/register"
+              id="nav-register"
+              className="nav-status not-logged"
+            >
               <FontAwesomeIcon className="navbar-icon" icon={faUserPlus} />
               <div>Register</div>
             </Link>

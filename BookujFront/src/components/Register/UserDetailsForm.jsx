@@ -18,7 +18,7 @@ const UserDetailsForm = ({ nextSection, setUser, user }) => {
 
   function handleOnChange(e) {
     setUser((prev) => {
-      return { ...prev, [e.target.id]: e.target.value };
+      return { ...prev, [e.target.name]: e.target.value };
     });
   }
 
@@ -30,7 +30,8 @@ const UserDetailsForm = ({ nextSection, setUser, user }) => {
           <div className="form-group">
             <input
               type="email"
-              id="email"
+              id="register-email"
+              name="email"
               placeholder=" "
               pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
               title="Enter a valid email address, e.g. example@example.com"
@@ -38,31 +39,33 @@ const UserDetailsForm = ({ nextSection, setUser, user }) => {
               onChange={handleOnChange}
               required
             />
-            <label htmlFor="email">Email</label>
+            <label htmlFor="register-email">Email</label>
           </div>
           <div className="form-group">
             <input
               type="password"
-              id="password"
+              id="register-password"
+              name="password"
               placeholder=" "
               value={user.password}
               onChange={handleOnChange}
               minLength={6}
               required
             />
-            <label htmlFor="password">Password</label>
+            <label htmlFor="register-password">Password</label>
           </div>
           <div className="form-group">
             <input
               type="password"
-              id="confirmPassword"
+              id="register-confirmPassword"
+              name="confirmPassword"
               placeholder=" "
               value={user.confirmPassword}
               onChange={handleOnChange}
               minLength={6}
               required
             />
-            <label htmlFor="confirmPassword">Confirm password</label>
+            <label htmlFor="register-confirmPassword">Confirm password</label>
             {passwordError && (
               <span style={{ color: "red" }} className="error">
                 {passwordError}

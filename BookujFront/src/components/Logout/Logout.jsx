@@ -22,7 +22,7 @@ const Logout = () => {
   };
 
   return (
-    <div className="logout-wrapper" onClick={handleLogout}>
+    <div className="logout-wrapper" id="nav-logout" onClick={handleLogout}>
       <FontAwesomeIcon className="logout-icon" icon={faDoorOpen} />
       <div>Logout</div>
     </div>
