@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { loginData } from "../test-data/login-data";
+import { userData } from "../test-data/login-data";
 
 test.describe("Login tests", () => {
   test.beforeEach(async ({ page }) => {
@@ -10,8 +10,8 @@ test.describe("Login tests", () => {
   test("successful login with correct credentials - request is sent", async ({
     page,
   }) => {
-    const userEmail = loginData.userEmail;
-    const userPassword = loginData.userPassword;
+    const userEmail = userData.userEmail;
+    const userPassword = userData.userPassword;
     let requestSent = false;
 
     await page.locator("#login-email").fill(userEmail);
@@ -61,7 +61,7 @@ test.describe("Login tests", () => {
 
   test("unsuccessful login with incorrect email", async ({ page }) => {
     const userEmail = "wrongemail@gmail.com";
-    const userPassword = loginData.userPassword;
+    const userPassword = userData.userPassword;
 
     await page.locator("#login-email").fill(userEmail);
     await page.locator("#login-password").fill(userPassword);
@@ -73,7 +73,7 @@ test.describe("Login tests", () => {
   });
 
   test("unsuccessful login with incorrect password", async ({ page }) => {
-    const userEmail = loginData.userEmail;
+    const userEmail = userData.userEmail;
     const userPassword = "123";
 
     await page.locator("#login-email").fill(userEmail);
@@ -86,8 +86,8 @@ test.describe("Login tests", () => {
   });
 
   test("Successful logout", async ({ page }) => {
-    const userEmail = loginData.userEmail;
-    const userPassword = loginData.userPassword;
+    const userEmail = userData.userEmail;
+    const userPassword = userData.userPassword;
 
     await page.locator("#login-email").fill(userEmail);
     await page.locator("#login-password").fill(userPassword);

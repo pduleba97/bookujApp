@@ -3,4 +3,4 @@ export const adminData = {
   password: "strongPassword1!",
 };
 
-export const API_URL = "https://localhost:7218/api";
+export const API_URL = "https://localhost:7218";

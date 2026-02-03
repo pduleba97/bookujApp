@@ -1,23 +1,20 @@
-import { Browser } from "@playwright/test";
+import { request } from "@playwright/test";
 import { API_URL } from "../test-data/admin-data";
 
 export default async function deleteUser(
-  browser: Browser,
   authToken: string,
   email: string,
 ): Promise<void> {
-  const context = await browser.newContext({
+  const apiContext = await request.newContext({
     ignoreHTTPSErrors: true, // Ignore certificate error
-  });
-  const newPage = await context.newPage();
-
-  const deleteResponse = await newPage.request.delete(
-    `${API_URL}/users/delete?email=${email}`,
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
+    baseURL: API_URL,
+    extraHTTPHeaders: {
+      Authorization: `Bearer ${authToken}`,
     },
+  });
+
+  const deleteResponse = await apiContext.delete(
+    `/api/users/delete?email=${email}`,
   );
 
   if (!deleteResponse.ok()) {

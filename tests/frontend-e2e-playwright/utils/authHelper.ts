@@ -1,18 +1,23 @@
-import { Browser } from "@playwright/test";
+import { request } from "@playwright/test";
 import { adminData, API_URL } from "../test-data/admin-data";
 
-export default async function getAuthToken(browser: Browser): Promise<string> {
-  const context = await browser.newContext({
+export default async function getAuthToken(): Promise<string> {
+  const apiContext = await request.newContext({
     ignoreHTTPSErrors: true, // Ignore certificate error
+    baseURL: API_URL,
   });
-  const newPage = await context.newPage();
 
-  const loginResponse = await newPage.request.post(`${API_URL}/users/login`, {
+  const loginResponse = await apiContext.post(`/api/users/login`, {
     data: {
       email: adminData.email,
       password: adminData.password,
     },
   });
+
+  if (!loginResponse.ok()) {
+    throw new Error(`Login failed with status ${loginResponse.status()}`);
+  }
+
   const loginData = await loginResponse.json();
 
   return loginData.accessToken;

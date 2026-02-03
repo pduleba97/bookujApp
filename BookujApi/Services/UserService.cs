@@ -27,10 +27,9 @@ namespace BookujApi.Services
             _config = config;
         }
 
-        // ✅ Add new user
         public async Task<User> RegisterUserAsync(RegisterUserDto dto)
         {
-            //Sprawdzenie czy email już istnieje
+            // Check if user with this email address already exists
             var existing = await _db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email.ToLowerInvariant());
             if (existing != null)
                 throw new Exception("Email is already registered.");
