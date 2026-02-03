@@ -149,6 +149,7 @@ function CreateBusiness() {
 
       const data = JSON.parse(text);
       toast.success("Successfully added new business!", {
+        role: "alert",
         position: "top-center",
         style: { width: "60vw" },
       });
@@ -156,6 +157,7 @@ function CreateBusiness() {
     } catch (err) {
       console.log("Fail");
       toast.error("Failed to add new business.", {
+        role: "alert",
         position: "top-center",
         style: { width: "60vw" },
       });

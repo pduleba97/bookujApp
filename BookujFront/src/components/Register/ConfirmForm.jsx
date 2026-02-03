@@ -25,11 +25,13 @@ function ConfirmForm({ nextSection, prevSection, user }) {
 
       nextSection();
       toast.success("Registration successful!", {
+        role: "alert",
         position: "top-center",
         style: { width: "60vw" },
       });
     } catch (err) {
       toast.error(err.message, {
+        role: "alert",
         position: "top-center",
         style: { width: "60vw" },
       });

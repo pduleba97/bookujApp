@@ -260,14 +260,11 @@ function Profile({
                     onChange={handleChange}
                   />
                   {!isNameValid && (
-                    <p className="input-error-message">
-                      {" "}
-                      Imię jest niepoprawne
-                    </p>
+                    <p className="input-error-message">Name is invalid</p>
                   )}
                 </div>
               ) : (
-                <p>{userData.firstName}</p>
+                <p id="user-profile-firstName">{userData.firstName}</p>
               )}
             </div>
             <div className="profile-mid-body-lastName">
@@ -282,14 +279,11 @@ function Profile({
                     onChange={handleChange}
                   />
                   {!isLastNameValid && (
-                    <p className="input-error-message">
-                      {" "}
-                      Nazwisko jest niepoprawne
-                    </p>
+                    <p className="input-error-message">Last name is invalid</p>
                   )}
                 </div>
               ) : (
-                <p>{userData.lastName}</p>
+                <p id="user-profile-lastName">{userData.lastName}</p>
               )}
             </div>
             <div className="profile-mid-body-email">
@@ -306,13 +300,11 @@ function Profile({
                     onChange={handleChange}
                   />
                   {!isEmailValid && (
-                    <p className="input-error-message">
-                      Niepoprawny adres e-mail
-                    </p>
+                    <p className="input-error-message">Invalid email address</p>
                   )}
                 </div>
               ) : (
-                <p>{userData.email}</p>
+                <p id="user-profile-email">{userData.email}</p>
               )}
             </div>
             <div className="profile-mid-body-phone">
@@ -330,22 +322,23 @@ function Profile({
                   />
                   {!isPhoneValid && (
                     <p className="input-error-message">
-                      Numer telefonu musi mieć pomiędzy 7 a 14 cyfr
+                      Phone number has to have between 7 and 14 digits
                     </p>
                   )}
                 </div>
               ) : (
-                <p>{userData.phoneNumber}</p>
+                <p id="user-profile-phoneNumber">{userData.phoneNumber}</p>
               )}
             </div>
             <div className="profile-mid-body-role">
               <p className="columnName">Role</p>
-              <p>{userData.role}</p>
+              <p id="user-profile-role">{userData.role}</p>
             </div>
           </div>
         </div>
         <div className="profile-mid">
           <button
+            id="user-profile-change-role-button"
             className={`button-bookuj button-become-owner ${
               userData.role === "Owner" && "button-remove-owner"
             } `}
