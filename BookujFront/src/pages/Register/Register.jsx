@@ -25,7 +25,7 @@ function Register() {
   }
 
   return (
-    <>
+    <div className="register-card-wrapper">
       <div className="register-card">
         <div className="register-details">
           {currentSection !== 3 && (
@@ -71,7 +71,7 @@ function Register() {
         </div>
         <div className="register-graphic" />
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,3 +1,8 @@
+.register-card-wrapper {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .register-card {
   margin: auto;
   margin-top: 4em;
@@ -50,8 +55,7 @@
 
 @media (max-width: 600px) {
   .register-card {
-    margin: 1em;
-    margin-top: 1em;
+    margin: 1rem auto;
     flex-direction: column;
   }
 
