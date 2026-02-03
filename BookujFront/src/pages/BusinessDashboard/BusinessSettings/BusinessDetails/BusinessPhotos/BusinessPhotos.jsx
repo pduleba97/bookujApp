@@ -75,7 +75,7 @@ function BusinessPhotos() {
     try {
       const croppedImageBlob = await getCroppedImg(
         currentImageFile,
-        croppedAreaPixels
+        croppedAreaPixels,
       );
 
       const form = new FormData();
@@ -318,7 +318,7 @@ function BusinessPhotos() {
               }
             />
             <button
-              className="crop-container-overlay-add-button"
+              className="button-bookuj crop-container-overlay-add-button"
               onClick={addCroppedImage}
             >
               ADD

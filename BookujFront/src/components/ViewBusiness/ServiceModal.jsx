@@ -28,7 +28,7 @@ function ServiceModal({ service, setActiveServiceId }) {
             <h3>{service.price.toFixed(2) + " zł"}</h3>
             <span>{service.durationMinutes + "min"}</span>
           </div>
-          <button>Book</button>
+          <button className="button-bookuj">Book</button>
         </div>
       </div>
     </div>

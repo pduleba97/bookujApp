@@ -81,7 +81,7 @@ function Login({ setIsLoggedIn, setUserData }) {
             </div>
 
             <p id="forgotPassword">Forgot password?</p>
-            <button id="login-submit" type="submit">
+            <button id="login-submit" className="button-bookuj" type="submit">
               Sign in
             </button>
             {isLoginFailed && (

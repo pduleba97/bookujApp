@@ -47,12 +47,18 @@
   padding: 0 4px;
 }
 
-.personal-details-form-button-wrapper {
+.register-form-button-wrapper {
   display: flex;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.personal-details-form-button-wrapper > button:first-child {
-  margin-right: 0.5em;
+.register-form-button-wrapper button {
+  flex: 1;
+}
+
+.register-form-button-wrapper button:hover {
+  background-color: #3b3d43;
 }
 
 .user-details-form-wrapper > h4 {

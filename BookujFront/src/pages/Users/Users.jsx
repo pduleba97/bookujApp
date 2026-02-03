@@ -49,7 +49,9 @@ function Users({ users, setUsers }) {
           value={newUserName}
           onChange={(e) => setNewUserName(e.target.value)}
         />
-        <button onClick={addUser}>Dodaj!</button>
+        <button className="button-bookuj" onClick={addUser}>
+          Dodaj!
+        </button>
       </div>
       <div className="card">
         <h3>Lista użytkowników:</h3>
@@ -69,7 +71,7 @@ function Users({ users, setUsers }) {
             </li>
           ))}
         </ul>
-        <button onClick={writeUsersToConsole}>
+        <button className="button-bookuj" onClick={writeUsersToConsole}>
           Wypisz do konsoli userów z fetch'a
         </button>
       </div>

@@ -1,6 +1,7 @@
 import "./UserDetailsForm.css";
 import { authFetch } from "../../api/authFetch";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function ConfirmForm({ nextSection, prevSection, user }) {
   async function handleNext(e) {
@@ -23,8 +24,15 @@ function ConfirmForm({ nextSection, prevSection, user }) {
       }
 
       nextSection();
+      toast.success("Registration successful!", {
+        position: "top-center",
+        style: { width: "60vw" },
+      });
     } catch (err) {
-      alert(err);
+      toast.error(err.message, {
+        position: "top-center",
+        style: { width: "60vw" },
+      });
     }
   }
 
@@ -66,14 +74,16 @@ function ConfirmForm({ nextSection, prevSection, user }) {
         </div>
       </div>
 
-      <form
-        className="personal-details-form-button-wrapper"
-        onSubmit={handleNext}
-      >
-        <button id="register-back" type="button" onClick={handlePrevious}>
+      <form className="register-form-button-wrapper" onSubmit={handleNext}>
+        <button
+          id="register-back"
+          className="button-bookuj"
+          type="button"
+          onClick={handlePrevious}
+        >
           Back
         </button>
-        <button id="register-submit" type="submit">
+        <button id="register-submit" className="button-bookuj" type="submit">
           Continue
         </button>
       </form>

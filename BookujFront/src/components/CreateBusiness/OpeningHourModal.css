@@ -68,7 +68,11 @@
 
 .opening-hour-modal-card-book-details {
   margin-top: 3em;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
+}
+
+.opening-hour-modal-card-book-details button {
+  width: 100%;
 }
 
 @media (max-width: 560px) {

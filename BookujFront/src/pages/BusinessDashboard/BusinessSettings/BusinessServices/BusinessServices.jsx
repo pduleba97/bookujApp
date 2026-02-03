@@ -117,7 +117,7 @@ function BusinessServices() {
         {showServiceModal && (
           <ServiceModal
             setShowServiceModal={setShowServiceModal}
-            positionClass="settings-services-modal"
+            serviceCategories={serviceCategories}
             onSave={async (newService) => {
               const response = await authFetch(
                 `/businesses/me/${businessId}/service`,
@@ -131,6 +131,7 @@ function BusinessServices() {
 
               fetchServicesByCategory(selectedCategoryId);
             }}
+            positionClass="settings-services-modal"
           />
         )}
 
@@ -328,6 +329,7 @@ function BusinessServices() {
                   <div className="dashboard-settings-services-body-services-list-addnew-modal-wrapper">
                     <div className="dashboard-settings-services-body-services-list-addnew-menu">
                       <button
+                      className="button-bookuj"
                         onClick={() => {
                           setShowServiceModal(true);
                           setShowOptionsModal(false);
@@ -336,6 +338,7 @@ function BusinessServices() {
                         New Service
                       </button>
                       <button
+                      className="button-bookuj"
                         onClick={() => {
                           setShowServiceCategoryModal(true);
                           setShowOptionsModal(false);

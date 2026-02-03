@@ -13,7 +13,6 @@ import EditServiceModal from "./EditServiceModal.jsx";
 function BusinessServicesForm({
   businessData,
   setBusinessData,
-  nextStep,
   prevStep,
   handleBusinessSubmit,
 }) {
@@ -39,7 +38,7 @@ function BusinessServicesForm({
     <form onSubmit={handleSubmit} className="form-wrapper">
       {showModal && (
         <ServiceModal
-          setShowModal={setShowModal}
+          setShowServiceModal={setShowModal}
           positionClass="register-services-modal"
           onSave={(newService) => {
             setBusinessData((prev) => ({
@@ -53,7 +52,6 @@ function BusinessServicesForm({
         <EditServiceModal
           setEditIdx={setEditIdx}
           serviceData={businessData.services[editIdx]}
-          positionClass="register-services-modal"
           onEdit={(editedService) => {
             setBusinessData((prev) => {
               const newServices = [...prev.services];
@@ -65,6 +63,7 @@ function BusinessServicesForm({
           onDelete={() => {
             handleRemoveService(editIdx);
           }}
+          positionClass="register-services-modal"
         />
       )}
       <div className="business-services-form">

@@ -73,9 +73,11 @@ const UserDetailsForm = ({ nextSection, setUser, user }) => {
             )}
           </div>
         </div>
-        <button id="register-submit" type="submit">
-          Next
-        </button>
+        <div className="register-form-button-wrapper">
+          <button id="register-submit" className="button-bookuj" type="submit">
+            Next
+          </button>
+        </div>
         <div className="already-registered-wrapper">
           <p>Already have an account?</p>
           <Link to="/login" style={{ textDecoration: "underline" }}>

@@ -117,8 +117,8 @@ function ManageBusiness() {
 
     setFilteredServices(
       businessData.services.filter((service) =>
-        service.name.toLowerCase().includes(searchFilter.toLowerCase())
-      )
+        service.name.toLowerCase().includes(searchFilter.toLowerCase()),
+      ),
     );
   }, [searchFilter]);
 
@@ -148,7 +148,7 @@ function ManageBusiness() {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // prędkość scrolla
+    const walk = (x - startX) * 2; // scroll speed
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -272,7 +272,7 @@ function ManageBusiness() {
                       <h4>{service.price.toFixed(2) + " zł"}</h4>
                       <span>{service.durationMinutes + "min"}</span>
                     </div>
-                    <button>Book</button>
+                    <button className="button-bookuj">Book</button>
                   </div>
                 </div>
                 <hr className="divider" />
@@ -286,7 +286,9 @@ function ManageBusiness() {
           {/* to implement */}
           <h3>Gift cards</h3>
           <p>Looking for the perfect present? Explore available Gift Cards.</p>
-          <button className="gift-cards-button">Show Gift Cards</button>
+          <button className="button-bookuj gift-cards-button">
+            Show Gift Cards
+          </button>
         </div>
 
         <MapContainer

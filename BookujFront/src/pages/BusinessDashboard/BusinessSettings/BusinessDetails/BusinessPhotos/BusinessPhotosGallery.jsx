@@ -22,7 +22,7 @@ function BusinessPhotosGallery({
 }) {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(
-    photoIndexForGalleryModal + 1
+    photoIndexForGalleryModal + 1,
   );
   const [showMenu, setShowMenu] = useState(false);
 
@@ -32,7 +32,7 @@ function BusinessPhotosGallery({
         `/businesses/me/${businessId}/photo?type=gallery&photoId=${
           photos[currentSlide - 1].id
         }`,
-        { method: "DELETE" }
+        { method: "DELETE" },
       );
 
       if (!response.ok) {
@@ -40,7 +40,7 @@ function BusinessPhotosGallery({
         throw new Error(error.error);
       }
       setPhotos((prev) =>
-        prev.filter((p) => p.id !== prev[currentSlide - 1]?.id)
+        prev.filter((p) => p.id !== prev[currentSlide - 1]?.id),
       );
     } catch (err) {
       console.warn(err);
@@ -105,10 +105,10 @@ function BusinessPhotosGallery({
                   }}
                 >
                   <button
+                    className="button-bookuj"
                     style={{
                       width: "100%",
                       padding: "8px",
-                      cursor: "pointer",
                       backgroundColor: "white",
                       color: "black",
                       fontSize: "16px",

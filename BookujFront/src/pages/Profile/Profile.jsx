@@ -3,6 +3,7 @@ import { authFetch } from "../../api/authFetch";
 import "./Profile.css";
 import { setAccessToken, setUser } from "../../api/sessionApi";
 import { reduceImageSize } from "../../utils/imageUtils";
+import { toast } from "react-toastify";
 
 function Profile({
   // userData, setUserData
@@ -51,13 +52,13 @@ function Profile({
 
   const isPhoneValid = /^\+?\d{7,14}$/.test(userEditFormData.phoneNumber);
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-    userEditFormData.email
+    userEditFormData.email,
   );
   const isNameValid = /^[A-Za-zÀ-ÖØ-öø-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż -]+$/.test(
-    userEditFormData.firstName
+    userEditFormData.firstName,
   );
   const isLastNameValid = /^[A-Za-zÀ-ÖØ-öø-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż -]+$/.test(
-    userEditFormData.lastName
+    userEditFormData.lastName,
   );
 
   const handleChange = (e) => {
@@ -90,7 +91,7 @@ function Profile({
           fileInput.files[0],
           240,
           240,
-          true
+          true,
         );
         formData.append("file", reducedFile);
       }
@@ -143,12 +144,12 @@ function Profile({
       setAccessToken(data.accessToken);
       setGeneralUserData((prev) => ({ ...prev, role: newRole }));
 
-      alert(`Your account status has been successfully changed to ${newRole}`);
-      //Toast here to let user know that operation succeeded? (instead of alert)
+      toast.success(
+        `Your account status has been successfully changed to ${newRole}`,
+      );
     } catch (err) {
       console.warn(err);
-      alert(err);
-      //Maybe a toast should be added here to let user know that something is not working?
+      toast.error(err.message);
     }
   }
 
@@ -193,8 +194,8 @@ function Profile({
                         avatarPreview !== null
                           ? avatarPreview
                           : avatarUrl
-                          ? avatarUrl
-                          : ""
+                            ? avatarUrl
+                            : ""
                       }
                       onError={(e) => {
                         e.currentTarget.onerror = null;
@@ -223,7 +224,7 @@ function Profile({
           >
             <h3 className="profile-mid-header-name">Personal Information</h3>
             <button
-              className="button-edit-profile"
+              className="button-bookuj button-edit-profile"
               disabled={
                 editMode &&
                 (!isPhoneValid ||
@@ -238,7 +239,7 @@ function Profile({
             </button>
             {editMode && (
               <button
-                className="button-edit-profile"
+                className="button-bookuj button-edit-profile"
                 onClick={() => handleCancelButton()}
               >
                 Cancel
@@ -344,18 +345,16 @@ function Profile({
           </div>
         </div>
         <div className="profile-mid">
-          <div className="profile-bottom-body">
-            <button
-              className={`button-become-owner ${
-                userData.role === "Owner" && "button-remove-owner"
-              } `}
-              onClick={handleToggleOwnerRole}
-            >
-              {userData.role !== "Owner"
-                ? "Change account status to business owner"
-                : "Remove business owner status"}
-            </button>
-          </div>
+          <button
+            className={`button-bookuj button-become-owner ${
+              userData.role === "Owner" && "button-remove-owner"
+            } `}
+            onClick={handleToggleOwnerRole}
+          >
+            {userData.role !== "Owner"
+              ? "Change account status to business owner"
+              : "Remove business owner status"}
+          </button>
         </div>
       </div>
     </>

@@ -3,7 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-function ServiceModal({ setShowServiceModal, positionClass, onSave }) {
+function ServiceModal({
+  setShowServiceModal,
+  serviceCategories,
+  onSave,
+  positionClass,
+}) {
   const hours = [null];
   const hoursValues = [null];
   const minutes = [null];
@@ -143,6 +148,25 @@ function ServiceModal({ setShowServiceModal, positionClass, onSave }) {
             />
             <label htmlFor="name">Service Name</label>
           </div>
+
+          {serviceCategories && (
+            <div className={`form-group has-value`}>
+              <select
+                type="text"
+                value={service.serviceCategoryId}
+                id="serviceCategoryId"
+                placeholder=""
+                onChange={handleOnChange}
+              >
+                <option value="">No Category</option>
+                {serviceCategories.map((sc) => (
+                  <option value={sc.id}>{sc.name}</option>
+                ))}
+              </select>
+              <label htmlFor="serviceCategoryId">Service Category</label>
+            </div>
+          )}
+
           <div className="service-modal-card-body-inputs">
             <div
               className={`form-group ${serviceTimeHour != null && "has-value"}`}
@@ -202,7 +226,11 @@ function ServiceModal({ setShowServiceModal, positionClass, onSave }) {
           </div>
         </div>
         <div className="service-modal-card-book-details">
-          <button type="button" onClick={handleSubmit}>
+          <button
+            className="button-bookuj"
+            type="button"
+            onClick={handleSubmit}
+          >
             Add
           </button>
         </div>
