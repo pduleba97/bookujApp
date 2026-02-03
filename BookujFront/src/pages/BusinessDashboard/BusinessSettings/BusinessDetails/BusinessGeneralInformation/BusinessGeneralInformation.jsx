@@ -110,11 +110,13 @@ function BusinessGeneralInformation() {
           />
           <h1>General Information</h1>
         </div>
-        <div className="business-settings-details-generalInformation-header-save">
-          <button disabled={!changeDetected} onClick={handleOnClick}>
-            Save
-          </button>
-        </div>
+        <button
+          disabled={!changeDetected}
+          className="button-bookuj business-settings-details-generalInformation-header-save"
+          onClick={handleOnClick}
+        >
+          Save
+        </button>
       </div>
 
       <div className="dashboard-settings-details-generalInformation-body">

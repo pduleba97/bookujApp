@@ -90,11 +90,13 @@ function BusinessOpeningHours() {
           setBusinessData={setBusinessData}
           onSave={setOpeningHour}
         />
-        <div className="business-settings-details-opening-hours-save">
-          <button disabled={!changeDetected} onClick={handleUpdateOpeningHours}>
-            Save
-          </button>
-        </div>
+        <button
+          disabled={!changeDetected}
+          className="button-bookuj business-settings-details-opening-hours-save"
+          onClick={handleUpdateOpeningHours}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

@@ -226,7 +226,11 @@ function ServiceModal({
           </div>
         </div>
         <div className="service-modal-card-book-details">
-          <button type="button" onClick={handleSubmit}>
+          <button
+            className="button-bookuj"
+            type="button"
+            onClick={handleSubmit}
+          >
             Add
           </button>
         </div>

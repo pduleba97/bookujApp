@@ -63,11 +63,17 @@ const PersonalDetailsForm = ({ nextSection, prevSection, setUser, user }) => {
             <label htmlFor="phoneNumber">Phone</label>
           </div>
         </div>
-        <div className="personal-details-form-button-wrapper">
-          <button type="button" onClick={handlePrevious}>
+        <div className="register-form-button-wrapper">
+          <button
+            type="button"
+            className="button-bookuj"
+            onClick={handlePrevious}
+          >
             Back
           </button>
-          <button type="submit">Next</button>
+          <button id="register-submit" className="button-bookuj" type="submit">
+            Next
+          </button>
         </div>
       </form>
       <div className="already-registered-wrapper">

@@ -70,7 +70,14 @@ function Login({ setIsLoggedIn, setUserData }) {
               required
             />
             <p id="forgotPassword">Forgot password?</p>
-            <button type="submit">Sign in</button>
+            <button id="login-submit" className="button-bookuj" type="submit">
+              Sign in
+            </button>
+            {isLoginFailed && (
+              <div id="login-failed">
+                <p>Incorrect login or password</p>
+              </div>
+            )}
           </form>
         </div>
       </div>

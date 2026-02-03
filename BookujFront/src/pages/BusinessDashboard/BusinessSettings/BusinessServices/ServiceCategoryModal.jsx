@@ -27,7 +27,7 @@ function ServiceCategoryModal({
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/servicecategory`,
-        { method: "POST", body: JSON.stringify(serviceCategory) }
+        { method: "POST", body: JSON.stringify(serviceCategory) },
       );
 
       const data = await response.json();
@@ -87,9 +87,12 @@ function ServiceCategoryModal({
             <label htmlFor="description">Description</label>
           </div>
         </div>
-        <div className="service-category-modal-card-button">
-          <button type="submit">Add</button>
-        </div>
+        <button
+          className="button-bookuj service-category-modal-card-button"
+          type="submit"
+        >
+          Add
+        </button>
       </form>
     </div>
   );

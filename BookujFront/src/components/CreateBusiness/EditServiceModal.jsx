@@ -6,7 +6,7 @@ import { useState } from "react";
 function EditServiceModal({
   setEditIdx,
   serviceData,
-  serviceCategories,
+  serviceCategories = null,
   onEdit,
   onDelete,
   positionClass,
@@ -244,7 +244,11 @@ function EditServiceModal({
               icon={faTrashCan}
             />
           </div>
-          <button type="button" onClick={handleSubmit}>
+          <button
+            className="button-bookuj"
+            type="button"
+            onClick={handleSubmit}
+          >
             Edit
           </button>
         </div>

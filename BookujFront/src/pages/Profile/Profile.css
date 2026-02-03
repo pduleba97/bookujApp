@@ -246,10 +246,11 @@ p {
 
 .button-become-owner {
   margin-bottom: 0;
-  cursor: pointer;
+  width: 100%;
 }
 
 .button-remove-owner {
+  width: 100%;
   background-color: rgb(211, 0, 0);
 }
 

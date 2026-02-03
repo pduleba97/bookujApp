@@ -60,7 +60,7 @@ function BusinessStaffForm({ mode }) {
     try {
       const response = await authFetch(
         `/businesses/me/${businessId}/employees/${id}`,
-        { method: "GET" }
+        { method: "GET" },
       );
 
       const data = await response.json();
@@ -101,7 +101,7 @@ function BusinessStaffForm({ mode }) {
   async function handleCroppedImage() {
     const croppedImageBlob = await getCroppedImg(
       currentImageFile,
-      croppedAreaPixels
+      croppedAreaPixels,
     );
     const croppedImageUrl = URL.createObjectURL(croppedImageBlob);
     setAvatarPreview(croppedImageUrl);
@@ -124,7 +124,7 @@ function BusinessStaffForm({ mode }) {
         {
           method: "PUT",
           body: form,
-        }
+        },
       );
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
@@ -154,7 +154,7 @@ function BusinessStaffForm({ mode }) {
         {
           method: isEdit ? "PATCH" : "POST",
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       const data = await response.json();
@@ -177,7 +177,7 @@ function BusinessStaffForm({ mode }) {
         {
           method: "PUT",
           body: JSON.stringify(servicesPayload),
-        }
+        },
       );
 
       if (!servicesResponse.ok) {
@@ -197,7 +197,7 @@ function BusinessStaffForm({ mode }) {
         `/businesses/me/${businessId}/employees/${id}`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       if (!response.ok) {
@@ -225,16 +225,21 @@ function BusinessStaffForm({ mode }) {
         </div>
         <div style={{ display: "flex", gap: "1em" }}>
           {isEdit && (
-            <div className="business-staff-form-header-delete">
-              <button type="button" onClick={handleDeleteEmployee}>
-                Delete
-              </button>
-            </div>
+            <button
+              className="button-bookuj business-staff-form-header-delete"
+              type="button"
+              onClick={handleDeleteEmployee}
+            >
+              Delete
+            </button>
           )}
 
-          <div className="business-staff-form-header-save">
-            <button type="submit">Save</button>
-          </div>
+          <button
+            className="button-bookuj business-staff-form-header-save"
+            type="submit"
+          >
+            Save
+          </button>
         </div>
       </div>
       <div className="business-staff-form-card">
@@ -420,6 +425,7 @@ function BusinessStaffForm({ mode }) {
               <p>Assign the services offered by the business to the employee</p>
               <div className="business-staff-form-services-body-empty-button-container">
                 <button
+                  className="button-bookuj"
                   type="button"
                   onClick={() => {
                     setShowAddServicesModal(true);
@@ -459,6 +465,7 @@ function BusinessStaffForm({ mode }) {
               </div>
               <div className="business-staff-form-services-body-button-container">
                 <button
+                  className="button-bookuj"
                   type="button"
                   onClick={() => {
                     setShowAddServicesModal(true);
@@ -530,7 +537,7 @@ function BusinessStaffForm({ mode }) {
             />
             <button
               type="button"
-              className="crop-container-overlay-add-button"
+              className="button-bookuj crop-container-overlay-add-button"
               onClick={handleCroppedImage}
             >
               ADD

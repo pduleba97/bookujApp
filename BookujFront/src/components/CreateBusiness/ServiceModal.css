@@ -119,8 +119,8 @@
 
 .service-modal-card > .service-modal-card-book-details,
 .service-modal-card > .edit-service-modal-card-book-details {
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
   text-align: right;
 }
 

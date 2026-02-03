@@ -329,6 +329,7 @@ function BusinessServices() {
                   <div className="dashboard-settings-services-body-services-list-addnew-modal-wrapper">
                     <div className="dashboard-settings-services-body-services-list-addnew-menu">
                       <button
+                      className="button-bookuj"
                         onClick={() => {
                           setShowServiceModal(true);
                           setShowOptionsModal(false);
@@ -337,6 +338,7 @@ function BusinessServices() {
                         New Service
                       </button>
                       <button
+                      className="button-bookuj"
                         onClick={() => {
                           setShowServiceCategoryModal(true);
                           setShowOptionsModal(false);

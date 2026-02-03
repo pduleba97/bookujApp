@@ -25,11 +25,12 @@ import BusinessPhotos from "./pages/BusinessDashboard/BusinessSettings/BusinessD
 import BusinessOpeningHours from "./pages/BusinessDashboard/BusinessSettings/BusinessDetails/BusinessOpeningHours/BusinessOpeningHours";
 import BusinessStaffManagement from "./pages/BusinessDashboard/BusinessStaffManagement/BusinessStaffManagement";
 import BusinessStaffForm from "./pages/BusinessDashboard/BusinessStaffManagement/BusinessStaff/BusinessStaffForm/BusinessStaffForm";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith(
-    "/manage-businesses/business/"
+    "/manage-businesses/business/",
   );
   const [users, setUsers] = useState([
     { id: 1, name: "Piotr" },
@@ -64,6 +65,13 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Navbar isLoggedIn={isLoggedIn} userData={userData} />
       <main className="app-content">
         <Routes>

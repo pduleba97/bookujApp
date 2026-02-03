@@ -22,7 +22,7 @@ function HandlePhotoModal({
         }`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       if (!response.ok) {
@@ -39,7 +39,7 @@ function HandlePhotoModal({
     <div className="handle-photo-modal-wrapper">
       <div className="handle-photo-modal">
         <button
-          className="button-upload"
+          className="button-bookuj button-upload"
           onClick={() => {
             openFilePicker();
             setShowModal(false);
@@ -48,7 +48,7 @@ function HandlePhotoModal({
           UPLOAD NEW IMAGE
         </button>
         <button
-          className="button-delete"
+          className="button-bookuj button-delete"
           onClick={async () => {
             await handleRemovePhoto();
             if (setSelectedPhoto) setSelectedPhoto(null);
@@ -58,7 +58,7 @@ function HandlePhotoModal({
           DELETE IMAGE
         </button>
         <button
-          className="button-cancel"
+          className="button-bookuj button-cancel"
           onClick={() => {
             setShowModal(false);
           }}

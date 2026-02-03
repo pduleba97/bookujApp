@@ -21,7 +21,7 @@ function HandleAddStaffServicesModal({
       try {
         const response = await authFetch(
           `/businesses/me/${businessId}/services`,
-          { method: "GET" }
+          { method: "GET" },
         );
 
         const data = await response.json();
@@ -30,7 +30,7 @@ function HandleAddStaffServicesModal({
         const servicesWithSelection = data.map((service) => {
           var isSelected =
             employeeServices?.some(
-              (employeeService) => employeeService.serviceId === service.id
+              (employeeService) => employeeService.serviceId === service.id,
             ) ?? false;
 
           return { ...service, selected: isSelected };
@@ -121,7 +121,7 @@ function HandleAddStaffServicesModal({
                     checked={allSelected}
                     onChange={() =>
                       setServicesList((prev) =>
-                        prev.map((s) => ({ ...s, selected: !allSelected }))
+                        prev.map((s) => ({ ...s, selected: !allSelected })),
                       )
                     }
                   />
@@ -142,8 +142,8 @@ function HandleAddStaffServicesModal({
                           prev.map((s) =>
                             s.id === service.id
                               ? { ...s, selected: !s.selected }
-                              : s
-                          )
+                              : s,
+                          ),
                         )
                       }
                     />
@@ -171,6 +171,7 @@ function HandleAddStaffServicesModal({
         <div className="handle-staff-services-modal-buttons">
           <button
             id="handle-staff-services-modal-buttons-cancel"
+            className="button-bookuj"
             type="button"
             onClick={() => {
               setShowAddServicesModal(false);
@@ -178,7 +179,11 @@ function HandleAddStaffServicesModal({
           >
             Cancel
           </button>
-          <button type="button" onClick={handleAssignServices}>
+          <button
+            className="button-bookuj"
+            type="button"
+            onClick={handleAssignServices}
+          >
             Select
           </button>
         </div>

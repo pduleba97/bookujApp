@@ -1,7 +1,7 @@
 .business-staff-form-wrapper {
   width: 60em;
   padding-left: 2rem;
-  padding-top: 2rem;
+  margin-top: 2rem;
 }
 
 .business-staff-form-header {
@@ -13,17 +13,11 @@
 
 .business-staff-form-header .business-staff-form-header-save,
 .business-staff-form-header .business-staff-form-header-delete {
-  min-width: 8em;
-  height: 3em;
+  min-width: 8rem;
+  height: 3rem;
 }
 
-.business-staff-form-header .business-staff-form-header-save button,
-.business-staff-form-header .business-staff-form-header-delete button {
-  cursor: pointer;
-  height: 100%;
-}
-
-.business-staff-form-header .business-staff-form-header-delete button {
+.business-staff-form-header .business-staff-form-header-delete {
   background-color: white;
   color: red;
   border: 1px solid #ccc;
@@ -190,7 +184,7 @@
 .business-staff-form-services-body-button-container button,
 .business-staff-form-services-body-empty-button-container button {
   height: 50px;
-  cursor: pointer;
+  width: 100%;
 }
 
 .business-staff-form-employee #description {

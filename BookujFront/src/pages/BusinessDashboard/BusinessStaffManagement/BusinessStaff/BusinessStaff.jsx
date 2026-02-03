@@ -175,7 +175,7 @@ function BusinessStaff() {
           <div className="business-staff-content-details-body">
             <div className="business-staff-content-details-body-nav">
               <button
-                className={`button-navigation ${
+                className={`button-bookuj button-navigation ${
                   selectedTab === 0 ? "active" : ""
                 }`}
                 onClick={() => {
@@ -185,7 +185,7 @@ function BusinessStaff() {
                 Services ({selectedEmployee?.employeeServices?.length ?? 0})
               </button>
               <button
-                className={`button-navigation ${
+                className={`button-bookuj button-navigation ${
                   selectedTab === 1 ? "active" : ""
                 }`}
                 onClick={() => {
