@@ -109,6 +109,7 @@ function Profile({
           if (data.data.imageUrl != null) {
             setAvatarUrl(data.data.imageUrl);
           }
+          toast.success(`Your profile was updated!`);
           console.log(data.data.imageUrl);
         }
       } catch (err) {
@@ -120,6 +121,7 @@ function Profile({
 
   const handleCancelButton = () => {
     setUserEditFormData(userData);
+    toast.info(`Your profile update was canceled.`);
     setEditMode(false);
     setAvatarPreview(null);
   };
@@ -145,7 +147,7 @@ function Profile({
       setGeneralUserData((prev) => ({ ...prev, role: newRole }));
 
       toast.success(
-        `Your account status has been successfully changed to ${newRole}`,
+        `Your account status has been successfully changed to ${newRole}.`,
       );
     } catch (err) {
       console.warn(err);
@@ -224,6 +226,7 @@ function Profile({
           >
             <h3 className="profile-mid-header-name">Personal Information</h3>
             <button
+              id="user-profile-edit-save-button"
               className="button-bookuj button-edit-profile"
               disabled={
                 editMode &&
@@ -239,6 +242,7 @@ function Profile({
             </button>
             {editMode && (
               <button
+                id="user-profile-cancel-edit-button"
                 className="button-bookuj button-edit-profile"
                 onClick={() => handleCancelButton()}
               >
@@ -249,10 +253,16 @@ function Profile({
           </div>
           <div className="profile-mid-body">
             <div className="profile-mid-body-firstName">
-              <p className="columnName">First Name</p>
+              <label
+                htmlFor="profile-edit-input-firstName"
+                className="columnName"
+              >
+                First name
+              </label>
               {editMode ? (
                 <div>
                   <input
+                    id="profile-edit-input-firstName"
                     className="profile-edit-input"
                     type="text"
                     name="firstName"
@@ -268,10 +278,16 @@ function Profile({
               )}
             </div>
             <div className="profile-mid-body-lastName">
-              <p className="columnName">Last Name</p>
+              <label
+                htmlFor="profile-edit-input-lastName"
+                className="columnName"
+              >
+                Last name
+              </label>
               {editMode ? (
                 <div>
                   <input
+                    id="profile-edit-input-lastName"
                     className="profile-edit-input"
                     type="text"
                     name="lastName"
@@ -287,10 +303,13 @@ function Profile({
               )}
             </div>
             <div className="profile-mid-body-email">
-              <p className="columnName">Email</p>
+              <label htmlFor="profile-edit-input-email" className="columnName">
+                Email
+              </label>
               {editMode ? (
                 <div>
                   <input
+                    id="profile-edit-input-email"
                     className={`profile-edit-input ${
                       !isEmailValid ? "input-error" : ""
                     }`}
@@ -308,10 +327,16 @@ function Profile({
               )}
             </div>
             <div className="profile-mid-body-phone">
-              <p className="columnName">Phone</p>
+              <label
+                htmlFor="profile-edit-input-phoneNumber"
+                className="columnName"
+              >
+                Phone
+              </label>
               {editMode ? (
                 <div>
                   <input
+                    id="profile-edit-input-phoneNumber"
                     className={`profile-edit-input ${
                       !isPhoneValid ? "input-error" : ""
                     }`}

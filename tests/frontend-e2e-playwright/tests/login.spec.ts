@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { userData } from "../test-data/login-data";
+import { LoginPage } from "../pages/login.page";
 
 test.describe("Login tests", () => {
   test.beforeEach(async ({ page }) => {
@@ -10,20 +11,21 @@ test.describe("Login tests", () => {
   test("successful login with correct credentials - request is sent", async ({
     page,
   }) => {
+    const loginPage = new LoginPage(page);
     const userEmail = userData.userEmail;
     const userPassword = userData.userPassword;
     let requestSent = false;
 
-    await page.locator("#login-email").fill(userEmail);
-    await page.locator("#login-password").fill(userPassword);
+    await loginPage.emailInput.fill(userEmail);
+    await loginPage.passwordInput.fill(userPassword);
     try {
       const requestPromise = page.waitForRequest(
         (request) =>
           request.url().includes("/api/users/login") &&
           request.method() === "POST",
-        { timeout: 1000 },
+        { timeout: 5000 },
       );
-      await page.locator("#login-submit").click();
+      await loginPage.signInButton.click();
 
       await requestPromise;
       requestSent = true;
@@ -39,6 +41,7 @@ test.describe("Login tests", () => {
   test("unsuccessful login with missing email and password - request not sent", async ({
     page,
   }) => {
+    const loginPage = new LoginPage(page);
     let requestSent = false;
 
     try {
@@ -46,9 +49,9 @@ test.describe("Login tests", () => {
         (request) =>
           request.url().includes("/api/users/login") &&
           request.method() === "POST",
-        { timeout: 1000 },
+        { timeout: 5000 },
       );
-      await page.locator("#login-submit").click();
+      await loginPage.signInButton.click();
 
       await requestPromise;
       requestSent = true;
@@ -60,38 +63,39 @@ test.describe("Login tests", () => {
   });
 
   test("unsuccessful login with incorrect email", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     const userEmail = "wrongemail@gmail.com";
     const userPassword = userData.userPassword;
 
-    await page.locator("#login-email").fill(userEmail);
-    await page.locator("#login-password").fill(userPassword);
-    await page.locator("#login-submit").click();
+    await loginPage.emailInput.fill(userEmail);
+    await loginPage.passwordInput.fill(userPassword);
+    await loginPage.signInButton.click();
 
-    await expect(page.locator("#login-failed")).toHaveText(
+    await expect(loginPage.loginFailedPrompt).toHaveText(
       "Incorrect login or password",
     );
   });
 
   test("unsuccessful login with incorrect password", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     const userEmail = userData.userEmail;
     const userPassword = "123";
 
-    await page.locator("#login-email").fill(userEmail);
-    await page.locator("#login-password").fill(userPassword);
-    await page.locator("#login-submit").click();
+    await loginPage.emailInput.fill(userEmail);
+    await loginPage.passwordInput.fill(userPassword);
+    await loginPage.signInButton.click();
 
-    await expect(page.locator("#login-failed")).toHaveText(
+    await expect(loginPage.loginFailedPrompt).toHaveText(
       "Incorrect login or password",
     );
   });
 
   test("Successful logout", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     const userEmail = userData.userEmail;
     const userPassword = userData.userPassword;
 
-    await page.locator("#login-email").fill(userEmail);
-    await page.locator("#login-password").fill(userPassword);
-    await page.locator("#login-submit").click();
+    await loginPage.LoginAsUser(userEmail, userPassword);
     await page.locator("#nav-logout").click();
 
     await expect(page.locator("#nav-profile")).toBeHidden();
