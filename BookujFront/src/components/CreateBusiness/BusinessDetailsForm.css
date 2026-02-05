@@ -1,4 +1,8 @@
 .create-business-wrapper {
+  padding: 2rem 1rem;
+}
+
+.create-business-card {
   margin: auto;
   padding: 2em;
   max-width: 28em;

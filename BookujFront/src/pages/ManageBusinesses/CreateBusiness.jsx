@@ -167,16 +167,18 @@ function CreateBusiness() {
 
   return (
     <div className="create-business-wrapper">
-      <StepComponent
-        currentStep={currentStep}
-        businessData={businessData}
-        setBusinessData={setBusinessData}
-        nextStep={nextStep}
-        prevStep={prevStep}
-        businessPicture={businessPicture}
-        setBusinessPicture={setBusinessPicture}
-        handleBusinessSubmit={handleBusinessSubmit} //test
-      />
+      <div className="create-business-card">
+        <StepComponent
+          currentStep={currentStep}
+          businessData={businessData}
+          setBusinessData={setBusinessData}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          businessPicture={businessPicture}
+          setBusinessPicture={setBusinessPicture}
+          handleBusinessSubmit={handleBusinessSubmit} //test
+        />
+      </div>
     </div>
   );
 }

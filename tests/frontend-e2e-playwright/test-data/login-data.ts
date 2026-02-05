@@ -6,3 +6,12 @@ export const userData = {
   userPhoneNumber: "300400500",
   userRole: "Client",
 };
+
+export const userOwnerData = {
+  userEmail: "owner@test.com",
+  userPassword: "123456",
+  userFirstName: "Owner",
+  userLastName: "Account",
+  userPhoneNumber: "300400500",
+  userRole: "Owner",
+};

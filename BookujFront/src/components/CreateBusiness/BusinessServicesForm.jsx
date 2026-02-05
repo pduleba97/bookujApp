@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./BusinessDetailsForm.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -118,6 +118,7 @@ function BusinessServicesForm({
             </div>
           ))}
         <div
+          id="business-services-form-add-button"
           className="business-services-form-button"
           onClick={() => {
             setShowModal(true);
@@ -129,13 +130,17 @@ function BusinessServicesForm({
       </div>
 
       <div className="form-buttons">
-        <button type="submit" className="manage-business-button" id="save">
-          Next
+        <button
+          type="submit"
+          id="business-form-create"
+          className="manage-business-button"
+        >
+          Create Business
         </button>
         <button
           type="button"
+          id="business-form-back"
           className="manage-business-button-white"
-          id="back"
           onClick={prevStep}
         >
           Back

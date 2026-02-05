@@ -131,6 +131,7 @@ function EditServiceModal({
           <div className="service-modal-card-header">
             <FontAwesomeIcon
               icon={faArrowLeft}
+              id="edit-service-modal-close"
               className="service-modal-card-header-close"
               onClick={() => {
                 setEditIdx(null);
@@ -148,11 +149,12 @@ function EditServiceModal({
             <input
               type="text"
               value={service.name}
-              id="name"
+              id="edit-service-name"
+              name="name"
               placeholder=""
               onChange={handleOnChange}
             />
-            <label htmlFor="Name">Service Name</label>
+            <label htmlFor="edit-service-name">Service Name</label>
           </div>
 
           {serviceCategories && (
@@ -160,7 +162,8 @@ function EditServiceModal({
               <select
                 type="text"
                 value={service.serviceCategoryId}
-                id="serviceCategoryId"
+                id="edit-service-category-id"
+                name="serviceCategoryId"
                 placeholder=""
                 onChange={handleOnChange}
               >
@@ -169,7 +172,7 @@ function EditServiceModal({
                   <option value={sc.id}>{sc.name}</option>
                 ))}
               </select>
-              <label htmlFor="serviceCategoryId">Service Category</label>
+              <label htmlFor="edit-service-category-id">Service Category</label>
             </div>
           )}
 
@@ -178,7 +181,8 @@ function EditServiceModal({
               className={`form-group ${serviceTimeHour != null && "has-value"}`}
             >
               <select
-                id="hours"
+                id="edit-service-hours"
+                name="hours"
                 value={serviceTimeHour ?? ""}
                 onChange={(e) => setServiceTimeHour(Number(e.target.value))}
               >
@@ -188,7 +192,7 @@ function EditServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="hours">Hour(s)</label>
+              <label htmlFor="edit-service-hours">Hour(s)</label>
             </div>
             <div
               className={`form-group ${
@@ -196,7 +200,8 @@ function EditServiceModal({
               }`}
             >
               <select
-                id="minutes"
+                id="edit-service-minutes"
+                name="minutes"
                 value={serviceTimeMinute ?? ""}
                 onChange={(e) => setServiceTimeMinute(Number(e.target.value))}
               >
@@ -206,28 +211,29 @@ function EditServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="minutes">Minutes</label>
+              <label htmlFor="edit-service-minutes">Minutes</label>
             </div>
             <div className="form-group">
               <input
                 type="text"
-                id="price"
+                id="edit-service-price"
+                name="price"
                 placeholder=""
                 value={service.price}
                 onChange={handleOnChange}
                 onBlur={handlePriceOnBlur}
               />
-              <label htmlFor="price">Price</label>
+              <label htmlFor="edit-service-price">Price</label>
             </div>
             <div className="form-group full-width">
               <textarea
-                id="description"
+                id="edit-service-description"
                 name="description"
                 placeholder=""
                 value={service.description || ""}
                 onChange={handleOnChange}
               />
-              <label htmlFor="description">Description</label>
+              <label htmlFor="edit-service-description">Description</label>
             </div>
           </div>
         </div>
@@ -245,6 +251,7 @@ function EditServiceModal({
             />
           </div>
           <button
+            id="edit-service-modal-edit"
             className="button-bookuj"
             type="button"
             onClick={handleSubmit}

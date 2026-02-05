@@ -71,7 +71,11 @@ function ManageBusinesses() {
       <div className="manage-business-top">
         <h2>Your Businesses</h2>
 
-        <Link to="/manage-businesses/add" className="manage-business-button">
+        <Link
+          to="/manage-businesses/add"
+          id="manage-businesses-add-button"
+          className="manage-business-button"
+        >
           <div className="add-icon" />
           <p>Add business</p>
         </Link>
@@ -141,14 +145,17 @@ function ManageBusinesses() {
             {businessesFilteredList.map((business) => {
               return (
                 <tr key={business.id}>
-                  <td>{business.name}</td>
-                  <td>{business.category}</td>
-                  <td>{business.city}</td>
-                  <td>{business.address}</td>
-                  <td>{business.isActive ? <p>✅</p> : <p>❌</p>}</td>
-                  <td className="manage-business-actions">
+                  <td id="business-name">{business.name}</td>
+                  <td id="business-category">{business.category}</td>
+                  <td id="business-city">{business.city}</td>
+                  <td id="business-address">{business.address}</td>
+                  <td id="business-status">
+                    {business.isActive ? <p>✅</p> : <p>❌</p>}
+                  </td>
+                  <td id="business-actions" className="manage-business-actions">
                     <Link
                       to={`/manage-businesses/business/${business.id}`}
+                      id="business-enter"
                       className="manage-business-action"
                     >
                       <FontAwesomeIcon
@@ -158,6 +165,7 @@ function ManageBusinesses() {
                       <span>Enter Business</span>
                     </Link>
                     <Link
+                      id="business-preview"
                       to={`/manage-businesses/preview/${business.id}`}
                       className="manage-business-action"
                     >
@@ -169,6 +177,7 @@ function ManageBusinesses() {
                     </Link>
 
                     <div
+                      id="business-delete"
                       className="manage-business-action"
                       onClick={() => {
                         handleDeleteBusiness(business.id);

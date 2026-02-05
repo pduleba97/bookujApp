@@ -61,6 +61,7 @@ function BusinessOpeningHoursForm({
                 onClick={(e) => e.stopPropagation()}
               >
                 <Switch
+                  id={`opening-hours-switch-${weekDays[idx]}`}
                   checked={openingHour.isOpen}
                   onChange={() => {
                     setBusinessData((prev) => {
@@ -77,6 +78,7 @@ function BusinessOpeningHoursForm({
               </div>
 
               <div
+                id={`opening-hours-clickable-${weekDays[idx]}`}
                 className="opening-hours-group-clickable"
                 onClick={() => {
                   if (openingHour.isOpen) setActiveOpeningHourId(idx);
@@ -116,13 +118,17 @@ function BusinessOpeningHoursForm({
 
       {businessData.id == null && (
         <div className="form-buttons">
-          <button type="submit" className="manage-business-button" id="save">
+          <button
+            type="submit"
+            id="business-form-next"
+            className="manage-business-button"
+          >
             Next
           </button>
           <button
             type="button"
+            id="business-form-back"
             className="manage-business-button-white"
-            id="back"
             onClick={prevStep}
           >
             Back
