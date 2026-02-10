@@ -145,17 +145,28 @@ function ManageBusinesses() {
             {businessesFilteredList.map((business) => {
               return (
                 <tr key={business.id}>
-                  <td id="business-name">{business.name}</td>
-                  <td id="business-category">{business.category}</td>
-                  <td id="business-city">{business.city}</td>
-                  <td id="business-address">{business.address}</td>
-                  <td id="business-status">
+                  <td id="manage-businesses-table-business-name">
+                    {business.name}
+                  </td>
+                  <td id="manage-businesses-table-business-category">
+                    {business.category}
+                  </td>
+                  <td id="manage-businesses-table-business-city">
+                    {business.city}
+                  </td>
+                  <td id="manage-businesses-table-business-address">
+                    {business.address}
+                  </td>
+                  <td id="manage-businesses-table-business-status">
                     {business.isActive ? <p>✅</p> : <p>❌</p>}
                   </td>
-                  <td id="business-actions" className="manage-business-actions">
+                  <td
+                    id="manage-businesses-table-business-actions"
+                    className="manage-business-actions"
+                  >
                     <Link
                       to={`/manage-businesses/business/${business.id}`}
-                      id="business-enter"
+                      id="manage-businesses-table-business-enter"
                       className="manage-business-action"
                     >
                       <FontAwesomeIcon
@@ -165,7 +176,7 @@ function ManageBusinesses() {
                       <span>Enter Business</span>
                     </Link>
                     <Link
-                      id="business-preview"
+                      id="manage-businesses-table-business-preview"
                       to={`/manage-businesses/preview/${business.id}`}
                       className="manage-business-action"
                     >
@@ -177,7 +188,7 @@ function ManageBusinesses() {
                     </Link>
 
                     <div
-                      id="business-delete"
+                      id="manage-businesses-table-business-delete"
                       className="manage-business-action"
                       onClick={() => {
                         handleDeleteBusiness(business.id);

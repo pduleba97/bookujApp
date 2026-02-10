@@ -16,9 +16,9 @@ function BusinessDetailsForm({ businessData, setBusinessData, nextStep }) {
   }
 
   return (
-    <form onSubmit={handleBusinessDetailsFromSubmit}>
+    <form id="business-details-form" onSubmit={handleBusinessDetailsFromSubmit}>
       <div className="form-wrapper">
-        <h1>About You</h1>
+        <h1 id="create-business-header">About You</h1>
         <p>Tell us more about your business.</p>
 
         <div className="input-details">

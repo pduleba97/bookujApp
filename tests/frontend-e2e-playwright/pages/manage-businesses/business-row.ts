@@ -11,13 +11,23 @@ export class BusinessRow {
   removeButton: Locator;
 
   constructor(private row: Locator) {
-    this.name = this.row.locator("#business-name");
-    this.category = this.row.locator("#business-category");
-    this.city = this.row.locator("#business-city");
-    this.address = this.row.locator("#business-address");
-    this.status = this.row.locator("#business-status");
-    this.enterButton = this.row.locator("#business-enter");
-    this.previewButton = this.row.locator("#business-preview");
-    this.removeButton = this.row.locator("#business-delete");
+    this.name = this.row.locator("#manage-businesses-table-business-name");
+    this.category = this.row.locator(
+      "#manage-businesses-table-business-category",
+    );
+    this.city = this.row.locator("#manage-businesses-table-business-city");
+    this.address = this.row.locator(
+      "#manage-businesses-table-business-address",
+    );
+    this.status = this.row.locator("#manage-businesses-table-business-status");
+    this.enterButton = this.row.locator(
+      "#manage-businesses-table-business-enter",
+    );
+    this.previewButton = this.row.locator(
+      "#manage-businesses-table-business-preview",
+    );
+    this.removeButton = this.row.locator(
+      "#manage-businesses-table-business-delete",
+    );
   }
 }

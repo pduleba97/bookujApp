@@ -94,17 +94,12 @@
 
 .form-group.full-width {
   grid-column: 1 / -1;
-  margin-bottom: 1em;
 }
 
 .service-modal-card-body-inputs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1em;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1; /* zajmuje całą szerokość gridu */
 }
 
 .service-modal-card

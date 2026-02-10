@@ -23,9 +23,12 @@ function BusinessDescriptionForm({
   }
 
   return (
-    <form onSubmit={handleBusinessDetailsFromSubmit}>
+    <form
+      id="business-description-form"
+      onSubmit={handleBusinessDetailsFromSubmit}
+    >
       <div className="form-wrapper">
-        <h1>Describe Your Business</h1>
+        <h1 id="create-business-header">Describe Your Business</h1>
         <p>Provide optional Business Photo and detailed description.</p>
         <div className="add-image">
           <input

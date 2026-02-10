@@ -19,8 +19,12 @@ function BusinessAddressForm({
   }
 
   return (
-    <form onSubmit={handleBusinessSubmit} className="form-wrapper">
-      <h1>Confirm Your Address</h1>
+    <form
+      id="business-address-form"
+      onSubmit={handleBusinessSubmit}
+      className="form-wrapper"
+    >
+      <h1 id="create-business-header">Confirm Your Address</h1>
       <p>Where can clients find you?</p>
       <div className="input-details">
         <div className="form-group" id="form-group-address">

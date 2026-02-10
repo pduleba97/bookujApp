@@ -2,6 +2,7 @@ import "./OpeningHourModal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function OpeningHourModal({
   openingHour,
@@ -29,7 +30,7 @@ function OpeningHourModal({
     e.preventDefault();
 
     if (openHour > closeHour) {
-      alert("Opening time must be earlier than closing time!");
+      toast.error("Opening time must be earlier than closing time!");
       return;
     }
     const newOpeningHour = {
@@ -71,7 +72,7 @@ function OpeningHourModal({
                 setActiveOpeningHourId(null);
               }}
             />
-            <h1>{weekDays[idx]}</h1>
+            <h1 id="opening-hour-modal-header">{weekDays[idx]}</h1>
           </div>
 
           <p>

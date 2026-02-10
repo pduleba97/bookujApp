@@ -2,6 +2,7 @@ import "./ServiceModal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function ServiceModal({
   setShowServiceModal,
@@ -62,8 +63,8 @@ function ServiceModal({
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (service.name.length < 3 || service.name == null) {
-      alert("A valid Service Name is required.");
+    if (service.name == null || service.name.length < 3) {
+      toast.error("A valid Service Name is required.");
       return;
     }
 
@@ -84,7 +85,7 @@ function ServiceModal({
       (serviceTimeHour == 0 || serviceTimeHour == null) &&
       (serviceTimeMinute == 0 || serviceTimeMinute == null)
     ) {
-      alert("Service cannot last 0 minutes!");
+      toast.error("Service cannot last 0 minutes!");
       return;
     }
 
@@ -93,7 +94,7 @@ function ServiceModal({
       service.price == "0.00" ||
       service.price == ""
     ) {
-      alert("Price cannot be set to 0.");
+      toast.error("Price cannot be set to 0.");
       return;
     }
 
@@ -130,7 +131,7 @@ function ServiceModal({
                 setShowServiceModal(false);
               }}
             />
-            <h1>Add Service</h1>
+            <h1 id="service-modal-header">Add Service</h1>
           </div>
 
           <p>
@@ -143,12 +144,12 @@ function ServiceModal({
             <input
               type="text"
               value={service.name}
-              id="service-name"
+              id="service-name-input"
               name="name"
               placeholder=""
               onChange={handleOnChange}
             />
-            <label htmlFor="service-name">Service Name</label>
+            <label htmlFor="service-name-input">Service Name</label>
           </div>
 
           {serviceCategories && (
@@ -175,7 +176,7 @@ function ServiceModal({
               className={`form-group ${serviceTimeHour != null && "has-value"}`}
             >
               <select
-                id="service-hours"
+                id="service-hours-input"
                 name="hours"
                 value={serviceTimeHour ?? ""}
                 onChange={(e) => setServiceTimeHour(Number(e.target.value))}
@@ -194,7 +195,7 @@ function ServiceModal({
               }`}
             >
               <select
-                id="service-minutes"
+                id="service-minutes-input"
                 name="minutes"
                 value={serviceTimeMinute ?? ""}
                 onChange={(e) => setServiceTimeMinute(Number(e.target.value))}
@@ -210,7 +211,7 @@ function ServiceModal({
             <div className="form-group">
               <input
                 type="text"
-                id="service-price"
+                id="service-price-input"
                 name="price"
                 placeholder=""
                 value={service.price}
@@ -221,7 +222,7 @@ function ServiceModal({
             </div>
             <div className="form-group full-width">
               <textarea
-                id="service-description"
+                id="service-description-input"
                 name="description"
                 placeholder=""
                 value={service.description}
