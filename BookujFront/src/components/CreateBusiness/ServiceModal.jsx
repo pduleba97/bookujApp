@@ -2,6 +2,7 @@ import "./ServiceModal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function ServiceModal({
   setShowServiceModal,
@@ -40,7 +41,7 @@ function ServiceModal({
     setService((prev) => {
       return {
         ...prev,
-        [e.target.id]: e.target.value,
+        [e.target.name]: e.target.value,
       };
     });
   }
@@ -54,7 +55,7 @@ function ServiceModal({
       }
       return {
         ...prev,
-        [e.target.id]: value.toFixed(2),
+        [e.target.name]: value.toFixed(2),
       };
     });
   }
@@ -62,8 +63,8 @@ function ServiceModal({
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (service.name.length < 3 || service.name == null) {
-      alert("A valid Service Name is required.");
+    if (service.name == null || service.name.length < 3) {
+      toast.error("A valid Service Name is required.");
       return;
     }
 
@@ -84,7 +85,7 @@ function ServiceModal({
       (serviceTimeHour == 0 || serviceTimeHour == null) &&
       (serviceTimeMinute == 0 || serviceTimeMinute == null)
     ) {
-      alert("Service cannot last 0 minutes!");
+      toast.error("Service cannot last 0 minutes!");
       return;
     }
 
@@ -93,7 +94,7 @@ function ServiceModal({
       service.price == "0.00" ||
       service.price == ""
     ) {
-      alert("Price cannot be set to 0.");
+      toast.error("Price cannot be set to 0.");
       return;
     }
 
@@ -123,13 +124,14 @@ function ServiceModal({
         <div className="service-modal-card-description">
           <div className="service-modal-card-header">
             <FontAwesomeIcon
-              icon={faArrowLeft}
+              id="service-modal-close"
               className="service-modal-card-header-close"
+              icon={faArrowLeft}
               onClick={() => {
                 setShowServiceModal(false);
               }}
             />
-            <h1>Add Service</h1>
+            <h1 id="service-modal-header">Add Service</h1>
           </div>
 
           <p>
@@ -142,11 +144,12 @@ function ServiceModal({
             <input
               type="text"
               value={service.name}
-              id="name"
+              id="service-name-input"
+              name="name"
               placeholder=""
               onChange={handleOnChange}
             />
-            <label htmlFor="name">Service Name</label>
+            <label htmlFor="service-name-input">Service Name</label>
           </div>
 
           {serviceCategories && (
@@ -154,7 +157,8 @@ function ServiceModal({
               <select
                 type="text"
                 value={service.serviceCategoryId}
-                id="serviceCategoryId"
+                id="service-category-id"
+                name="serviceCategoryId"
                 placeholder=""
                 onChange={handleOnChange}
               >
@@ -163,7 +167,7 @@ function ServiceModal({
                   <option value={sc.id}>{sc.name}</option>
                 ))}
               </select>
-              <label htmlFor="serviceCategoryId">Service Category</label>
+              <label htmlFor="service-category-id">Service Category</label>
             </div>
           )}
 
@@ -172,7 +176,8 @@ function ServiceModal({
               className={`form-group ${serviceTimeHour != null && "has-value"}`}
             >
               <select
-                id="hours"
+                id="service-hours-input"
+                name="hours"
                 value={serviceTimeHour ?? ""}
                 onChange={(e) => setServiceTimeHour(Number(e.target.value))}
               >
@@ -182,7 +187,7 @@ function ServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="hours">Hour(s)</label>
+              <label htmlFor="service-hours">Hour(s)</label>
             </div>
             <div
               className={`form-group ${
@@ -190,7 +195,8 @@ function ServiceModal({
               }`}
             >
               <select
-                id="minutes"
+                id="service-minutes-input"
+                name="minutes"
                 value={serviceTimeMinute ?? ""}
                 onChange={(e) => setServiceTimeMinute(Number(e.target.value))}
               >
@@ -200,33 +206,35 @@ function ServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="minutes">Minutes</label>
+              <label htmlFor="service-minutes">Minutes</label>
             </div>
             <div className="form-group">
               <input
                 type="text"
-                id="price"
+                id="service-price-input"
+                name="price"
                 placeholder=""
                 value={service.price}
                 onChange={handleOnChange}
                 onBlur={handlePriceOnBlur}
               />
-              <label htmlFor="price">Price</label>
+              <label htmlFor="service-price">Price</label>
             </div>
             <div className="form-group full-width">
               <textarea
-                id="description"
+                id="service-description-input"
                 name="description"
                 placeholder=""
                 value={service.description}
                 onChange={handleOnChange}
               />
-              <label htmlFor="description">Description</label>
+              <label htmlFor="service-description">Description</label>
             </div>
           </div>
         </div>
         <div className="service-modal-card-book-details">
           <button
+            id="service-modal-add"
             className="button-bookuj"
             type="button"
             onClick={handleSubmit}

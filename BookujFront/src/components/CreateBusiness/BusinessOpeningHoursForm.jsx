@@ -36,7 +36,7 @@ function BusinessOpeningHoursForm({
         className="opening-hours-form-wrapper-icon-clock"
       />
       {!businessData.openingHours[0].id ? (
-        <h1>Your Business Hours</h1>
+        <h1 id="create-business-header">Your Business Hours</h1>
       ) : (
         <h1>Adjust opening hours</h1>
       )}
@@ -61,6 +61,7 @@ function BusinessOpeningHoursForm({
                 onClick={(e) => e.stopPropagation()}
               >
                 <Switch
+                  name={`opening-hours-switch-${weekDays[idx]}`}
                   checked={openingHour.isOpen}
                   onChange={() => {
                     setBusinessData((prev) => {
@@ -77,6 +78,7 @@ function BusinessOpeningHoursForm({
               </div>
 
               <div
+                id={`opening-hours-clickable-${weekDays[idx]}`}
                 className="opening-hours-group-clickable"
                 onClick={() => {
                   if (openingHour.isOpen) setActiveOpeningHourId(idx);
@@ -95,15 +97,14 @@ function BusinessOpeningHoursForm({
                     </div>
                   )}
                 </div>
-
-                <div className="opening-hours-group-hours-chevron">
-                  {openingHour.isOpen && (
+                {openingHour.isOpen && (
+                  <div className="opening-hours-group-hours-chevron">
                     <FontAwesomeIcon
                       className="faChevronRight"
                       icon={faChevronRight}
                     />
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -116,13 +117,17 @@ function BusinessOpeningHoursForm({
 
       {businessData.id == null && (
         <div className="form-buttons">
-          <button type="submit" className="manage-business-button" id="save">
+          <button
+            type="submit"
+            id="business-form-next"
+            className="manage-business-button"
+          >
             Next
           </button>
           <button
             type="button"
+            id="business-form-back"
             className="manage-business-button-white"
-            id="back"
             onClick={prevStep}
           >
             Back

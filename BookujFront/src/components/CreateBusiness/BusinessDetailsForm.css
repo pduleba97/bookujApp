@@ -1,4 +1,8 @@
 .create-business-wrapper {
+  padding: 2rem 1rem;
+}
+
+.create-business-card {
   margin: auto;
   padding: 2em;
   max-width: 28em;
@@ -201,10 +205,7 @@
 
 .business-services-form .divider {
   opacity: 20%;
-}
-
-.business-services-form-header {
-  margin-bottom: 2em;
+  margin-top: 2em;
 }
 
 .business-services-form-button {
@@ -228,6 +229,7 @@
   padding-bottom: 0.5em;
   display: flex;
   justify-content: flex-start;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
 .service-name-duration-name-price {

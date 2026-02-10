@@ -3,7 +3,7 @@ import { userData } from "../test-data/login-data";
 import { ProfilePage } from "../pages/profile.page";
 import { LoginPage } from "../pages/login.page";
 
-test.describe("User profile tests", () => {
+test.describe.serial("User profile tests", () => {
   test.beforeEach(async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.LoginAsUser(userData.userEmail, userData.userPassword);
@@ -127,13 +127,13 @@ test.describe("User profile tests", () => {
     const toastOwner = `Your account status has been successfully changed to ${ownerUserRole}`;
 
     await profilePage.changeRoleButton.click();
-
     await expect(profilePage.userRole).toHaveText(ownerUserRole);
+    await expect(page.locator("#nav-manage-businesses")).toBeVisible();
     await profilePage.expectSuccessToast(toastOwner);
 
     await profilePage.changeRoleButton.click();
-
     await expect(profilePage.userRole).toHaveText(userData.userRole);
+    await expect(page.locator("#nav-manage-businesses")).toBeHidden();
     await profilePage.expectSuccessToast(toastClient);
   });
 });

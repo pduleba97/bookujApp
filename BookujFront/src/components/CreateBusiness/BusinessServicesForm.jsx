@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./BusinessDetailsForm.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -68,56 +68,62 @@ function BusinessServicesForm({
       )}
       <div className="business-services-form">
         <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faStore} />
-        {businessData.services.length == 0 ? (
-          <div className="business-services-form-header">
-            <h1>No services added yet</h1>
+        <div className="business-services-form-header">
+          <h1 id="create-business-header">
+            {businessData.services.length == 0
+              ? "No services added yet"
+              : "Your services"}
+          </h1>
+          {businessData.services.length == 0 && (
             <p>
               Add at least one service now. Later you can add more, edit
               details, and group services into categories.
             </p>
-          </div>
-        ) : (
-          <div className="business-services-form-header">
-            <h1>Your services</h1>
-          </div>
-        )}
+          )}
+        </div>
         {businessData.services.length > 0 && <hr className="divider" />}
         {businessData.services &&
           businessData.services.map((service, idx) => (
-            <div key={idx}>
-              <div className="service-group">
-                <div className="service-delete">
+            <div
+              key={idx}
+              data-testid={`service-${idx}`}
+              className="service-group"
+            >
+              <div className="service-delete">
+                <FontAwesomeIcon
+                  id="service-remove"
+                  className="service-remove"
+                  icon={faTrashCan}
+                  onClick={() => {
+                    handleRemoveService(idx);
+                  }}
+                />
+              </div>
+              <div
+                className="service-name-duration-name-price"
+                onClick={() => {
+                  setEditIdx(idx);
+                }}
+              >
+                <div className="service-name-duration-name">
+                  <div id="service-name">{service.name}</div>
+                  <p id="service-duration">{service.durationMinutes + "min"}</p>
+                </div>
+                <div className="service-price">
+                  <div id="service-price">
+                    {service.price.toFixed(2) + " zł"}
+                  </div>
                   <FontAwesomeIcon
-                    className="service-remove"
-                    icon={faTrashCan}
-                    onClick={() => {
-                      handleRemoveService(idx);
-                    }}
+                    id="service-chevron"
+                    icon={faChevronRight}
+                    style={{ fontSize: "20px" }}
                   />
                 </div>
-                <div
-                  className="service-name-duration-name-price"
-                  onClick={() => {
-                    setEditIdx(idx);
-                  }}
-                >
-                  <div className="service-name-duration-name">
-                    <div>{service.name}</div>
-                    <p>{service.durationMinutes + "min"}</p>
-                  </div>
-                  <div className="service-price">
-                    <div>{service.price.toFixed(2) + " zł"}</div>
-                    <FontAwesomeIcon
-                      icon={faChevronRight}
-                      style={{ fontSize: "20px" }}
-                    />
-                  </div>
-                </div>
               </div>
-              <hr className="divider" />
             </div>
           ))}
         <div
+          id="business-services-form-add-button"
           className="business-services-form-button"
           onClick={() => {
             setShowModal(true);
@@ -129,13 +135,17 @@ function BusinessServicesForm({
       </div>
 
       <div className="form-buttons">
-        <button type="submit" className="manage-business-button" id="save">
-          Next
+        <button
+          type="submit"
+          id="business-form-create"
+          className="manage-business-button"
+        >
+          Create Business
         </button>
         <button
           type="button"
+          id="business-form-back"
           className="manage-business-button-white"
-          id="back"
           onClick={prevStep}
         >
           Back

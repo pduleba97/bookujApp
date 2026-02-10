@@ -2,6 +2,7 @@ import "./ServiceModal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function EditServiceModal({
   setEditIdx,
@@ -47,7 +48,7 @@ function EditServiceModal({
     setService((prev) => {
       return {
         ...prev,
-        [e.target.id]: e.target.value === "" ? null : e.target.value,
+        [e.target.name]: e.target.value === "" ? null : e.target.value,
       };
     });
   }
@@ -61,7 +62,7 @@ function EditServiceModal({
       }
       return {
         ...prev,
-        [e.target.id]: value.toFixed(2),
+        [e.target.name]: value.toFixed(2),
       };
     });
   }
@@ -69,8 +70,8 @@ function EditServiceModal({
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (service.name.length < 3 || service.name == null) {
-      alert("A valid Service Name is required.");
+    if (service.name == null || service.name.length < 3) {
+      toast.error("A valid Service Name is required.");
       return;
     }
 
@@ -91,7 +92,7 @@ function EditServiceModal({
       (serviceTimeHour == 0 || serviceTimeHour == null) &&
       (serviceTimeMinute == 0 || serviceTimeMinute == null)
     ) {
-      alert("Service cannot last 0 minutes!");
+      toast.error("Service cannot last 0 minutes!");
       return;
     }
 
@@ -100,7 +101,7 @@ function EditServiceModal({
       service.price == "0.00" ||
       service.price == ""
     ) {
-      alert("Price cannot be set to 0.");
+      toast.error("Price cannot be set to 0.");
       return;
     }
 
@@ -131,12 +132,13 @@ function EditServiceModal({
           <div className="service-modal-card-header">
             <FontAwesomeIcon
               icon={faArrowLeft}
+              id="edit-service-modal-close"
               className="service-modal-card-header-close"
               onClick={() => {
                 setEditIdx(null);
               }}
             />
-            <h1>Edit Service</h1>
+            <h1 id="edit-service-modal-header">Edit Service</h1>
           </div>
           <p>
             Add the basic information for this service now. Description is
@@ -148,11 +150,12 @@ function EditServiceModal({
             <input
               type="text"
               value={service.name}
-              id="name"
+              id="edit-service-name-input"
+              name="name"
               placeholder=""
               onChange={handleOnChange}
             />
-            <label htmlFor="Name">Service Name</label>
+            <label htmlFor="edit-service-name-input">Service Name</label>
           </div>
 
           {serviceCategories && (
@@ -160,7 +163,8 @@ function EditServiceModal({
               <select
                 type="text"
                 value={service.serviceCategoryId}
-                id="serviceCategoryId"
+                id="edit-service-category-id-input"
+                name="serviceCategoryId"
                 placeholder=""
                 onChange={handleOnChange}
               >
@@ -169,7 +173,9 @@ function EditServiceModal({
                   <option value={sc.id}>{sc.name}</option>
                 ))}
               </select>
-              <label htmlFor="serviceCategoryId">Service Category</label>
+              <label htmlFor="edit-service-category-id-input">
+                Service Category
+              </label>
             </div>
           )}
 
@@ -178,7 +184,8 @@ function EditServiceModal({
               className={`form-group ${serviceTimeHour != null && "has-value"}`}
             >
               <select
-                id="hours"
+                id="edit-service-hours-input"
+                name="hours"
                 value={serviceTimeHour ?? ""}
                 onChange={(e) => setServiceTimeHour(Number(e.target.value))}
               >
@@ -188,7 +195,7 @@ function EditServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="hours">Hour(s)</label>
+              <label htmlFor="edit-service-hours-input">Hour(s)</label>
             </div>
             <div
               className={`form-group ${
@@ -196,7 +203,8 @@ function EditServiceModal({
               }`}
             >
               <select
-                id="minutes"
+                id="edit-service-minutes-input"
+                name="minutes"
                 value={serviceTimeMinute ?? ""}
                 onChange={(e) => setServiceTimeMinute(Number(e.target.value))}
               >
@@ -206,33 +214,37 @@ function EditServiceModal({
                   </option>
                 ))}
               </select>
-              <label htmlFor="minutes">Minutes</label>
+              <label htmlFor="edit-service-minutes-input">Minutes</label>
             </div>
             <div className="form-group">
               <input
                 type="text"
-                id="price"
+                id="edit-service-price-input"
+                name="price"
                 placeholder=""
                 value={service.price}
                 onChange={handleOnChange}
                 onBlur={handlePriceOnBlur}
               />
-              <label htmlFor="price">Price</label>
+              <label htmlFor="edit-service-price-input">Price</label>
             </div>
             <div className="form-group full-width">
               <textarea
-                id="description"
+                id="edit-service-description-input"
                 name="description"
                 placeholder=""
                 value={service.description || ""}
                 onChange={handleOnChange}
               />
-              <label htmlFor="description">Description</label>
+              <label htmlFor="edit-service-description-input">
+                Description
+              </label>
             </div>
           </div>
         </div>
         <div className="edit-service-modal-card-book-details">
           <div
+            id="edit-service-modal-delete-button"
             className="edit-service-remove-box"
             onClick={() => {
               onDelete();
@@ -245,6 +257,7 @@ function EditServiceModal({
             />
           </div>
           <button
+            id="edit-service-modal-edit"
             className="button-bookuj"
             type="button"
             onClick={handleSubmit}

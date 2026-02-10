@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import "./BusinessDetailsForm.css";
 
 function BusinessDescriptionForm({
@@ -24,14 +23,17 @@ function BusinessDescriptionForm({
   }
 
   return (
-    <form onSubmit={handleBusinessDetailsFromSubmit}>
+    <form
+      id="business-description-form"
+      onSubmit={handleBusinessDetailsFromSubmit}
+    >
       <div className="form-wrapper">
-        <h1>Describe Your Business</h1>
+        <h1 id="create-business-header">Describe Your Business</h1>
         <p>Provide optional Business Photo and detailed description.</p>
         <div className="add-image">
           <input
             type="file"
-            id="businessImage"
+            id="business-image"
             accept="image/*"
             style={{ display: "none" }}
             placeholder="Business Image"
@@ -65,7 +67,7 @@ function BusinessDescriptionForm({
           />
 
           <label
-            htmlFor="businessImage"
+            htmlFor="business-image"
             className={`upload-box ${preview ? "has-preview" : ""}`}
           >
             {preview ? (
@@ -94,26 +96,30 @@ function BusinessDescriptionForm({
         </div>
 
         <div className="input-details">
-          <div className="form-group" id="form-group-name">
+          <div className="form-group" id="form-group-description">
             <textarea
-              id="description"
+              id="business-description"
               name="description"
               placeholder=""
               value={businessData.description}
               onChange={handleChange}
             />
-            <label htmlFor="description">Description</label>
+            <label htmlFor="business-description">Description</label>
           </div>
         </div>
       </div>
       <div className="form-buttons">
-        <button type="submit" className="manage-business-button" id="next">
+        <button
+          id="business-form-next"
+          type="submit"
+          className="manage-business-button"
+        >
           Next
         </button>
         <button
           type="button"
           className="manage-business-button-white"
-          id="back"
+          id="business-form-back"
           onClick={prevStep}
         >
           Back

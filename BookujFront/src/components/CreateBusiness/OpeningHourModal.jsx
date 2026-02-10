@@ -2,6 +2,7 @@ import "./OpeningHourModal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function OpeningHourModal({
   openingHour,
@@ -29,7 +30,7 @@ function OpeningHourModal({
     e.preventDefault();
 
     if (openHour > closeHour) {
-      alert("Opening time must be earlier than closing time!");
+      toast.error("Opening time must be earlier than closing time!");
       return;
     }
     const newOpeningHour = {
@@ -40,15 +41,6 @@ function OpeningHourModal({
 
     onSave(newOpeningHour, idx);
 
-    // setOpeningHours((prev) => {
-    //   const newOpeningHours = [...prev];
-    //   newOpeningHours[openingHour.dayOfWeek] = {
-    //     ...prev[openingHour.dayOfWeek],
-    //     openTime: openHour,
-    //     closeTime: closeHour,
-    //   };
-    //   return newOpeningHours;
-    // });
     setActiveOpeningHourId(null);
   }
 
@@ -73,13 +65,14 @@ function OpeningHourModal({
         <div className="opening-hour-modal-card-description">
           <div className="opening-hour-modal-card-header">
             <FontAwesomeIcon
-              icon={faArrowLeft}
+              id="opening-hour-modal-close"
               className="opening-hour-modal-card-header-close"
+              icon={faArrowLeft}
               onClick={() => {
                 setActiveOpeningHourId(null);
               }}
             />
-            <h1>{weekDays[idx]}</h1>
+            <h1 id="opening-hour-modal-header">{weekDays[idx]}</h1>
           </div>
 
           <p>
@@ -91,6 +84,7 @@ function OpeningHourModal({
           <div style={{ fontSize: "18px" }}>Opening hours</div>
           <div className="opening-hour-modal-card-body-inputs">
             <select
+              id="opening-hour-modal-select-openHour"
               value={openHour}
               onChange={(e) => setOpenHour(e.target.value)}
             >
@@ -100,7 +94,9 @@ function OpeningHourModal({
                 </option>
               ))}
             </select>
+
             <select
+              id="opening-hour-modal-select-closeHour"
               value={closeHour}
               onChange={(e) => setCloseHour(e.target.value)}
             >
@@ -113,7 +109,12 @@ function OpeningHourModal({
           </div>
         </div>
         <div className="opening-hour-modal-card-book-details">
-          <button className="button-bookuj" type="button" onClick={submitForm}>
+          <button
+            id="opening-hour-modal-save"
+            className="button-bookuj"
+            type="button"
+            onClick={submitForm}
+          >
             Save
           </button>
         </div>
